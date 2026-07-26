@@ -1,0 +1,40 @@
+{
+  "shell": {
+    "brand": "Booky",
+    "skipToContent": "Lewati ke konten utama",
+    "languageLabel": "Bahasa",
+    "languageDescription": "Ganti bahasa",
+    "mobileNavigation": "Navigasi placeholder",
+    "userBadge": "Shell user-facing",
+    "adminBadge": "Shell admin-facing",
+    "helper": "Workflow bisnis sengaja belum diimplementasikan pada fondasi ini.",
+    "areas": {
+      "public": "Area publik",
+      "user": "Area pembaca",
+      "admin": "Area admin"
+    },
+    "navigation": {
+      "public": "Placeholder publik",
+      "user": "Placeholder pembaca",
+      "admin": "Placeholder admin"
+    }
+  },
+  "routes": {
+    "public": {
+      "title": "Shell fondasi publik",
+      "description": "Placeholder publik responsif untuk baseline shell Booky yang terlokalisasi."
+    },
+    "user": {
+      "title": "Shell fondasi pembaca",
+      "description": "Placeholder pembaca responsif yang mempertahankan baseline shell user-facing."
+    },
+    "admin": {
+      "title": "Shell fondasi admin",
+      "description": "Placeholder admin responsif yang mempertahankan baseline shell admin-facing."
+    }
+  },
+  "metadata": {
+    "sectionTitle": "Fondasi Booky",
+    "sectionDescription": "Fondasi shell Booky terlokalisasi untuk placeholder publik, pembaca, dan admin."
+  }
+}

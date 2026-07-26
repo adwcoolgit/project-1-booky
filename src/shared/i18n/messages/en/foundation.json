@@ -1,0 +1,40 @@
+{
+  "shell": {
+    "brand": "Booky",
+    "skipToContent": "Skip to main content",
+    "languageLabel": "Language",
+    "languageDescription": "Switch language",
+    "mobileNavigation": "Placeholder navigation",
+    "userBadge": "User-facing shell",
+    "adminBadge": "Admin-facing shell",
+    "helper": "Business workflows are intentionally absent in this foundation.",
+    "areas": {
+      "public": "Public area",
+      "user": "Reader area",
+      "admin": "Admin area"
+    },
+    "navigation": {
+      "public": "Public placeholder",
+      "user": "Reader placeholder",
+      "admin": "Admin placeholder"
+    }
+  },
+  "routes": {
+    "public": {
+      "title": "Public foundation shell",
+      "description": "A responsive public placeholder for Booky's localized shell baseline."
+    },
+    "user": {
+      "title": "Reader foundation shell",
+      "description": "A responsive reader placeholder that preserves the user-facing shell baseline."
+    },
+    "admin": {
+      "title": "Admin foundation shell",
+      "description": "A responsive admin placeholder that preserves the admin-facing shell baseline."
+    }
+  },
+  "metadata": {
+    "sectionTitle": "Booky foundation",
+    "sectionDescription": "Localized Booky shell foundation for public, reader, and admin placeholders."
+  }
+}
