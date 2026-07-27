@@ -19,10 +19,11 @@ test("foundation admin shell keeps locale switcher accessible in Indonesian", as
   await page.goto("/id/foundation/admin");
   await injectAxe(page);
 
-  await expect(page.getByRole("button", { name: "English" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Bahasa Indonesia" })).toHaveAttribute(
-    "aria-pressed",
-    "true",
-  );
+  await expect(page.locator('[data-locale-flag="en"]').first()).toBeVisible();
+  await expect(page.locator('[data-locale-flag="id"]').first()).toBeVisible();
+  await expect(page.locator('[data-locale-label="en"]').first()).not.toBeVisible();
+  await expect(page.locator('[data-locale-label="id"]').first()).not.toBeVisible();
+  await expect(page.getByRole("link", { name: "English" }).first()).toBeVisible();
+  await expect(page.getByRole("link", { name: "Bahasa Indonesia" }).first()).toHaveAttribute("aria-current", "page");
   await checkA11y(page);
 });

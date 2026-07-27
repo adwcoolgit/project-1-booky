@@ -1,0 +1,11 @@
+target_path,kind,asset,source_usage,format,status,notes
+brand/booky-mark.svg,unique-vector,Brand logo,All auth/header screens,SVG,EXPORT_REQUIRED,Exact Booky mark; do not redraw
+avatars/user-john-doe.webp,raster-fixture,User/admin avatar,User/admin headers/profile,WebP,EXPORT_REQUIRED,Use approved fixture or replace with original portfolio asset
+illustrations/home-library-hero.webp,raster/vector,Home hero/banner,Home desktop/mobile,WebP/SVG,EXPORT_REQUIRED,Preserve crop and aspect ratio
+books/psychology-of-money.webp,book-cover,The Psychology of Money cover,Detail/admin/list screens,WebP,EXPORT_REQUIRED,Verify usage rights; exact Figma crop
+books/yeti-dan-teki-yang-abadi.webp,book-cover,Yeti cover,Borrowed list screens,WebP,EXPORT_REQUIRED,Verify usage rights
+books/<book-slug>.webp,book-cover-set,Other distinct book covers,Home/category/cart/reviews,WebP,EXPORT_REQUIRED,One file per unique cover; deduplicate
+authors/<author-slug>.webp,portrait-set,Popular author portraits,Home/author screen,WebP,EXPORT_REQUIRED,One file per unique author
+categories/<category-slug>.svg,category-art,Category artwork,Home category cards,SVG/WebP,EXPORT_REQUIRED,Only if unique; otherwise icon component
+illustrations/success-check.svg,unique-vector,Borrow success icon,Success desktop/mobile,SVG,EXPORT_REQUIRED,Can use icon component only if exact shape matches
+icons/generic-controls,icon-library,"Search, eye, chevrons, cart, more, share, close, upload, trash, calendar",Multiple screens,Component,USE_ICON_COMPONENT,Use consistent library; no runtime binary required

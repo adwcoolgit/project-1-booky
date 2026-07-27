@@ -1,0 +1,151 @@
+{
+  "Common": {
+    "language": "Language",
+    "english": "English",
+    "indonesian": "Bahasa Indonesia",
+    "search": "Search",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "preview": "Preview",
+    "loading": "Loading...",
+    "retry": "Try again",
+    "noData": "No data found"
+  },
+  "Navigation": {
+    "home": "Home",
+    "profile": "Profile",
+    "borrowedList": "Borrowed List",
+    "reviews": "Reviews",
+    "bookList": "Book List",
+    "users": "User",
+    "logout": "Logout",
+    "cart": "Cart"
+  },
+  "Auth": {
+    "login": {
+      "title": "Login",
+      "description": "Sign in to manage your library account.",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Login",
+      "registerPrompt": "Don't have an account?",
+      "registerLink": "Register"
+    },
+    "register": {
+      "title": "Register",
+      "description": "Create your library account.",
+      "name": "Name",
+      "phone": "Phone Number",
+      "confirmPassword": "Confirm Password",
+      "submit": "Register",
+      "loginPrompt": "Already have an account?",
+      "loginLink": "Login"
+    }
+  },
+  "Home": {
+    "categories": "Categories",
+    "recommendations": "Recommended for You",
+    "popularAuthors": "Popular Authors"
+  },
+  "Books": {
+    "detail": "Book Detail",
+    "category": "Category",
+    "author": "Author",
+    "pages": "Pages",
+    "rating": "Rating",
+    "reviews": "Reviews",
+    "description": "Description",
+    "available": "Available",
+    "borrowed": "Borrowed",
+    "unavailable": "Unavailable",
+    "addToCart": "Add to Cart",
+    "borrowBook": "Borrow Book",
+    "related": "Related Books",
+    "addBook": "Add Book",
+    "editBook": "Edit Book",
+    "previewBook": "Preview Book",
+    "deleteData": "Delete Data",
+    "deleteWarning": "Once deleted, you won't be able to recover this data."
+  },
+  "Cart": {
+    "title": "Cart",
+    "selectAll": "Select All",
+    "summary": "Loan Summary",
+    "checkout": "Checkout",
+    "empty": "Your cart is empty"
+  },
+  "Checkout": {
+    "title": "Checkout",
+    "borrowDate": "Borrow Date",
+    "duration": "Duration",
+    "durationDays": "{count, plural, one {# day} other {# days}}",
+    "returnDate": "Return Date",
+    "agreement": "I agree to the borrowing policy.",
+    "confirm": "Confirm Borrowing",
+    "successTitle": "Borrowing Successful",
+    "successDescription": "Please return the books by {date}."
+  },
+  "Borrowed": {
+    "title": "Borrowed List",
+    "all": "All",
+    "active": "Active",
+    "returned": "Returned",
+    "overdue": "Overdue",
+    "status": "Status",
+    "dueDate": "Due Date",
+    "borrower": "Borrower's Name",
+    "giveReview": "Give Review"
+  },
+  "Profile": {
+    "title": "Profile",
+    "update": "Update Profile",
+    "preferredLanguage": "Preferred Language"
+  },
+  "Reviews": {
+    "title": "Reviews",
+    "giveReview": "Give Review",
+    "rating": "Rating",
+    "review": "Review",
+    "send": "Send",
+    "empty": "No reviews yet"
+  },
+  "Admin": {
+    "loginDescription": "Sign in to manage your library account.",
+    "userList": "User",
+    "bookList": "Book List",
+    "searchUser": "Search user",
+    "searchBook": "Search book",
+    "createdAt": "Created at",
+    "coverImage": "Cover Image",
+    "changeImage": "Change Image",
+    "deleteImage": "Delete Image",
+    "upload": "Click to upload",
+    "dragDrop": "or drag and drop",
+    "fileHint": "PNG or JPG (max. 5 MB)"
+  },
+  "Validation": {
+    "required": "This field is required.",
+    "emailInvalid": "Enter a valid email address.",
+    "passwordMin": "Password must contain at least 8 characters.",
+    "passwordMismatch": "Passwords do not match.",
+    "ratingRequired": "Choose a rating.",
+    "reviewMin": "Review must contain at least 10 characters.",
+    "fileType": "Use a PNG or JPG file.",
+    "fileSize": "File size must not exceed 5 MB."
+  },
+  "Errors": {
+    "generic": "Something went wrong. Please try again.",
+    "network": "Unable to connect. Check your connection and try again.",
+    "unauthenticated": "Your session has expired. Please sign in again.",
+    "forbidden": "You don't have permission to perform this action.",
+    "conflict": "The data has changed. Refresh and try again.",
+    "rateLimit": "Too many attempts. Please wait and try again."
+  },
+  "Metadata": {
+    "appTitle": "Booky Library App",
+    "appDescription": "A digital library application for discovering and borrowing books."
+  }
+}

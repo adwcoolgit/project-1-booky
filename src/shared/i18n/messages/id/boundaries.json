@@ -1,0 +1,31 @@
+{
+  "loading": {
+    "eyebrow": "Status boundary",
+    "title": "Menyiapkan shell fondasi",
+    "description": "Booky sedang memuat struktur shell terlokalisasi untuk route placeholder ini.",
+    "status": "Memuat konten fondasi."
+  },
+  "error": {
+    "eyebrow": "Status boundary",
+    "title": "Tampilan fondasi ini tidak dapat dirender",
+    "description": "Coba lagi shell ini atau kembali ke route placeholder yang stabil.",
+    "retry": "Coba lagi",
+    "recovery": "Buka placeholder publik",
+    "digestLabel": "ID referensi"
+  },
+  "globalError": {
+    "eyebrow": "Status boundary",
+    "title": "Booky tidak dapat pulih dari error ini",
+    "description": "Setel ulang shell fondasi atau kembali ke route placeholder yang stabil.",
+    "retry": "Setel ulang shell",
+    "recovery": "Buka placeholder publik",
+    "digestLabel": "ID referensi"
+  },
+  "notFound": {
+    "eyebrow": "Status boundary",
+    "title": "Halaman fondasi ini tidak tersedia",
+    "description": "Route ini mungkin hilang atau belum disiapkan pada slice fondasi ini.",
+    "unsupportedLocaleDescription": "Locale ini belum didukung untuk Booky. Gunakan route English atau Bahasa Indonesia.",
+    "recovery": "Buka placeholder publik"
+  }
+}

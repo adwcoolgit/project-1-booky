@@ -1,0 +1,31 @@
+{
+  "loading": {
+    "eyebrow": "Boundary state",
+    "title": "Preparing foundation shell",
+    "description": "Booky is loading the localized shell structure for this placeholder route.",
+    "status": "Loading foundation content."
+  },
+  "error": {
+    "eyebrow": "Boundary state",
+    "title": "This foundation view could not be rendered",
+    "description": "Try the shell again or return to a stable placeholder route.",
+    "retry": "Try again",
+    "recovery": "Go to public placeholder",
+    "digestLabel": "Reference ID"
+  },
+  "globalError": {
+    "eyebrow": "Boundary state",
+    "title": "Booky could not recover from this error",
+    "description": "Reset the foundation shell or return to a stable placeholder route.",
+    "retry": "Reset shell",
+    "recovery": "Go to public placeholder",
+    "digestLabel": "Reference ID"
+  },
+  "notFound": {
+    "eyebrow": "Boundary state",
+    "title": "This foundation page is unavailable",
+    "description": "The route may be missing or is not yet prepared in this foundation slice.",
+    "unsupportedLocaleDescription": "This locale is not supported for Booky yet. Use English or Bahasa Indonesia routes.",
+    "recovery": "Go to public placeholder"
+  }
+}

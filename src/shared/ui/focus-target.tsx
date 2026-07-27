@@ -7,5 +7,5 @@ type FocusTargetProps = ComponentPropsWithoutRef<"div"> & {
 };
 
 export function FocusTarget({ targetId = "main-content", className, ...props }: FocusTargetProps) {
-  return <div className={cn("outline-none", className)} id={targetId} tabIndex={-1} {...props} />;
+  return <div className={cn("focus-target outline-none", className)} id={targetId} tabIndex={-1} {...props} />;
 }

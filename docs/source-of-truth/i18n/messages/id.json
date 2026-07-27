@@ -1,0 +1,151 @@
+{
+  "Common": {
+    "language": "Bahasa",
+    "english": "English",
+    "indonesian": "Bahasa Indonesia",
+    "search": "Cari",
+    "save": "Simpan",
+    "cancel": "Batal",
+    "confirm": "Konfirmasi",
+    "delete": "Hapus",
+    "edit": "Edit",
+    "preview": "Pratinjau",
+    "loading": "Memuat...",
+    "retry": "Coba lagi",
+    "noData": "Data tidak ditemukan"
+  },
+  "Navigation": {
+    "home": "Beranda",
+    "profile": "Profil",
+    "borrowedList": "Daftar Peminjaman",
+    "reviews": "Ulasan",
+    "bookList": "Daftar Buku",
+    "users": "Pengguna",
+    "logout": "Keluar",
+    "cart": "Keranjang"
+  },
+  "Auth": {
+    "login": {
+      "title": "Masuk",
+      "description": "Masuk untuk mengelola akun perpustakaan Anda.",
+      "email": "Email",
+      "password": "Kata Sandi",
+      "submit": "Masuk",
+      "registerPrompt": "Belum memiliki akun?",
+      "registerLink": "Daftar"
+    },
+    "register": {
+      "title": "Daftar",
+      "description": "Buat akun perpustakaan Anda.",
+      "name": "Nama",
+      "phone": "Nomor Telepon",
+      "confirmPassword": "Konfirmasi Kata Sandi",
+      "submit": "Daftar",
+      "loginPrompt": "Sudah memiliki akun?",
+      "loginLink": "Masuk"
+    }
+  },
+  "Home": {
+    "categories": "Kategori",
+    "recommendations": "Rekomendasi untuk Anda",
+    "popularAuthors": "Penulis Populer"
+  },
+  "Books": {
+    "detail": "Detail Buku",
+    "category": "Kategori",
+    "author": "Penulis",
+    "pages": "Halaman",
+    "rating": "Rating",
+    "reviews": "Ulasan",
+    "description": "Deskripsi",
+    "available": "Tersedia",
+    "borrowed": "Dipinjam",
+    "unavailable": "Tidak Tersedia",
+    "addToCart": "Tambah ke Keranjang",
+    "borrowBook": "Pinjam Buku",
+    "related": "Buku Terkait",
+    "addBook": "Tambah Buku",
+    "editBook": "Edit Buku",
+    "previewBook": "Pratinjau Buku",
+    "deleteData": "Hapus Data",
+    "deleteWarning": "Setelah dihapus, data ini tidak dapat dipulihkan."
+  },
+  "Cart": {
+    "title": "Keranjang",
+    "selectAll": "Pilih Semua",
+    "summary": "Ringkasan Peminjaman",
+    "checkout": "Lanjutkan",
+    "empty": "Keranjang Anda kosong"
+  },
+  "Checkout": {
+    "title": "Konfirmasi Peminjaman",
+    "borrowDate": "Tanggal Pinjam",
+    "duration": "Durasi",
+    "durationDays": "{count} hari",
+    "returnDate": "Tanggal Pengembalian",
+    "agreement": "Saya menyetujui kebijakan peminjaman.",
+    "confirm": "Konfirmasi Peminjaman",
+    "successTitle": "Peminjaman Berhasil",
+    "successDescription": "Harap kembalikan buku paling lambat {date}."
+  },
+  "Borrowed": {
+    "title": "Daftar Peminjaman",
+    "all": "Semua",
+    "active": "Aktif",
+    "returned": "Dikembalikan",
+    "overdue": "Terlambat",
+    "status": "Status",
+    "dueDate": "Batas Pengembalian",
+    "borrower": "Nama Peminjam",
+    "giveReview": "Beri Ulasan"
+  },
+  "Profile": {
+    "title": "Profil",
+    "update": "Perbarui Profil",
+    "preferredLanguage": "Bahasa Pilihan"
+  },
+  "Reviews": {
+    "title": "Ulasan",
+    "giveReview": "Beri Ulasan",
+    "rating": "Rating",
+    "review": "Ulasan",
+    "send": "Kirim",
+    "empty": "Belum ada ulasan"
+  },
+  "Admin": {
+    "loginDescription": "Masuk untuk mengelola akun perpustakaan.",
+    "userList": "Pengguna",
+    "bookList": "Daftar Buku",
+    "searchUser": "Cari pengguna",
+    "searchBook": "Cari buku",
+    "createdAt": "Dibuat pada",
+    "coverImage": "Gambar Sampul",
+    "changeImage": "Ganti Gambar",
+    "deleteImage": "Hapus Gambar",
+    "upload": "Klik untuk mengunggah",
+    "dragDrop": "atau seret dan lepas",
+    "fileHint": "PNG atau JPG (maks. 5 MB)"
+  },
+  "Validation": {
+    "required": "Kolom ini wajib diisi.",
+    "emailInvalid": "Masukkan alamat email yang valid.",
+    "passwordMin": "Kata sandi minimal 8 karakter.",
+    "passwordMismatch": "Konfirmasi kata sandi tidak sama.",
+    "ratingRequired": "Pilih rating.",
+    "reviewMin": "Ulasan minimal 10 karakter.",
+    "fileType": "Gunakan file PNG atau JPG.",
+    "fileSize": "Ukuran file tidak boleh lebih dari 5 MB."
+  },
+  "Errors": {
+    "generic": "Terjadi kesalahan. Silakan coba lagi.",
+    "network": "Tidak dapat terhubung. Periksa koneksi lalu coba lagi.",
+    "unauthenticated": "Sesi Anda telah berakhir. Silakan masuk kembali.",
+    "forbidden": "Anda tidak memiliki izin untuk melakukan tindakan ini.",
+    "conflict": "Data telah berubah. Muat ulang lalu coba lagi.",
+    "rateLimit": "Terlalu banyak percobaan. Tunggu sebentar lalu coba lagi."
+  },
+  "Metadata": {
+    "appTitle": "Aplikasi Perpustakaan Booky",
+    "appDescription": "Aplikasi perpustakaan digital untuk menemukan dan meminjam buku."
+  }
+}

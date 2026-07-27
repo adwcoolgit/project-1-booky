@@ -1,0 +1,110 @@
+{
+  "fontFamily": {
+    "display": "Quicksand",
+    "body": "Quicksand"
+  },
+  "fontSize": {
+    "display3xl": 56,
+    "display2xl": 48,
+    "displayXl": 60,
+    "displayLg": 36,
+    "displayMd": 32,
+    "displaySm": 28,
+    "displayXs": 24,
+    "textXl": 20,
+    "textLg": 18,
+    "textMd": 16,
+    "textSm": 14,
+    "textXs": 12
+  },
+  "lineHeight": {
+    "display3xl": 68,
+    "display2xl": 60,
+    "displayXl": 72,
+    "displayLg": 44,
+    "displayMd": 42,
+    "displaySm": 38,
+    "displayXs": 36,
+    "textXl": 34,
+    "textLg": 32,
+    "textMd": 30,
+    "textSm": 28,
+    "textXs": 24
+  },
+  "colors": {
+    "base": {
+      "white": "#ffffff",
+      "black": "#000000"
+    },
+    "neutral": {
+      "25": "#fdfdfd",
+      "50": "#fafafa",
+      "100": "#f5f5f5",
+      "200": "#e9eaeb",
+      "300": "#d5d7da",
+      "400": "#a4a7ae",
+      "500": "#717680",
+      "600": "#535862",
+      "700": "#414651",
+      "800": "#252b37",
+      "900": "#181d27",
+      "950": "#0a0d12"
+    },
+    "primary": {
+      "100": "#f6f9fe",
+      "200": "#d2e3ff",
+      "300": "#1c65da"
+    },
+    "accent": {
+      "red": "#d9206e",
+      "screenError": "#ee1d52",
+      "green": "#079455",
+      "statusGreen": "#24a500",
+      "yellow": "#fdb022"
+    }
+  },
+  "radius": {
+    "none": 0,
+    "xxs": 2,
+    "xs": 4,
+    "sm": 6,
+    "md": 8,
+    "lg": 10,
+    "xl": 12,
+    "2xl": 16,
+    "3xl": 20,
+    "4xl": 24,
+    "full": 9999
+  },
+  "spacing": {
+    "none": 0,
+    "xxs": 2,
+    "xs": 4,
+    "1_5": 6,
+    "md": 8,
+    "lg": 12,
+    "xl": 16,
+    "2xl": 20,
+    "3xl": 24,
+    "4xl": 32,
+    "5xl": 40,
+    "6xl": 48,
+    "7xl": 64,
+    "8xl": 80,
+    "9xl": 96,
+    "10xl": 128,
+    "11xl": 160
+  },
+  "shadow": {
+    "card": "0 0 10px rgba(203, 202, 202, 0.25)"
+  },
+  "layout": {
+    "desktopCanvas": 1440,
+    "desktopHeader": 80,
+    "desktopGutter": 120,
+    "mobileCanvas": 393,
+    "mobileHeader": 64,
+    "mobileGutter": 16,
+    "mobileContent": 361
+  }
+}

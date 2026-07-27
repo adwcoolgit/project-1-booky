@@ -11,7 +11,7 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   webServer: {
-    command: "npm run build && npm run start -- --hostname 127.0.0.1 --port 3000",
+    command: "npm run build && npx next start --hostname 127.0.0.1 --port 3000",
     url: "http://127.0.0.1:3000/en/foundation/public",
     reuseExistingServer: true,
     timeout: 180000,

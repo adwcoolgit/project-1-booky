@@ -18,11 +18,12 @@ const serverEnvSchema = z.object({
 
 export type PublicEnv = z.infer<typeof publicEnvSchema>;
 export type ServerEnv = z.infer<typeof serverEnvSchema>;
+type EnvSource = Record<string, string | undefined>;
 
-export function getPublicEnv(source: NodeJS.ProcessEnv = process.env): PublicEnv {
+export function getPublicEnv(source: EnvSource = process.env): PublicEnv {
   return publicEnvSchema.parse(source);
 }
 
-export function getServerEnv(source: NodeJS.ProcessEnv = process.env): ServerEnv {
+export function getServerEnv(source: EnvSource = process.env): ServerEnv {
   return serverEnvSchema.parse(source);
 }

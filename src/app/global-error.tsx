@@ -1,16 +1,30 @@
 "use client";
 
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
+import { BoundaryStateView } from "@/features/foundation-shell";
+import { bookyFont } from "@/shared/styles/fonts";
+
+import "./globals.css";
+
 export default function GlobalError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
+  const pathname = usePathname() ?? "/en/foundation/public";
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  function handleRetry() {
+    if (searchParams.get("boundary") === "error") {
+      router.replace(pathname);
+      return;
+    }
+
+    reset();
+  }
+
   return (
     <html lang="en">
-      <body>
-        <main className="mx-auto flex min-h-screen max-w-3xl flex-col items-start justify-center gap-4 px-6 py-12">
-          <h1 className="font-display text-3xl font-bold">Application error</h1>
-          <p className="text-base text-foreground">{error.message || "An unexpected error interrupted the foundation shell."}</p>
-          <button className="rounded-full bg-brand px-4 py-2 text-sm font-semibold text-white" onClick={reset} type="button">
-            Try again
-          </button>
-        </main>
+      <body className={bookyFont.variable}>
+        <BoundaryStateView error={error} errorScope="global" onRetry={handleRetry} pathname={pathname} state="error" />
       </body>
     </html>
   );

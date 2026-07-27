@@ -1,0 +1,1940 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Library API",
+    "version": "1.0.0",
+    "description": "REST API for Library Web Coding by Henry Rivardo - Software Engineer"
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Book": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "isbn": {
+            "type": "string"
+          },
+          "publishedYear": {
+            "type": "integer",
+            "nullable": true
+          },
+          "coverImage": {
+            "type": "string",
+            "nullable": true
+          },
+          "rating": {
+            "type": "number",
+            "example": 4.5
+          },
+          "reviewCount": {
+            "type": "integer",
+            "example": 10
+          },
+          "totalCopies": {
+            "type": "integer",
+            "example": 5
+          },
+          "availableCopies": {
+            "type": "integer",
+            "example": 3
+          },
+          "borrowCount": {
+            "type": "integer",
+            "example": 20
+          },
+          "authorId": {
+            "type": "integer"
+          },
+          "categoryId": {
+            "type": "integer"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "ADMIN",
+                  "USER"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [],
+  "tags": [
+    {
+      "name": "Auth"
+    },
+    {
+      "name": "Books"
+    },
+    {
+      "name": "Authors"
+    },
+    {
+      "name": "Categories"
+    },
+    {
+      "name": "Loans"
+    },
+    {
+      "name": "Admin",
+      "description": "Admin-only endpoints & dashboard"
+    },
+    {
+      "name": "Me",
+      "description": "User profile & personal data"
+    },
+    {
+      "name": "Reviews",
+      "description": "Book reviews"
+    }
+  ],
+  "paths": {
+    "/api/admin/books": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Book list — daftar buku untuk admin (filter & pagination)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "available",
+                "borrowed",
+                "returned"
+              ],
+              "default": "all"
+            },
+            "description": "Filter by availability — all, available (ada stok), borrowed (sedang dipinjam), returned (semua kopi sudah kembali)"
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search by title"
+          },
+          {
+            "in": "query",
+            "name": "categoryId",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "authorId",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "books + pagination"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/admin/loans": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Create a loan (admin)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "userId",
+                  "bookId"
+                ],
+                "properties": {
+                  "userId": {
+                    "type": "integer",
+                    "example": 2
+                  },
+                  "bookId": {
+                    "type": "integer",
+                    "example": 12
+                  },
+                  "dueAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "ISO date-time; default +7 days"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Validation / business rule failed"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Borrowed list — pinjaman dengan filter All/Active/Returned/Overdue, search, pagination",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "active",
+                "returned",
+                "overdue"
+              ],
+              "default": "all"
+            },
+            "description": "all | active (belum jatuh tempo) | returned | overdue (lewat deadline)"
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search by book title, author name, or borrower name"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "loans (borrowedAt, dueAt, durationDays, book with cover, borrower) + pagination"
+          }
+        }
+      }
+    },
+    "/api/admin/loans/{id}": {
+      "patch": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Update a loan (admin) — change dueAt or status",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "dueAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "BORROWED",
+                      "LATE",
+                      "RETURNED"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated"
+          },
+          "404": {
+            "description": "Loan not found"
+          }
+        }
+      }
+    },
+    "/api/admin/loans/overdue": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "List overdue loans (not returned and past dueAt)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/overview": {
+      "get": {
+        "summary": "Admin overview (totals, active/overdue loans, top borrowed books)",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/admin/users": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "User list — daftar user (search, pagination)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search by name, email, or phone"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "users + pagination (name",
+            "phone": null,
+            "email": null,
+            "createdAt)": null
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Register new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "Nomor Handphone (optional)"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login and get token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/authors": {
+      "get": {
+        "tags": [
+          "Authors"
+        ],
+        "summary": "List authors (optional q = search by name, untuk auto-detect di form Add Book)",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by name (contains, case-insensitive)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Authors",
+          "Admin"
+        ],
+        "summary": "Create author (admin)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "bio": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/api/authors/popular": {
+      "get": {
+        "tags": [
+          "Authors"
+        ],
+        "summary": "Popular authors by accumulated rating dari buku (rating * reviewCount per buku)",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "authors + bookCount + accumulatedScore"
+          }
+        }
+      }
+    },
+    "/api/authors/{id}/books": {
+      "get": {
+        "tags": [
+          "Authors"
+        ],
+        "summary": "Book by author — daftar buku oleh author (untuk halaman \"Book by Author\") + pagination",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 12,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "author (id",
+            "name": null,
+            "bio) + bookCount + books + pagination": null
+          },
+          "404": {
+            "description": "Author not found"
+          }
+        }
+      }
+    },
+    "/api/authors/{id}": {
+      "put": {
+        "tags": [
+          "Authors",
+          "Admin"
+        ],
+        "summary": "Update author (admin)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "bio": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Authors",
+          "Admin"
+        ],
+        "summary": "Delete author (admin) — blocked if author still has books",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted"
+          },
+          "400": {
+            "description": "Has dependent books"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/api/books": {
+      "get": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Daftar buku (user) — filter category, rating, search + pagination",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search by title"
+          },
+          {
+            "in": "query",
+            "name": "categoryId",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Filter by category (id dari GET /api/categories)"
+          },
+          {
+            "in": "query",
+            "name": "authorId",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "minRating",
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "description": "Filter rating minimal (1-5), e.g. 4 = buku dengan rating >= 4"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 12,
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "books + pagination (page",
+            "limit": null,
+            "total": null,
+            "totalPages)": null
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Create book (admin)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "title",
+                  "isbn",
+                  "categoryId"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "isbn": {
+                    "type": "string"
+                  },
+                  "categoryId": {
+                    "type": "integer"
+                  },
+                  "authorId": {
+                    "type": "integer"
+                  },
+                  "authorName": {
+                    "type": "string"
+                  },
+                  "coverImage": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "File gambar (JPEG/PNG/GIF/WebP, max 5MB)"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "publishedYear": {
+                    "type": "integer",
+                    "description": "Tahun terbit, angka saja (contoh 2018)"
+                  },
+                  "totalCopies": {
+                    "type": "integer"
+                  },
+                  "availableCopies": {
+                    "type": "integer"
+                  }
+                }
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "title",
+                  "isbn",
+                  "categoryId"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "isbn": {
+                    "type": "string"
+                  },
+                  "publishedYear": {
+                    "type": "integer"
+                  },
+                  "coverImage": {
+                    "type": "string",
+                    "description": "URL cover (atau pakai multipart untuk upload file)"
+                  },
+                  "authorId": {
+                    "type": "integer"
+                  },
+                  "authorName": {
+                    "type": "string"
+                  },
+                  "categoryId": {
+                    "type": "integer"
+                  },
+                  "totalCopies": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "availableCopies": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Berikan authorId atau authorName / Invalid file type / File too large"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/books/recommend": {
+      "get": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Rekomendasi buku (by rating) dengan load more (page)",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "by",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "rating",
+                "popular"
+              ],
+              "default": "rating"
+            }
+          },
+          {
+            "in": "query",
+            "name": "categoryId",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 8,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recommended books + pagination"
+          }
+        }
+      }
+    },
+    "/api/books/{id}": {
+      "get": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Preview book detail — untuk admin/list (author, category, cover, rating, reviewCount, totalCopies, reviews)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Full book with author, category, rating, reviewCount, totalCopies, availableCopies, borrowCount, reviews"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Update book (admin)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "isbn": {
+                    "type": "string"
+                  },
+                  "publishedYear": {
+                    "type": "integer"
+                  },
+                  "coverImage": {
+                    "type": "string",
+                    "description": "URL atau kosongkan bila upload file (multipart)"
+                  },
+                  "authorId": {
+                    "type": "integer"
+                  },
+                  "authorName": {
+                    "type": "string"
+                  },
+                  "categoryId": {
+                    "type": "integer"
+                  },
+                  "totalCopies": {
+                    "type": "integer"
+                  },
+                  "availableCopies": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated successfully"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Books",
+          "Admin"
+        ],
+        "summary": "Delete book (admin) — blocked if there are active loans",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted"
+          },
+          "400": {
+            "description": "Has active loans"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/api/cart": {
+      "get": {
+        "summary": "My cart — daftar buku di cart (untuk halaman My Cart)",
+        "tags": [
+          "Cart"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "cartId",
+            "items (id": null,
+            "bookId": null,
+            "book dengan author": null,
+            "category": null,
+            "coverImage)": null,
+            "itemCount": null
+          }
+        }
+      },
+      "delete": {
+        "summary": "Clear my cart",
+        "tags": [
+          "Cart"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Emptied"
+          }
+        }
+      }
+    },
+    "/api/cart/checkout": {
+      "get": {
+        "summary": "Checkout payload — User Information + Book List (untuk halaman Checkout)",
+        "tags": [
+          "Cart"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "user (name",
+            "email": null,
+            "phone)": null,
+            "items (id": null,
+            "bookId": null,
+            "book": "title",
+            "author": null,
+            "category": null,
+            "coverImage)": null,
+            "itemCount": null
+          }
+        }
+      }
+    },
+    "/api/cart/items": {
+      "post": {
+        "summary": "Add book to cart (untuk pinjam nanti)",
+        "tags": [
+          "Cart"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "bookId"
+                ],
+                "properties": {
+                  "bookId": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Added"
+          },
+          "400": {
+            "description": "Book not found / out of stock / already in cart"
+          }
+        }
+      }
+    },
+    "/api/cart/items/{itemId}": {
+      "delete": {
+        "summary": "Remove item from cart",
+        "tags": [
+          "Cart"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "itemId",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Removed"
+          },
+          "404": {
+            "description": "Item not found"
+          }
+        }
+      }
+    },
+    "/api/categories": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "List categories",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Categories",
+          "Admin"
+        ],
+        "summary": "Create category (admin)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/api/categories/{id}": {
+      "put": {
+        "tags": [
+          "Categories",
+          "Admin"
+        ],
+        "summary": "Update category (admin)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Categories",
+          "Admin"
+        ],
+        "summary": "Delete category (admin) — blocked if category has books",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted"
+          },
+          "400": {
+            "description": "Has dependent books"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/api/loans": {
+      "post": {
+        "summary": "Borrow a book (user)",
+        "tags": [
+          "Loans"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "bookId",
+                  "days"
+                ],
+                "properties": {
+                  "bookId": {
+                    "type": "integer",
+                    "example": 12
+                  },
+                  "days": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 30,
+                    "example": 7
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Borrowed successfully"
+          },
+          "400": {
+            "description": "Validation / business rule failed"
+          }
+        }
+      }
+    },
+    "/api/loans/{id}/return": {
+      "patch": {
+        "summary": "Return a book (admin or the borrower)",
+        "tags": [
+          "Loans"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned"
+          },
+          "404": {
+            "description": "Loan not found"
+          }
+        }
+      }
+    },
+    "/api/loans/from-cart": {
+      "post": {
+        "summary": "Confirm & Borrow — checkout dari cart (itemIds, borrowDate, duration 3/5/10 days)",
+        "tags": [
+          "Loans"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "itemIds"
+                ],
+                "properties": {
+                  "itemIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "description": "CartItem id yang dipilih"
+                  },
+                  "days": {
+                    "5": null,
+                    "type": "integer",
+                    "enum": [
+                      3,
+                      5,
+                      10
+                    ],
+                    "default": 3,
+                    "description": "Borrow duration (3",
+                    "or 10 days)": null
+                  },
+                  "borrowDate": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "YYYY-MM-DD; default today"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "loans (borrowedAt",
+            "dueAt": null,
+            "returnByMessage)": null,
+            "failed": null,
+            "removedFromCart": null
+          },
+          "400": {
+            "description": "itemIds required / invalid"
+          }
+        }
+      }
+    },
+    "/api/loans/my": {
+      "get": {
+        "summary": "Borrowed List (user) — filter All/Active/Returned/Overdue, pagination (Load More)",
+        "tags": [
+          "Loans"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "active",
+                "returned",
+                "overdue"
+              ],
+              "default": "all"
+            }
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search by book title or author name"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "loans (displayStatus",
+            "dueAt": null,
+            "book": null,
+            "borrowedAt": null,
+            "durationDays) + pagination": null
+          }
+        }
+      }
+    },
+    "/api/me": {
+      "get": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Get my profile + loan statistics",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Update my profile (name, phone, foto profil)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "Nomor Handphone, 8–20 chars"
+                  },
+                  "profilePhoto": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "File foto (JPEG/PNG/GIF/WebP, max 5MB)"
+                  }
+                }
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "Nomor Handphone, 8–20 chars"
+                  },
+                  "profilePhoto": {
+                    "type": "string",
+                    "description": "URL foto (atau pakai multipart untuk upload file)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated"
+          }
+        }
+      }
+    },
+    "/api/me/loans": {
+      "get": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "List my loans (active & history)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "BORROWED",
+                "LATE",
+                "RETURNED"
+              ]
+            },
+            "description": "Filter by status (optional)"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/me/reviews": {
+      "get": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Halaman Reviews — daftar review yang user berikan (rating, comment, book, timestamp)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search Reviews (book title, author, or comment)"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "reviews (star",
+            "comment": null,
+            "createdAt": null,
+            "book dengan author": null,
+            "category) + pagination": null
+          }
+        }
+      }
+    },
+    "/api/reviews": {
+      "post": {
+        "summary": "Create or update my review for a book",
+        "tags": [
+          "Reviews"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "bookId",
+                  "star"
+                ],
+                "properties": {
+                  "bookId": {
+                    "type": "integer",
+                    "example": 12
+                  },
+                  "star": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "example": 4
+                  },
+                  "comment": {
+                    "type": "string",
+                    "example": "Bagus banget!"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created/Updated"
+          }
+        }
+      }
+    },
+    "/api/reviews/book/{bookId}": {
+      "get": {
+        "summary": "List reviews for a book",
+        "tags": [
+          "Reviews"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "bookId",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/reviews/{id}": {
+      "delete": {
+        "summary": "Delete my review",
+        "tags": [
+          "Reviews"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted"
+          }
+        }
+      }
+    }
+  }
+}

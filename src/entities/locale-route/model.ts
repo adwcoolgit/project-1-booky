@@ -51,3 +51,9 @@ export function buildFoundationRouteMap(locale: AppLocale, labels: Record<Founda
     label: labels[area],
   }));
 }
+
+export function getFoundationAreaFromPathname(pathname: string): FoundationArea | null {
+  const match = pathname.match(/\/foundation\/(public|user|admin)(?=\/|$)/);
+
+  return (match?.[1] as FoundationArea | undefined) ?? null;
+}

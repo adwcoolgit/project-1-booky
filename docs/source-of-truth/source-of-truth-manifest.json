@@ -1,0 +1,98 @@
+{
+  "name": "Booky Source-of-Truth Manifest",
+  "packVersion": "1.0",
+  "generatedAtUtc": "2026-07-26T10:21:29.727120+00:00",
+  "hashAlgorithm": "SHA-256",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "214fc2a826d1494c8ec1559dd590a00225724d5bc6715269a053b97829211158",
+      "sizeBytes": 823
+    },
+    {
+      "path": "api/API_CONTRACT_INTEGRATION_SPEC_Library_App_v1.3.md",
+      "sha256": "e923c09430ed3c71389134a9bbc1df44e13e0ece7eb64801d21303cc2528d871",
+      "sizeBytes": 22335
+    },
+    {
+      "path": "api/Library_App_API_Endpoint_Manifest_v1.3.csv",
+      "sha256": "2753f329a51cc654ca3eb090126e0038d9c5d198269e8dc7efdde4e2ec3d044b",
+      "sizeBytes": 7250
+    },
+    {
+      "path": "api/Library_App_OpenAPI_3.0.3_v1.0.0.json",
+      "sha256": "adca2f43f10ea041b644fb3b8e8bbe44c82a2ea6d579f039695b731b09845a4a",
+      "sizeBytes": 45951
+    },
+    {
+      "path": "api/library-app-api-reference.txt",
+      "sha256": "254be258a5eb01a36b75b29231b3047cfebf0e05673b53d67474ab92c628a7ee",
+      "sizeBytes": 53290
+    },
+    {
+      "path": "design/Library_App_Asset_Manifest.csv",
+      "sha256": "7a92f7b41efb8f0ced1a43ae94921a46949548e90b2053620098dba40e884c62",
+      "sizeBytes": 1580
+    },
+    {
+      "path": "design/Library_App_Figma_Read_Ledger.md",
+      "sha256": "c2596f5e3f967e94cb783ef6e4889c40f1d5c464aa21b5f1e2cb62ceb3c37f1a",
+      "sizeBytes": 10908
+    },
+    {
+      "path": "design/design-tokens.json",
+      "sha256": "856c0ab8ef7272e75377614189eb145185c9d5488afce203944b77abbebf68ba",
+      "sizeBytes": 1964
+    },
+    {
+      "path": "design/tokens.css",
+      "sha256": "d5a3b0fac14ed1aa9e0ecf1bb7a6af9462f586ce4cf10000f458c364ca8ee2a2",
+      "sizeBytes": 911
+    },
+    {
+      "path": "engineering/DOCUMENT_REVIEW_RESOLUTION_Library_App_v1.3.md",
+      "sha256": "6f17a4194d01078d1b16dce613cb1221df13c9fc55cc178ce65e9cd5f4769479",
+      "sizeBytes": 1588
+    },
+    {
+      "path": "engineering/ENGINEERING_INSTRUCTIONS_Library_App_v1.3.md",
+      "sha256": "89ee81d5e63494990a916057ba83ac6f8d55fe5fbee3b81ce3f2fd6fbc709ad3",
+      "sizeBytes": 3321
+    },
+    {
+      "path": "i18n/I18N_IMPLEMENTATION_SPEC_Library_App_v1.3.md",
+      "sha256": "1f85939bdbcfb01b10ff8964774fd989d4a322f9a5b0bf51b4da275732c0682a",
+      "sizeBytes": 2138
+    },
+    {
+      "path": "i18n/messages/en.json",
+      "sha256": "0f73080ad686dbd5c1c05e244a7fcd4cd39b4c754ee904927de2bb4df56a5dbc",
+      "sizeBytes": 4495
+    },
+    {
+      "path": "i18n/messages/id.json",
+      "sha256": "d300e1f9f27af8bf0832ff7320074106d4a42e9c1e02d9b887f6707e0d1a09d2",
+      "sizeBytes": 4616
+    },
+    {
+      "path": "i18n/scripts/check-i18n-keys.mjs",
+      "sha256": "090d536c3f2a3fa850880452dd1272505c988adc94584d61a1df63665328da67",
+      "sizeBytes": 1410
+    },
+    {
+      "path": "product/PRD_Library_App_Figma_Aligned_v1.3.docx",
+      "sha256": "ca587caa3b1a8ec814e656d4a2a6ce189e47ca0d3b62b26527caeeaeea54970e",
+      "sizeBytes": 63385
+    },
+    {
+      "path": "product/PRD_Library_App_Figma_Aligned_v1.3.md",
+      "sha256": "53281bf1b422dcd3b04983100640d983440ba3516190f38b040068de805ff453",
+      "sizeBytes": 87894
+    },
+    {
+      "path": "quality/a11y_audit_v1.3.json",
+      "sha256": "8964306f5185829c86a7a7c19db2e40abcb2f3262e098addaebf404c1ec619cf",
+      "sizeBytes": 148
+    }
+  ]
+}

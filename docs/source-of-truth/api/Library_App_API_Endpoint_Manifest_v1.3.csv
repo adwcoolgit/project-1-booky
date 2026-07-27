@@ -1,0 +1,42 @@
+﻿index,tags,method,full_api_path,axios_service_path,security,query_parameters,path_parameters,request_content_types,required_request_fields,success_statuses,error_statuses,response_schema_status,runtime_status,summary
+1,Admin,GET,/api/admin/books,/admin/books,Bearer JWT,"status,q,categoryId,authorId,page,limit",,,,200,"401,403",DESCRIPTION_ONLY,NOT_TESTED,Book list — daftar buku untuk admin (filter & pagination)
+2,Admin,GET,/api/admin/loans,/admin/loans,Bearer JWT,"status,q,page,limit",,,,200,,DESCRIPTION_ONLY,NOT_TESTED,"Borrowed list — pinjaman dengan filter All/Active/Returned/Overdue, search, pagination"
+3,Admin,POST,/api/admin/loans,/admin/loans,Bearer JWT,,,application/json,"application/json: userId, bookId",201,400,DESCRIPTION_ONLY,NOT_TESTED,Create a loan (admin)
+4,Admin,PATCH,/api/admin/loans/{id},/admin/loans/{id},Bearer JWT,,id,application/json,application/json: none declared,200,404,DESCRIPTION_ONLY,NOT_TESTED,Update a loan (admin) — change dueAt or status
+5,Admin,GET,/api/admin/loans/overdue,/admin/loans/overdue,Bearer JWT,"page,limit",,,,200,,DESCRIPTION_ONLY,NOT_TESTED,List overdue loans (not returned and past dueAt)
+6,Admin,GET,/api/admin/overview,/admin/overview,Bearer JWT,,,,,200,"401,403",DESCRIPTION_ONLY,NOT_TESTED,"Admin overview (totals, active/overdue loans, top borrowed books)"
+7,Admin,GET,/api/admin/users,/admin/users,Bearer JWT,"q,page,limit",,,,200,"401,403",DESCRIPTION_ONLY,NOT_TESTED,"User list — daftar user (search, pagination)"
+8,Auth,POST,/api/auth/register,/auth/register,Public,,,application/json,"application/json: name, email, password",201,400,DESCRIPTION_ONLY,NOT_TESTED,Register new user
+9,Auth,POST,/api/auth/login,/auth/login,Public,,,application/json,"application/json: email, password",200,401,200:application/json:LoginResponse,NOT_TESTED,Login and get token
+10,Authors,GET,/api/authors,/authors,Public,q,,,,200,,DESCRIPTION_ONLY,NOT_TESTED,"List authors (optional q = search by name, untuk auto-detect di form Add Book)"
+11,"Authors, Admin",POST,/api/authors,/authors,Bearer JWT,,,application/json,application/json: name,201,,DESCRIPTION_ONLY,NOT_TESTED,Create author (admin)
+12,Authors,GET,/api/authors/popular,/authors/popular,Public,limit,,,,200,,DESCRIPTION_ONLY,NOT_TESTED,Popular authors by accumulated rating dari buku (rating * reviewCount per buku)
+13,Authors,GET,/api/authors/{id}/books,/authors/{id}/books,Public,"page,limit",id,,,200,404,DESCRIPTION_ONLY,NOT_TESTED,"Book by author — daftar buku oleh author (untuk halaman ""Book by Author"") + pagination"
+14,"Authors, Admin",PUT,/api/authors/{id},/authors/{id},Bearer JWT,,id,application/json,application/json: none declared,200,404,DESCRIPTION_ONLY,NOT_TESTED,Update author (admin)
+15,"Authors, Admin",DELETE,/api/authors/{id},/authors/{id},Bearer JWT,,id,,,200,"400,404",DESCRIPTION_ONLY,NOT_TESTED,Delete author (admin) — blocked if author still has books
+16,Books,GET,/api/books,/books,Public,"q,categoryId,authorId,minRating,page,limit",,,,200,,DESCRIPTION_ONLY,NOT_TESTED,"Daftar buku (user) — filter category, rating, search + pagination"
+17,Books,POST,/api/books,/books,Bearer JWT,,,"multipart/form-data, application/json","multipart/form-data: title, isbn, categoryId | application/json: title, isbn, categoryId",201,"400,401,403",DESCRIPTION_ONLY,NOT_TESTED,Create book (admin)
+18,Books,GET,/api/books/recommend,/books/recommend,Public,"by,categoryId,page,limit",,,,200,,DESCRIPTION_ONLY,NOT_TESTED,Rekomendasi buku (by rating) dengan load more (page)
+19,Books,GET,/api/books/{id},/books/{id},Public,,id,,,200,404,DESCRIPTION_ONLY,NOT_TESTED,"Preview book detail — untuk admin/list (author, category, cover, rating, reviewCount, totalCopies, reviews)"
+20,Books,PUT,/api/books/{id},/books/{id},Bearer JWT,,id,application/json,application/json: none declared,200,404,DESCRIPTION_ONLY,NOT_TESTED,Update book (admin)
+21,"Books, Admin",DELETE,/api/books/{id},/books/{id},Bearer JWT,,id,,,200,"400,404",DESCRIPTION_ONLY,NOT_TESTED,Delete book (admin) — blocked if there are active loans
+22,Cart,GET,/api/cart,/cart,Bearer JWT,,,,,200,,DESCRIPTION_ONLY,NOT_TESTED,My cart — daftar buku di cart (untuk halaman My Cart)
+23,Cart,DELETE,/api/cart,/cart,Bearer JWT,,,,,200,,DESCRIPTION_ONLY,NOT_TESTED,Clear my cart
+24,Cart,GET,/api/cart/checkout,/cart/checkout,Bearer JWT,,,,,200,,DESCRIPTION_ONLY,NOT_TESTED,Checkout payload — User Information + Book List (untuk halaman Checkout)
+25,Cart,POST,/api/cart/items,/cart/items,Bearer JWT,,,application/json,application/json: bookId,200,400,DESCRIPTION_ONLY,NOT_TESTED,Add book to cart (untuk pinjam nanti)
+26,Cart,DELETE,/api/cart/items/{itemId},/cart/items/{itemId},Bearer JWT,,itemId,,,200,404,DESCRIPTION_ONLY,NOT_TESTED,Remove item from cart
+27,Categories,GET,/api/categories,/categories,Public,,,,,200,,DESCRIPTION_ONLY,NOT_TESTED,List categories
+28,"Categories, Admin",POST,/api/categories,/categories,Bearer JWT,,,application/json,application/json: name,201,,DESCRIPTION_ONLY,NOT_TESTED,Create category (admin)
+29,"Categories, Admin",PUT,/api/categories/{id},/categories/{id},Bearer JWT,,id,application/json,application/json: none declared,200,404,DESCRIPTION_ONLY,NOT_TESTED,Update category (admin)
+30,"Categories, Admin",DELETE,/api/categories/{id},/categories/{id},Bearer JWT,,id,,,200,"400,404",DESCRIPTION_ONLY,NOT_TESTED,Delete category (admin) — blocked if category has books
+31,Loans,POST,/api/loans,/loans,Bearer JWT,,,application/json,"application/json: bookId, days",200,400,DESCRIPTION_ONLY,NOT_TESTED,Borrow a book (user)
+32,Loans,PATCH,/api/loans/{id}/return,/loans/{id}/return,Bearer JWT,,id,,,200,404,DESCRIPTION_ONLY,NOT_TESTED,Return a book (admin or the borrower)
+33,Loans,POST,/api/loans/from-cart,/loans/from-cart,Bearer JWT,,,application/json,application/json: itemIds,200,400,DESCRIPTION_ONLY,NOT_TESTED,"Confirm & Borrow — checkout dari cart (itemIds, borrowDate, duration 3/5/10 days)"
+34,Loans,GET,/api/loans/my,/loans/my,Bearer JWT,"status,q,page,limit",,,,200,,DESCRIPTION_ONLY,NOT_TESTED,"Borrowed List (user) — filter All/Active/Returned/Overdue, pagination (Load More)"
+35,Me,GET,/api/me,/me,Bearer JWT,,,,,200,,DESCRIPTION_ONLY,NOT_TESTED,Get my profile + loan statistics
+36,Me,PATCH,/api/me,/me,Bearer JWT,,,"multipart/form-data, application/json",multipart/form-data: none declared | application/json: none declared,200,,DESCRIPTION_ONLY,NOT_TESTED,"Update my profile (name, phone, foto profil)"
+37,Me,GET,/api/me/loans,/me/loans,Bearer JWT,"status,page,limit",,,,200,,DESCRIPTION_ONLY,NOT_TESTED,List my loans (active & history)
+38,Me,GET,/api/me/reviews,/me/reviews,Bearer JWT,"q,page,limit",,,,200,,DESCRIPTION_ONLY,NOT_TESTED,"Halaman Reviews — daftar review yang user berikan (rating, comment, book, timestamp)"
+39,Reviews,POST,/api/reviews,/reviews,Bearer JWT,,,application/json,"application/json: bookId, star",201,,DESCRIPTION_ONLY,NOT_TESTED,Create or update my review for a book
+40,Reviews,GET,/api/reviews/book/{bookId},/reviews/book/{bookId},Public,"page,limit",bookId,,,200,,DESCRIPTION_ONLY,NOT_TESTED,List reviews for a book
+41,Reviews,DELETE,/api/reviews/{id},/reviews/{id},Bearer JWT,,id,,,200,,DESCRIPTION_ONLY,NOT_TESTED,Delete my review

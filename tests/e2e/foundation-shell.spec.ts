@@ -21,6 +21,8 @@ for (const locale of ["en", "id"] as const) {
       await expect(page.locator("html")).toHaveAttribute("lang", locale);
       await expect(page.getByRole("heading", { name: expectations[locale][area].title })).toBeVisible();
       await expect(page.getByText(expectations[locale][area].badge, { exact: true })).toBeVisible();
+      await expect(page.locator(`[data-locale-flag="${locale}"]`).first()).toBeVisible();
+      await expect(page.locator(`[data-locale-label="${locale}"]`).first()).not.toBeVisible();
       await expect(page).toHaveURL(new RegExp(`/${locale}/foundation/${area}$`));
     });
   }
@@ -28,8 +30,30 @@ for (const locale of ["en", "id"] as const) {
 
 test("locale switching preserves the current placeholder route", async ({ page }) => {
   await page.goto("/en/foundation/user");
-  await page.getByRole("button", { name: "Bahasa Indonesia" }).click();
+  await page.getByRole("link", { name: "Bahasa Indonesia" }).click();
 
   await expect(page).toHaveURL(/\/id\/foundation\/user$/);
   await expect(page.getByRole("heading", { name: "Shell fondasi pembaca" })).toBeVisible();
+});
+
+test("unsupported locale boundaries keep language switching on supported foundation routes", async ({ page }) => {
+  await page.goto("/fr/foundation/public");
+
+  await expect(page.getByRole("heading", { name: "This foundation page is unavailable" })).toBeVisible();
+  await page.getByRole("link", { name: "Bahasa Indonesia" }).click();
+  await expect(page).toHaveURL(/\/id\/foundation\/public$/);
+  await expect(page.getByRole("heading", { name: "Shell fondasi publik" })).toBeVisible();
+});
+
+test("production build proof keeps placeholder shell pages routable", async ({ page }) => {
+  const proofRoutes = [
+    { route: "/en/foundation/public", title: "Public foundation shell" },
+    { route: "/en/foundation/user", title: "Reader foundation shell" },
+    { route: "/en/foundation/admin", title: "Admin foundation shell" },
+  ] as const;
+
+  for (const entry of proofRoutes) {
+    await page.goto(entry.route);
+    await expect(page.getByRole("heading", { name: entry.title })).toBeVisible();
+  }
 });

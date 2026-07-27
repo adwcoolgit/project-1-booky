@@ -1,9 +1,8 @@
-import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
-import { isSupportedLocale } from "@/shared/i18n/config";
-import { getMessages } from "@/shared/i18n/get-messages";
+import { getMessages, getFoundationShellChromeMessages } from "@/shared/i18n/get-messages";
 import { getLocaleDirection } from "@/shared/i18n/routing";
+import { resolveLocale } from "@/shared/i18n/config";
 import { AppProviders } from "@/shared/providers";
 import { bookyFont } from "@/shared/styles/fonts";
 import { SkipLink } from "@/shared/ui";
@@ -17,14 +16,10 @@ export default async function LocaleLayout({
   children: ReactNode;
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
-
-  if (!isSupportedLocale(locale)) {
-    notFound();
-  }
-
+  const { locale: rawLocale } = await params;
+  const locale = resolveLocale(rawLocale);
   const messages = getMessages(locale);
-  const skipToContent = (messages as { Foundation: { shell: { skipToContent: string } } }).Foundation.shell.skipToContent;
+  const skipToContent = getFoundationShellChromeMessages(locale).skipToContent;
 
   return (
     <html dir={getLocaleDirection()} lang={locale} suppressHydrationWarning>

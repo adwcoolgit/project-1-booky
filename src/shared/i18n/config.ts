@@ -12,3 +12,7 @@ export const localeSchema = z.enum(supportedLocales);
 export function isSupportedLocale(value: string): value is AppLocale {
   return supportedLocales.includes(value as AppLocale);
 }
+
+export function resolveLocale(value?: string): AppLocale {
+  return value && isSupportedLocale(value) ? value : defaultLocale;
+}
