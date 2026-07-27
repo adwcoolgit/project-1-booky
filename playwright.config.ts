@@ -11,9 +11,10 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   webServer: {
-    command: "npm run build && npx next start --hostname 127.0.0.1 --port 3000",
+    command:
+      "set \"APP_URL=http://127.0.0.1:3000\" && set \"NEXT_PUBLIC_APP_URL=http://127.0.0.1:3000\" && set \"AUTH_ALLOWED_ORIGINS=http://127.0.0.1:3000\" && set \"AUTH_E2E_FIXTURE_MODE=true\" && npm run build && npx next start --hostname 127.0.0.1 --port 3000",
     url: "http://127.0.0.1:3000/en/foundation/public",
-    reuseExistingServer: true,
+    reuseExistingServer: false,
     timeout: 180000,
   },
   projects: [

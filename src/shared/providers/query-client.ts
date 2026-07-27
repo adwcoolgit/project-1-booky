@@ -1,4 +1,4 @@
-import { QueryClient } from "@tanstack/react-query";
+import { QueryClient, type QueryKey } from "@tanstack/react-query";
 
 export const queryClientDefaults = {
   queries: {
@@ -16,4 +16,12 @@ export function createQueryClient() {
   return new QueryClient({
     defaultOptions: queryClientDefaults,
   });
+}
+
+export function getQueryRoot(queryKey: QueryKey): string | null {
+  if (!Array.isArray(queryKey) || queryKey.length === 0) {
+    return null;
+  }
+
+  return typeof queryKey[0] === "string" ? queryKey[0] : null;
 }

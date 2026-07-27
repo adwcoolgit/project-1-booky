@@ -63,7 +63,7 @@ export function BoundaryStateView({
   }, [focusId, state]);
 
   const panelClassName = cn(
-    "rounded-[28px] border p-6 shadow-card md:p-8",
+    "rounded-panel border p-6 shadow-card md:p-8",
     inverse ? "border-white/10 bg-neutral-950 text-white" : "border-border bg-muted/60 text-foreground",
   );
   const subtleTextClassName = inverse ? "text-neutral-300" : "text-text-muted";
@@ -81,11 +81,11 @@ export function BoundaryStateView({
       role={state === "error" ? "alert" : "status"}
       targetId={focusId}
     >
-      <p className={cn("text-sm font-semibold uppercase tracking-[0.16em]", eyebrowClassName)}>{copy.eyebrow}</p>
-      <h2 className="mt-3 font-display text-[clamp(1.5rem,2.8vw,2.5rem)] font-bold leading-tight" id={headingId}>
+      <p className={cn("text-eyebrow font-semibold", eyebrowClassName)}>{copy.eyebrow}</p>
+      <h2 className="mt-3 text-section-title" id={headingId}>
         {copy.title}
       </h2>
-      <p className={cn("mt-4 max-w-2xl text-base leading-8", subtleTextClassName)}>{copy.description}</p>
+      <p className={cn("mt-4 max-w-2xl text-body-default", subtleTextClassName)}>{copy.description}</p>
 
       {state === "loading" ? (
         <div aria-hidden="true" className="mt-6 space-y-3">

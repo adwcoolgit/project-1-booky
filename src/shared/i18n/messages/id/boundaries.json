@@ -27,5 +27,17 @@
     "description": "Route ini mungkin hilang atau belum disiapkan pada slice fondasi ini.",
     "unsupportedLocaleDescription": "Locale ini belum didukung untuk Booky. Gunakan route English atau Bahasa Indonesia.",
     "recovery": "Buka placeholder publik"
+  },
+  "authGuards": {
+    "eyebrow": "Konten terlindungi",
+    "userHomeTitle": "Pengalaman user yang diizinkan",
+    "userHomeDescription": "Route placeholder ini hanya dirender setelah guard USER terlokalisasi mengizinkan akses.",
+    "adminUsersTitle": "Pengalaman admin yang diizinkan",
+    "adminUsersDescription": "Route placeholder ini hanya dirender setelah guard ADMIN terlokalisasi mengizinkan akses.",
+    "forbiddenTitle": "Halaman ini tidak tersedia untuk peran Anda",
+    "forbiddenDescription": "Booky mempertahankan sesi Anda, tetapi route terlokalisasi ini dikhususkan untuk pengalaman berotorisasi yang berbeda.",
+    "userHomeAction": "Buka beranda user",
+    "adminHomeAction": "Buka beranda admin",
+    "loginAction": "Buka login"
   }
 }

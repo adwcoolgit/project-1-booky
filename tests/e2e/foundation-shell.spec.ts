@@ -22,7 +22,7 @@ for (const locale of ["en", "id"] as const) {
       await expect(page.getByRole("heading", { name: expectations[locale][area].title })).toBeVisible();
       await expect(page.getByText(expectations[locale][area].badge, { exact: true })).toBeVisible();
       await expect(page.locator(`[data-locale-flag="${locale}"]`).first()).toBeVisible();
-      await expect(page.locator(`[data-locale-label="${locale}"]`).first()).not.toBeVisible();
+      await expect(page.locator(`[data-locale-label="${locale}"]`).first()).toHaveText(locale === "en" ? "English" : "Bahasa Indonesia");
       await expect(page).toHaveURL(new RegExp(`/${locale}/foundation/${area}$`));
     });
   }

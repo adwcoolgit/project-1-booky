@@ -15,12 +15,12 @@ type AdminShellProps = {
 export function AdminShell({ shell, helper, areaLabel, children }: AdminShellProps) {
   return (
     <div className="min-h-screen bg-neutral-950 text-white">
-      <div className="mx-auto grid min-h-screen w-full max-w-[1440px] md:grid-cols-[280px_minmax(0,1fr)]">
+      <div className="mx-auto grid min-h-screen w-full max-w-canvas md:grid-cols-shell-admin">
         <aside className="border-b border-white/10 bg-neutral-900 p-6 md:border-b-0 md:border-r">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-primary-200">{shell.badge}</p>
-              <span className="mt-2 block font-display text-3xl font-bold">Booky</span>
+              <p className="text-eyebrow font-semibold text-primary-200">{shell.badge}</p>
+              <span className="mt-2 block font-display text-3xl font-bold text-white">Booky</span>
               <p className="mt-2 text-sm text-neutral-200">{areaLabel}</p>
             </div>
             <LocaleSwitcher className="hidden md:flex" tone="inverse" />
@@ -47,10 +47,10 @@ export function AdminShell({ shell, helper, areaLabel, children }: AdminShellPro
         </aside>
 
         <main className="px-4 py-8 md:px-12 md:py-10" id="main-content" tabIndex={-1}>
-          <section className="rounded-[32px] border border-white/10 bg-neutral-900 p-6 shadow-card md:p-10">
-            <h1 className="font-display text-[clamp(1.75rem,3vw,3rem)] font-bold leading-tight">{shell.title}</h1>
-            <p className="mt-4 max-w-3xl text-base leading-8 text-neutral-300">{shell.description}</p>
-            <p className="mt-6 rounded-3xl bg-white/5 px-5 py-4 text-sm leading-7 text-neutral-200">{helper}</p>
+          <section className="rounded-5xl border border-white/10 bg-neutral-900 p-6 shadow-card md:p-10">
+            <h1 className="text-section-title">{shell.title}</h1>
+            <p className="mt-4 max-w-3xl text-body-default text-neutral-300">{shell.description}</p>
+            <p className="mt-6 rounded-3xl bg-white/5 px-5 py-4 text-body-default text-neutral-200">{helper}</p>
             <div className="mt-8">{children}</div>
           </section>
         </main>
