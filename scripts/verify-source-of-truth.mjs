@@ -1,6 +1,8 @@
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { extname, join, resolve } from "node:path";
+
+const TEXT_EXTENSIONS = new Set([".md", ".csv", ".txt", ".json", ".css", ".mjs"]);
 
 function parseArgs(argv) {
   const options = {
@@ -26,8 +28,19 @@ function parseArgs(argv) {
   return options;
 }
 
+function readCanonicalBytes(pathname) {
+  const content = readFileSync(pathname);
+
+  if (!TEXT_EXTENSIONS.has(extname(pathname).toLowerCase())) {
+    return content;
+  }
+
+  const normalizedText = content.toString("utf8").replace(/\r\n/g, "\n");
+  return Buffer.from(normalizedText, "utf8");
+}
+
 function sha256(pathname) {
-  return createHash("sha256").update(readFileSync(pathname)).digest("hex");
+  return createHash("sha256").update(readCanonicalBytes(pathname)).digest("hex");
 }
 
 function fail(message) {
