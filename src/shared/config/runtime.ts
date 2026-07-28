@@ -16,5 +16,6 @@ export const runtimeConfig = {
   authSessionCookieSecure:
     serverEnv.AUTH_SESSION_COOKIE_SECURE ?? serverEnv.NODE_ENV === "production",
   authAllowedOrigins: serverEnv.AUTH_ALLOWED_ORIGINS ?? [appUrl],
-  authE2eFixtureMode: serverEnv.AUTH_E2E_FIXTURE_MODE ?? false,
+  authE2eFixtureMode:
+    serverEnv.AUTH_E2E_FIXTURE_MODE ?? publicEnv.NEXT_PUBLIC_AUTH_E2E_FIXTURE_MODE ?? false,
 } as const;

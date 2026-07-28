@@ -5,6 +5,7 @@ import { getLocaleDirection } from "@/shared/i18n/routing";
 import { resolveLocale } from "@/shared/i18n/config";
 import { AppProviders } from "@/shared/providers";
 import { bookyFont } from "@/shared/styles/fonts";
+import { cn } from "@/shared/lib/utils";
 import { SkipLink } from "@/shared/ui";
 
 import "../globals.css";
@@ -23,7 +24,7 @@ export default async function LocaleLayout({
 
   return (
     <html dir={getLocaleDirection()} lang={locale} suppressHydrationWarning>
-      <body className={bookyFont.variable}>
+      <body className={cn(bookyFont.className, bookyFont.variable)}>
         <AppProviders locale={locale} messages={messages}>
           <nav aria-label="Skip links">
             <SkipLink label={skipToContent} />

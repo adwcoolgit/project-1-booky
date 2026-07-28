@@ -47,6 +47,8 @@ function FlagIcon({ locale, ...props }: FlagIconProps) {
   return <EnglishFlagIcon {...props} />;
 }
 
+const localePrefixPattern = /^\/(en|id)(?=\/|$)/;
+
 export function LocaleSwitcher({ className, tone = "default" }: LocaleSwitcherProps) {
   const locale = useLocale() as AppLocale;
   const pathname = usePathname() ?? `/${locale}/foundation/public`;
@@ -56,8 +58,8 @@ export function LocaleSwitcher({ className, tone = "default" }: LocaleSwitcherPr
   const inverse = tone === "inverse";
 
   function buildHref(nextLocale: AppLocale) {
-    if (/^\/(en|id)(?=\/)/.test(pathname)) {
-      return pathname.replace(/^\/(en|id)(?=\/)/, `/${nextLocale}`);
+    if (localePrefixPattern.test(pathname)) {
+      return pathname.replace(localePrefixPattern, `/${nextLocale}`);
     }
 
     return `/${nextLocale}/foundation/public`;

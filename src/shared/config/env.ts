@@ -1,7 +1,8 @@
 import { z } from "zod";
 
 const defaultAppUrl = "http://localhost:3000";
-const defaultApiBaseUrl = "https://library-backend-production-b9cf.up.railway.app/api";
+const defaultApiBaseUrl =
+  "https://library-backend-production-b9cf.up.railway.app/api";
 const defaultAuthSessionCookieName = "BOOKY_SESSION";
 
 function normalizeBooleanEnvValue(value: unknown) {
@@ -66,15 +67,21 @@ const authAllowedOriginsSchema = z
 const publicEnvSchema = z.object({
   NEXT_PUBLIC_APP_URL: z.string().url().default(defaultAppUrl),
   NEXT_PUBLIC_API_BASE_URL: z.string().url().default(defaultApiBaseUrl),
+  NEXT_PUBLIC_AUTH_E2E_FIXTURE_MODE: authE2eFixtureModeSchema,
 });
 
 const serverEnvSchema = z.object({
-  NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
+  NODE_ENV: z
+    .enum(["development", "test", "production"])
+    .default("development"),
   APP_URL: z.string().url().optional(),
   API_BASE_URL: z.string().url().optional(),
   NEXT_PUBLIC_APP_URL: z.string().url().optional(),
   NEXT_PUBLIC_API_BASE_URL: z.string().url().optional(),
-  AUTH_SESSION_COOKIE_NAME: z.string().min(1).default(defaultAuthSessionCookieName),
+  AUTH_SESSION_COOKIE_NAME: z
+    .string()
+    .min(1)
+    .default(defaultAuthSessionCookieName),
   AUTH_SESSION_COOKIE_SECURE: authSessionCookieSecureSchema,
   AUTH_ALLOWED_ORIGINS: authAllowedOriginsSchema,
   AUTH_E2E_FIXTURE_MODE: authE2eFixtureModeSchema,

@@ -4,9 +4,11 @@ import sourceEnMessages from "../../../docs/source-of-truth/i18n/messages/en.jso
 import sourceIdMessages from "../../../docs/source-of-truth/i18n/messages/id.json";
 import authEnMessages from "@/shared/i18n/messages/en/auth.json";
 import boundariesEnMessages from "@/shared/i18n/messages/en/boundaries.json";
+import discoveryEnMessages from "@/shared/i18n/messages/en/discovery.json";
 import foundationEnMessages from "@/shared/i18n/messages/en/foundation.json";
 import authIdMessages from "@/shared/i18n/messages/id/auth.json";
 import boundariesIdMessages from "@/shared/i18n/messages/id/boundaries.json";
+import discoveryIdMessages from "@/shared/i18n/messages/id/discovery.json";
 import foundationIdMessages from "@/shared/i18n/messages/id/foundation.json";
 import type { AppLocale } from "@/shared/i18n/config";
 
@@ -23,6 +25,11 @@ const foundationMessages = {
 const boundaryMessages = {
   en: boundariesEnMessages,
   id: boundariesIdMessages,
+} as const;
+
+const discoveryFeatureMessages = {
+  en: discoveryEnMessages,
+  id: discoveryIdMessages,
 } as const;
 
 const authFeatureMessages = {
@@ -64,6 +71,9 @@ export type FoundationShellChromeMessages = {
   };
 };
 
+export type SourceMetadataMessages = (typeof sourceMessages)[AppLocale]["Metadata"];
+export type SourceHomeMessages = (typeof sourceMessages)[AppLocale]["Home"];
+export type DiscoveryFeatureMessages = (typeof discoveryFeatureMessages)[AppLocale];
 export type AuthFeatureMessages = (typeof authFeatureMessages)[AppLocale];
 export type BoundaryMessages = (typeof boundaryMessages)[AppLocale];
 
@@ -71,6 +81,7 @@ export function getMessages(locale: AppLocale): AbstractIntlMessages {
   return {
     ...sourceMessages[locale],
     Boundaries: boundaryMessages[locale],
+    Discovery: discoveryFeatureMessages[locale],
     Foundation: foundationMessages[locale],
     AuthFeature: authFeatureMessages[locale],
   } satisfies AbstractIntlMessages;
@@ -125,4 +136,16 @@ export function getAuthFeatureMessages(locale: AppLocale): AuthFeatureMessages {
 
 export function getBoundaryMessages(locale: AppLocale): BoundaryMessages {
   return boundaryMessages[locale];
+}
+
+export function getDiscoveryFeatureMessages(locale: AppLocale): DiscoveryFeatureMessages {
+  return discoveryFeatureMessages[locale];
+}
+
+export function getSourceHomeMessages(locale: AppLocale): SourceHomeMessages {
+  return sourceMessages[locale].Home;
+}
+
+export function getSourceMetadataMessages(locale: AppLocale): SourceMetadataMessages {
+  return sourceMessages[locale].Metadata;
 }

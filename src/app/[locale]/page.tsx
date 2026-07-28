@@ -1,14 +1,27 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
-import { LogoutButton } from "@/features/auth/components/logout-button";
 import { readRouteGuardResult } from "@/features/auth/config/auth-routes";
+import {
+  HomeDiscoverySections,
+  readHomeDiscoveryViewModel,
+} from "@/features/discovery";
+import { HomeHeroBanner } from "@/features/discovery/components/home-hero-banner";
+import { HomePageFooter } from "@/features/discovery/components/home-page-footer";
+import { HomePageHeader } from "@/features/discovery/components/home-page-header";
 import { executeProtectedServerRequest } from "@/shared/api/server/authenticated-client";
 import { resolveProtectedRequestFailure } from "@/shared/auth/guards";
 import { readSessionEnvelope } from "@/shared/auth/session.server";
 import { resolveProtectedProfileFixture } from "@/shared/auth/protected-profile-fixture";
 import { runtimeConfig } from "@/shared/config/runtime";
 import { resolveLocale } from "@/shared/i18n/config";
-import { getBoundaryMessages } from "@/shared/i18n/get-messages";
+import {
+  getDiscoveryFeatureMessages,
+  getSourceHomeMessages,
+  getSourceMetadataMessages,
+} from "@/shared/i18n/get-messages";
+
+const BOOKY_BRAND_LABEL = "Booky";
 
 type UserProfileSummary = {
   name?: string;
@@ -16,7 +29,9 @@ type UserProfileSummary = {
   activeLoanCount?: number;
 };
 
-function serializeSearchParams(searchParams: Record<string, string | string[] | undefined>): string {
+function serializeSearchParams(
+  searchParams: Record<string, string | string[] | undefined>,
+): string {
   const params = new URLSearchParams();
 
   for (const [key, value] of Object.entries(searchParams)) {
@@ -37,6 +52,22 @@ function serializeSearchParams(searchParams: Record<string, string | string[] | 
   return params.toString();
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale = resolveLocale(rawLocale);
+  const metadata = getSourceMetadataMessages(locale);
+  const discovery = getDiscoveryFeatureMessages(locale).home;
+
+  return {
+    title: `${discovery.headerLabel} | ${metadata.appTitle}`,
+    description: discovery.description,
+  };
+}
+
 export default async function UserHomePage({
   params,
   searchParams,
@@ -49,7 +80,9 @@ export default async function UserHomePage({
   const locale = resolveLocale(rawLocale);
   const pathname = `/${locale}`;
   const serializedSearch = serializeSearchParams(resolvedSearchParams);
-  const currentPath = serializedSearch ? `${pathname}?${serializedSearch}` : pathname;
+  const currentPath = serializedSearch
+    ? `${pathname}?${serializedSearch}`
+    : pathname;
   const guard = await readRouteGuardResult({
     pathname,
     locale,
@@ -87,36 +120,69 @@ export default async function UserHomePage({
     throw protectedProfile.error;
   }
 
-  const copy = getBoundaryMessages(locale).authGuards;
-  const profile = protectedProfile.data;
+  const discoveryMessages = getDiscoveryFeatureMessages(locale);
+  const homeSource = getSourceHomeMessages(locale);
+  const discovery = discoveryMessages.home;
+  const bookFilters = discoveryMessages.results.filters;
+  const data = await readHomeDiscoveryViewModel(locale);
+  const displayName =
+    protectedProfile.data.name ??
+    guard.session.displayName ??
+    guard.session.email;
 
   return (
-    <main className="min-h-screen bg-page-user-accent px-4 py-10 md:px-8 md:py-16">
-      <div className="mx-auto max-w-content rounded-5xl border border-border bg-white p-6 shadow-card md:p-8">
-        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-          <div>
-            <p className="text-eyebrow font-semibold text-brand">{copy.eyebrow}</p>
-            <h1 className="mt-4 text-page-title text-foreground">{copy.userHomeTitle}</h1>
-            <p className="mt-3 text-body-default text-text-muted">{copy.userHomeDescription}</p>
-          </div>
-          <LogoutButton locale={locale} surface="user" />
-        </div>
+    <div className="min-h-screen bg-white text-foreground">
+      <HomePageHeader
+        brandLabel={BOOKY_BRAND_LABEL}
+        displayName={displayName}
+        locale={locale}
+        searchLabel={bookFilters.searchLabel}
+        searchPlaceholder={bookFilters.searchPlaceholder}
+      />
 
-        <dl className="mt-8 grid gap-4 rounded-4xl bg-muted/50 p-5 text-sm text-foreground md:grid-cols-3">
-          <div>
-            <dt className="font-semibold text-text-muted">Name</dt>
-            <dd className="mt-1">{profile.name ?? guard.session.displayName}</dd>
-          </div>
-          <div>
-            <dt className="font-semibold text-text-muted">Email</dt>
-            <dd className="mt-1 break-all">{profile.email ?? guard.session.email}</dd>
-          </div>
-          <div>
-            <dt className="font-semibold text-text-muted">Active loans</dt>
-            <dd className="mt-1">{profile.activeLoanCount ?? 0}</dd>
-          </div>
-        </dl>
-      </div>
-    </main>
+      <main
+        className="px-4 py-8 md:px-8 md:py-12 xl:px-[120px]"
+        id="main-content"
+        tabIndex={-1}
+      >
+        <div className="mx-auto flex w-full max-w-[75rem] flex-col gap-12">
+          <HomeHeroBanner
+            heading={`${discovery.hero.lineOne} ${BOOKY_BRAND_LABEL}`}
+          />
+
+          <HomeDiscoverySections
+            catalogHref={`/${locale}/books`}
+            copy={{
+              categories: {
+                eyebrow: discovery.sections.categories.eyebrow,
+                title: homeSource.categories,
+                description: discovery.sections.categories.description,
+              },
+              recommendations: {
+                eyebrow: discovery.sections.recommendations.eyebrow,
+                title: homeSource.recommendations,
+                description: discovery.sections.recommendations.description,
+                ctaLabel: discovery.actions.viewAllBooks,
+              },
+              popularAuthors: {
+                eyebrow: discovery.sections.popularAuthors.eyebrow,
+                title: homeSource.popularAuthors,
+                description: discovery.sections.popularAuthors.description,
+              },
+              states: discovery.states,
+            }}
+            data={data}
+            retryHref={currentPath}
+          />
+        </div>
+      </main>
+
+      <HomePageFooter
+        brandLabel={BOOKY_BRAND_LABEL}
+        description={discovery.footer}
+        locale={locale}
+        socialLabel={discovery.actions.socialLabel}
+      />
+    </div>
   );
 }
