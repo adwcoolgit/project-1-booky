@@ -5,6 +5,7 @@ export {
   type BookDetailHeroCopy,
   type BookRouteStateCopy,
 } from "@/features/discovery/components/book-detail-hero";
+export { BookDetailPageSkeleton } from "@/features/discovery/components/book-detail-page-skeleton";
 export {
   BookReviewList,
   type BookReviewListCopy,
@@ -97,3 +98,4 @@ export {
   readDiscoveryCategories,
 } from "@/features/discovery/results-discovery";
 export * from "@/features/discovery/model";
+

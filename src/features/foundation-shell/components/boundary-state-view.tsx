@@ -125,8 +125,10 @@ export function BoundaryStateView({
   );
 
   if (shell.variant === "admin-facing") {
-    return <AdminShell areaLabel={shellChrome.areas[area]} helper={shellChrome.helper} shell={shell}>{content}</AdminShell>;
+    return <AdminShell areaLabel={shellChrome.areas[area]} helper={shellChrome.helper} locale={activeLocale} shell={shell}>{content}</AdminShell>;
   }
 
-  return <UserShell areaLabel={shellChrome.areas[area]} helper={shellChrome.helper} shell={shell}>{content}</UserShell>;
+  return <UserShell areaLabel={shellChrome.areas[area]} helper={shellChrome.helper} locale={activeLocale} shell={shell}>{content}</UserShell>;
 }
+
+

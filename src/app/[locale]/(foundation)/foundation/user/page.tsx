@@ -44,5 +44,6 @@ export default async function UserFoundationPage({
   const shell = createShellDefinition(locale, "user", getFoundationShellMessages(locale));
   const shellChrome = getFoundationShellChromeMessages(locale);
 
-  return <UserShell areaLabel={shellChrome.areas.user} helper={shellChrome.helper} shell={shell} />;
+  return <UserShell areaLabel={shellChrome.areas.user} helper={shellChrome.helper} locale={locale} shell={shell} />;
 }
+

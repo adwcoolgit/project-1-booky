@@ -1,4 +1,4 @@
-﻿import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import {
   mapBookDetailResponseDtoToDetail,
@@ -111,6 +111,9 @@ describe("book detail transport contract", () => {
     expect(view.related.books.map((book) => book.title)).toEqual([
       "The Dispossessed",
       "A Wizard of Earthsea",
+      "The Word for World Is Forest",
     ]);
   });
 });
+
+
