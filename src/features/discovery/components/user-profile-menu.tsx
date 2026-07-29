@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
@@ -101,20 +101,20 @@ export function UserProfileMenu({
       <button
         aria-controls={menuId}
         aria-expanded={open}
-        className="flex min-w-0 items-center gap-4 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+        className="flex min-w-0 items-center gap-3 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 sm:gap-3.5 lg:gap-4"
         data-home-header-profile-trigger="true"
         onClick={() => {
           setOpen((current) => !current);
         }}
         type="button"
       >
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-subtle text-sm font-bold text-brand">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-subtle text-[13px] font-bold text-brand sm:h-[42px] sm:w-[42px] lg:h-11 lg:w-11 lg:text-sm xl:h-12 xl:w-12">
           {initials}
         </div>
-        <p className="max-w-[5rem] truncate text-[18px] font-semibold leading-8 tracking-[-0.02em] text-neutral-950">
+        <p className="hidden max-w-[4.5rem] truncate text-[18px] font-semibold leading-8 tracking-[-0.02em] text-neutral-950 lg:block xl:max-w-[5rem]">
           {displayName}
         </p>
-        <span className="shrink-0" data-home-header-profile-chevron="true">
+        <span className="hidden shrink-0 lg:block" data-home-header-profile-chevron="true">
           <ChevronDownIcon open={open} />
         </span>
         <span className="sr-only">{labels.trigger}</span>
@@ -126,7 +126,6 @@ export function UserProfileMenu({
           data-home-header-profile-menu="true"
           id={menuId}
         >
-          {/* Menu items */}
           {MENU_ITEMS.map((item) => (
             <Link
               className="text-body-md font-semibold tracking-auth text-neutral-950 transition hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
@@ -150,4 +149,3 @@ export function UserProfileMenu({
     </div>
   );
 }
-

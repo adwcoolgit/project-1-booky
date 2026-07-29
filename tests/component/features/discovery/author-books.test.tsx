@@ -75,13 +75,13 @@ describe("author books section", () => {
 
     renderWithQueryClient(<AuthorBooksSection {...createReadyProps("en")} />);
 
-    expect(screen.getByText("47 books in catalog")).toBeInTheDocument();
+    expect(screen.getByText("47 books")).toBeInTheDocument();
     expect(screen.getAllByRole("link").filter((element) => element.getAttribute("data-book-card") === "true")).toHaveLength(2);
 
     await user.click(screen.getByRole("button", { name: "Load more books" }));
 
     expect(await screen.findByRole("link", { name: "The Dispossessed" })).toBeInTheDocument();
-    expect(screen.getByText("47 books in catalog")).toBeInTheDocument();
+    expect(screen.getByText("47 books")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "All books loaded" })).toBeInTheDocument();
   });
 

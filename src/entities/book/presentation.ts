@@ -1,4 +1,4 @@
-import type {
+﻿import type {
   BookAvailabilityState,
   BookDetail,
   BookDetailPresentation,
@@ -6,6 +6,7 @@ import type {
   BookPresentationOptions,
   BookSummary,
 } from "@/entities/book/model";
+import { createIdBackedSlug } from "@/shared/lib/slug";
 
 const bookCoverFallback =
   "data:image/svg+xml;charset=UTF-8," +
@@ -83,6 +84,14 @@ export function mapBookDetailToPresentation(
     title: detail.summary.title,
     authorName: detail.summary.authorName,
     categoryLabel: detail.summary.categoryName,
+    categoryHref:
+      detail.summary.categoryId !== null && detail.summary.categoryName
+        ? `/${options.locale}/categories/${createIdBackedSlug(
+            detail.summary.categoryName,
+            detail.summary.categoryId,
+            "category",
+          )}`
+        : null,
     description: detail.description,
     ratingLabel: summaryPresentation.ratingLabel,
     reviewCountLabel:
@@ -96,3 +105,4 @@ export function mapBookDetailToPresentation(
     coverImage: summaryPresentation.coverImage,
   };
 }
+

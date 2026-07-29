@@ -1,4 +1,4 @@
-import { QueryClientProvider } from "@tanstack/react-query";
+﻿import { QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ReactNode } from "react";
@@ -23,7 +23,6 @@ import {
 import {
   mapBooksCollectionDtoToPage,
   mapBookSummaryToPresentation,
-  type BookSummary,
 } from "@/entities/book";
 import { mapCategorySummaryToPresentation, type CategorySummary } from "@/entities/category";
 import { HomeDiscoverySections, type HomeDiscoverySectionsCopy } from "@/features/discovery";

@@ -1,11 +1,11 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import Link from "next/link";
 
 import type { BookPresentation } from "@/entities/book/model";
 import { cn } from "@/shared/lib/utils";
 
 const HOME_BOOK_CARD_SIZES =
-  "(max-width: 639px) calc((100vw - 3rem) / 2), (max-width: 1023px) calc((100vw - 4rem) / 2), (max-width: 1279px) calc((100vw - 7rem) / 3), 224px";
+  "(max-width: 639px) calc((100vw - 3rem) / 2), (max-width: 767px) calc((100vw - 4rem) / 2), (max-width: 1023px) calc((100vw - 5rem) / 2), (max-width: 1279px) calc((100vw - 7rem) / 3), 224px";
 const GRID_BOOK_CARD_SIZES =
   "(max-width: 639px) calc((100vw - 3rem) / 2), (max-width: 1023px) calc((100vw - 4rem) / 2), (max-width: 1279px) calc((100vw - 6rem) / 4), 20rem";
 const RELATED_BOOK_CARD_SIZES =
@@ -31,7 +31,7 @@ export function BookCard({ book, variant = "grid", className }: BookCardProps) {
       <Link
         aria-label={book.title}
         className={cn(
-          "home-card-shadow group flex h-full min-h-[20rem] flex-col overflow-hidden rounded-[12px] bg-white transition hover:-translate-y-0.5 md:min-h-[29.25rem]",
+          "home-card-shadow group flex h-[370px] w-full flex-col overflow-hidden rounded-[12px] bg-white transition hover:-translate-y-0.5 sm:h-[390px] md:h-[420px] lg:h-[440px] xl:h-[468px]",
           className,
         )}
         data-book-card="true"
@@ -39,7 +39,7 @@ export function BookCard({ book, variant = "grid", className }: BookCardProps) {
       >
         <div
           className={cn(
-            "relative aspect-[2/3] w-full overflow-hidden",
+            "relative h-[258px] w-full overflow-hidden sm:h-[272px] md:h-[300px] lg:h-[316px] xl:h-[336px]",
             book.coverImage.isFallback ? "bg-brand-subtle" : "bg-muted/50",
           )}
         >
@@ -52,10 +52,14 @@ export function BookCard({ book, variant = "grid", className }: BookCardProps) {
             unoptimized
           />
         </div>
-        <div className="flex flex-1 flex-col gap-1 p-4">
-          <h3 className="line-clamp-2 text-lg font-bold leading-8 tracking-[-0.03em] text-neutral-900">{book.title}</h3>
-          <p className="line-clamp-1 text-base font-medium leading-[30px] tracking-[-0.03em] text-neutral-700">{book.authorName}</p>
-          <div className="mt-auto flex items-center gap-[2px] pt-1 text-base font-semibold leading-[30px] tracking-[-0.02em] text-neutral-900">
+        <div className="flex flex-1 flex-col gap-0.5 p-3 sm:gap-1 sm:p-[14px] md:p-4">
+          <h3 className="line-clamp-1 text-sm font-bold leading-7 tracking-[-0.02em] text-neutral-900 sm:text-[15px] sm:leading-7 md:line-clamp-2 md:text-base md:leading-[30px] lg:text-[17px] lg:leading-8 xl:text-lg xl:leading-8 xl:tracking-[-0.03em]">
+            {book.title}
+          </h3>
+          <p className="line-clamp-1 text-sm font-medium leading-7 tracking-[-0.03em] text-neutral-700 sm:text-[15px] sm:leading-7 md:text-[15px] md:leading-[30px] lg:text-base lg:leading-[30px]">
+            {book.authorName}
+          </p>
+          <div className="mt-auto flex items-center gap-[2px] pt-0.5 text-sm font-semibold leading-7 tracking-[-0.02em] text-neutral-900 sm:text-[15px] sm:leading-7 md:pt-1 md:text-[15px] md:leading-[30px] lg:text-base lg:leading-[30px]">
             <StarIcon />
             <span>{book.ratingLabel ?? "-"}</span>
           </div>

@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import Link from "next/link";
 
 type HomePageFooterProps = {
@@ -45,18 +45,29 @@ function TikTokIcon() {
 export function HomePageFooter({ locale, brandLabel, description, socialLabel }: HomePageFooterProps) {
   return (
     <footer className="border-t border-border bg-white">
-      <div className="mx-auto flex w-full max-w-canvas justify-center px-4 py-12 md:px-8 md:py-16 xl:px-[150px] xl:py-20">
-        <div className="flex w-full max-w-[71.25rem] flex-col items-center gap-10">
-          <div className="flex flex-col items-center gap-[22px] text-center">
-            <Link className="flex items-center gap-[15px]" href={`/${locale}`}>
-              <Image alt="" aria-hidden="true" height={42} src="/assets/logo.svg" width={42} />
+      <div className="mx-auto flex w-full max-w-canvas justify-center px-4 py-10 sm:px-6 sm:py-12 md:px-8 md:py-14 lg:px-10 lg:py-16 xl:px-[150px] xl:py-20">
+        <div className="flex w-full max-w-[71.25rem] flex-col items-center gap-6 sm:gap-8 md:gap-10">
+          <div className="flex flex-col items-center gap-4 text-center sm:gap-5 md:gap-[22px]">
+            <Link className="flex items-center gap-[11.43px] sm:gap-3 md:gap-[15px]" href={`/${locale}`}>
+              <Image
+                alt=""
+                aria-hidden="true"
+                className="h-8 w-8 sm:h-9 sm:w-9 md:h-[42px] md:w-[42px]"
+                height={42}
+                src="/assets/logo.svg"
+                width={42}
+              />
               <span className="font-display text-[32px] font-bold leading-[42px] text-neutral-950">{brandLabel}</span>
             </Link>
-            <p className="text-base font-semibold leading-[30px] tracking-[-0.02em] text-neutral-950">{description}</p>
+            <p className="max-w-[22.5625rem] text-sm font-semibold leading-7 tracking-[-0.02em] text-neutral-950 sm:max-w-[30rem] sm:text-[15px] sm:leading-[30px] lg:max-w-[40rem] md:max-w-none md:text-base md:leading-[30px]">
+              {description}
+            </p>
           </div>
 
           <div className="flex flex-col items-center gap-5">
-            <p className="text-base font-bold leading-[30px] text-neutral-950">{socialLabel}</p>
+            <p className="text-center text-base font-bold leading-[30px] tracking-[-0.02em] text-neutral-950">
+              {socialLabel}
+            </p>
             <div aria-hidden="true" className="flex items-center gap-3">
               <span className="flex h-10 w-10 items-center justify-center rounded-full border border-border"><FacebookIcon /></span>
               <span className="flex h-10 w-10 items-center justify-center rounded-full border border-border"><InstagramIcon /></span>

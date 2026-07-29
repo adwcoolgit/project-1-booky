@@ -33,4 +33,25 @@ describe("author mapper", () => {
     });
     expect(collection?.books).toHaveLength(2);
   });
+
+  it("falls back to pagination total when author bookCount is missing", () => {
+    const collection = mapAuthorBooksResponseDtoToCollection({
+      author: {
+        id: 21,
+        name: "Ursula K. Le Guin",
+        bio: "American novelist known for speculative fiction.",
+      },
+      books: authorBooksResponseFixture.books,
+      pagination: {
+        page: 1,
+        limit: 2,
+        total: 47,
+        totalPages: 24,
+        hasMore: true,
+      },
+    }, 2);
+
+    expect(collection).not.toBeNull();
+    expect(collection?.author.bookCount).toBe(47);
+  });
 });

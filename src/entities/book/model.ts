@@ -1,4 +1,4 @@
-import type { AppLocale } from "@/shared/i18n/config";
+﻿import type { AppLocale } from "@/shared/i18n/config";
 import type { BookReviewPage } from "@/entities/review/model";
 
 export type BookSummary = {
@@ -53,6 +53,7 @@ export type BookDetailPresentation = {
   title: string;
   authorName: string;
   categoryLabel: string | null;
+  categoryHref: string | null;
   description: string | null;
   ratingLabel: string | null;
   reviewCountLabel: string | null;
@@ -70,3 +71,4 @@ export type BookPresentationOptions = {
   locale: AppLocale;
   showAvailability?: boolean;
 };
+

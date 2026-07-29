@@ -70,13 +70,22 @@ export function mapAuthorBooksResponseDtoToCollection(payload: unknown, fallback
   const books = extractCollectionItems<BookMapperDto>(payload, ["books"])
     .map((dto) => mapBookDtoToSummary(dto))
     .filter((book): book is BookSummary => book !== null);
-  const pagination = derivePaginationState(extractPaginationShape(payload), fallbackLimit);
+  const paginationShape = extractPaginationShape(payload);
+  const pagination = derivePaginationState(paginationShape, fallbackLimit);
+  const authorWithBookCount =
+    author.bookCount !== null || paginationShape?.total === undefined
+      ? author
+      : {
+          ...author,
+          bookCount: paginationShape.total,
+        };
 
   return {
-    author,
+    author: authorWithBookCount,
     books,
     page: pagination.page,
     limit: pagination.limit,
     hasMore: pagination.hasMore,
   };
 }
+

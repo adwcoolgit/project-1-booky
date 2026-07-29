@@ -78,7 +78,7 @@
                                    "booksEyebrow":  "Books by author",
                                    "booksTitle":  "Continue discovery through this author",
                                    "booksDescription":  "The first page is ready on entry, then additional pages append below the same author summary.",
-                                   "bookCountLabel":  "books in catalog",
+                                   "bookCountLabel":  "books",
                                    "empty":  {
                                                  "title":  "No books are available for this author yet",
                                                  "description":  "This author page loaded successfully, but the current catalog does not list any books here yet."
@@ -226,3 +226,4 @@
                                }
                 }
 }
+

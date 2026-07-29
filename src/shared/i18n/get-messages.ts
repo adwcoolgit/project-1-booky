@@ -1,4 +1,4 @@
-import type { AbstractIntlMessages } from "next-intl";
+﻿import type { AbstractIntlMessages } from "next-intl";
 
 import sourceEnMessages from "../../../docs/source-of-truth/i18n/messages/en.json";
 import sourceIdMessages from "../../../docs/source-of-truth/i18n/messages/id.json";
@@ -74,6 +74,7 @@ export type FoundationShellChromeMessages = {
 export type SourceMetadataMessages = (typeof sourceMessages)[AppLocale]["Metadata"];
 export type SourceHomeMessages = (typeof sourceMessages)[AppLocale]["Home"];
 export type SourceNavigationMessages = (typeof sourceMessages)[AppLocale]["Navigation"];
+export type SourceBookMessages = (typeof sourceMessages)[AppLocale]["Books"];
 export type DiscoveryFeatureMessages = (typeof discoveryFeatureMessages)[AppLocale];
 export type AuthFeatureMessages = (typeof authFeatureMessages)[AppLocale];
 export type BoundaryMessages = (typeof boundaryMessages)[AppLocale];
@@ -151,6 +152,13 @@ export function getSourceNavigationMessages(locale: AppLocale): SourceNavigation
   return sourceMessages[locale].Navigation;
 }
 
+export function getSourceBookMessages(locale: AppLocale): SourceBookMessages {
+  return sourceMessages[locale].Books;
+}
+
 export function getSourceMetadataMessages(locale: AppLocale): SourceMetadataMessages {
   return sourceMessages[locale].Metadata;
 }
+
+
+
