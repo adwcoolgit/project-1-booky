@@ -15,6 +15,15 @@ export type BookSummary = {
   totalCopies: number | null;
 };
 
+export type BookSummaryPage = {
+  items: BookSummary[];
+  page: number;
+  limit: number;
+  hasMore: boolean;
+};
+
+export type BookAvailabilityState = "available" | "borrowed" | "unavailable" | "unknown";
+
 export type BookDetail = {
   summary: BookSummary;
   description: string | null;
@@ -32,6 +41,24 @@ export type BookPresentation = {
   ratingLabel: string | null;
   reviewCountLabel: string | null;
   availabilityLabel: string | null;
+  coverImage: {
+    src: string;
+    alt: string;
+    isFallback: boolean;
+  };
+};
+
+export type BookDetailPresentation = {
+  id: number;
+  title: string;
+  authorName: string;
+  categoryLabel: string | null;
+  description: string | null;
+  ratingLabel: string | null;
+  reviewCountLabel: string | null;
+  availabilityRatioLabel: string | null;
+  borrowCountLabel: string | null;
+  availabilityState: BookAvailabilityState;
   coverImage: {
     src: string;
     alt: string;

@@ -1,145 +1,228 @@
 {
-  "home": {
-    "headerLabel": "Reader home",
-    "welcomeLabel": "Signed in as",
-    "title": "Discover your next read without losing your place.",
-    "description": "Browse curated recommendations and category shelves that stay ready for deeper discovery flows.",
-    "hero": {
-      "lineOne": "Welcome to"
-    },
-    "actions": {
-      "viewAllBooks": "View all books",
-      "socialLabel": "Social media"
-    },
-    "metrics": {
-      "recommendations": "Curated picks",
-      "categories": "Category shelves"
-    },
-    "footer": "Recommendations and categories stay available here while search, author browsing, and book details build on the same discovery contract.",
-    "sections": {
-      "categories": {
-        "eyebrow": "Browse by shelf",
-        "description": "Jump into domain categories before refining results."
-      },
-      "recommendations": {
-        "eyebrow": "Recommended now",
-        "description": "Fresh discovery cards based on the approved recommendation mode."
-      },
-      "popularAuthors": {
-        "eyebrow": "Authors to know",
-        "description": "Browse notable authors from the current public catalog without translating their domain content."
-      }
-    },
-    "states": {
-      "loading": {
-        "title": "Loading discovery data",
-        "description": "Booky is preparing this section."
-      },
-      "empty": {
-        "title": "Nothing to show yet",
-        "description": "This section is available, but no items matched the current response."
-      },
-      "error": {
-        "title": "This section could not be loaded",
-        "description": "Refresh or retry this route to request the discovery data again.",
-        "retry": "Retry section"
-      },
-      "stale": {
-        "badge": "Stale data",
-        "description": "Showing the last successful response while newer data is unavailable."
-      }
-    }
-  },
-  "results": {
-    "books": {
-      "headerLabel": "Book discovery",
-      "title": "Search, filter, and bookmark the next shelf you want to revisit.",
-      "description": "The result set stays tied to the URL so refresh and navigation keep the same discovery context."
-    },
-    "category": {
-      "headerLabel": "Category shelf",
-      "title": "Browse one category without losing your filter context.",
-      "description": "This route keeps the selected category fixed while minimum rating and page state remain bookmarkable."
-    },
-    "author": {
-      "headerLabel": "Author shelf",
-      "description": "Browse one author's catalog without collapsing the author summary into the book grid.",
-      "summaryEyebrow": "Author summary",
-      "booksEyebrow": "Books by author",
-      "booksTitle": "Continue discovery through this author",
-      "booksDescription": "The first page is ready on entry, then additional pages append below the same author summary.",
-      "bookCountLabel": "books in catalog",
-      "empty": {
-        "title": "No books are available for this author yet",
-        "description": "This author page loaded successfully, but the current catalog does not list any books here yet."
-      },
-      "states": {
-        "invalidId": {
-          "title": "This author link is invalid",
-          "description": "Use a positive author ID to open a localized author catalog."
-        },
-        "notFound": {
-          "title": "This author could not be found",
-          "description": "The author ID is valid, but the public catalog does not have a matching author page."
-        },
-        "error": {
-          "title": "This author page could not be loaded",
-          "description": "Retry the same route to request the author catalog again.",
-          "retry": "Retry author page"
-        }
-      },
-      "loadMore": {
-        "idle": "Load more books",
-        "pending": "Loading more books",
-        "exhausted": "All books loaded",
-        "errorTitle": "More books could not be loaded",
-        "errorDescription": "Retry to append the next page for this author without resetting the summary.",
-        "retry": "Retry load more"
-      }
-    },
-    "filters": {
-      "searchLabel": "Search books",
-      "searchPlaceholder": "Search by title or author",
-      "categoryLabel": "Category",
-      "categoryAllLabel": "All categories",
-      "minRatingLabel": "Minimum rating",
-      "minRatingAllLabel": "Any rating",
-      "resetLabel": "Reset",
-      "applyLabel": "Apply",
-      "fixedCategoryLabel": "Category"
-    },
-    "criteria": {
-      "title": "Active criteria",
-      "fallback": "Showing all books for the current route.",
-      "search": "Search",
-      "category": "Category",
-      "fixedCategory": "Category",
-      "minRating": "Minimum rating",
-      "page": "Page"
-    },
-    "pagination": {
-      "previous": "Previous",
-      "next": "Next",
-      "page": "Page {page}"
-    },
-    "states": {
-      "loading": {
-        "title": "Loading books",
-        "description": "Booky is preparing the current result set."
-      },
-      "empty": {
-        "title": "No books matched this route",
-        "description": "Adjust the search text, category, or minimum rating and try again."
-      },
-      "error": {
-        "title": "This result set could not be loaded",
-        "description": "Retry the same route to request the discovery data again without losing the current URL state.",
-        "retry": "Retry results"
-      },
-      "stale": {
-        "badge": "Stale data",
-        "description": "Showing the previous result set while Booky loads the latest response."
-      }
-    }
-  }
+    "home":  {
+                 "headerLabel":  "Reader home",
+                 "welcomeLabel":  "Signed in as",
+                 "title":  "Discover your next read without losing your place.",
+                 "description":  "Browse curated recommendations and category shelves that stay ready for deeper discovery flows.",
+                 "hero":  {
+                              "lineOne":  "Welcome to"
+                          },
+                 "actions":  {
+                                 "socialLabel":  "Follow on Social Media"
+                             },
+                 "metrics":  {
+                                 "recommendations":  "Curated picks",
+                                 "categories":  "Category shelves"
+                             },
+                 "footer":  "Discover inspiring stories \u0026 timeless knowledge, ready to borrow anytime. Explore online or visit our nearest library branch.",
+                 "sections":  {
+                                  "categories":  {
+                                                     "eyebrow":  "Browse by shelf",
+                                                     "description":  "Jump into domain categories before refining results."
+                                                 },
+                                  "recommendations":  {
+                                                          "eyebrow":  "Recommended now",
+                                                          "description":  "Fresh discovery cards based on the approved recommendation mode.",
+                                                          "loadMore":  {
+                                                                           "idle":  "Load More",
+                                                                           "pending":  "Loading More",
+                                                                           "exhausted":  "All recommendations loaded",
+                                                                           "errorTitle":  "More recommendations could not be loaded",
+                                                                           "errorDescription":  "Retry to append the next recommendation batch without leaving this page.",
+                                                                           "retry":  "Retry load more"
+                                                                       }
+                                                      },
+                                  "popularAuthors":  {
+                                                         "eyebrow":  "Authors to know",
+                                                         "description":  "Browse notable authors from the current public catalog without translating their domain content."
+                                                     }
+                              },
+                 "states":  {
+                                "loading":  {
+                                                "title":  "Loading discovery data",
+                                                "description":  "Booky is preparing this section."
+                                            },
+                                "empty":  {
+                                              "title":  "Nothing to show yet",
+                                              "description":  "This section is available, but no items matched the current response."
+                                          },
+                                "error":  {
+                                              "title":  "This section could not be loaded",
+                                              "description":  "Refresh or retry this route to request the discovery data again.",
+                                              "retry":  "Retry section"
+                                          },
+                                "stale":  {
+                                              "badge":  "Stale data",
+                                              "description":  "Showing the last successful response while newer data is unavailable."
+                                          }
+                            },
+                 "profileMenu":  {
+                                     "trigger":  "Open profile menu"
+                                 }
+             },
+    "results":  {
+                    "books":  {
+                                  "headerLabel":  "Book discovery",
+                                  "title":  "Search, filter, and bookmark the next shelf you want to revisit.",
+                                  "description":  "The result set stays tied to the URL so refresh and navigation keep the same discovery context."
+                              },
+                    "category":  {
+                                     "headerLabel":  "Category shelf",
+                                     "title":  "Browse one category without losing your filter context.",
+                                     "description":  "This route keeps the selected category fixed while minimum rating and page state remain bookmarkable."
+                                 },
+                    "author":  {
+                                   "headerLabel":  "Author shelf",
+                                   "description":  "Browse one author\u0027s catalog without collapsing the author summary into the book grid.",
+                                   "summaryEyebrow":  "Author summary",
+                                   "booksEyebrow":  "Books by author",
+                                   "booksTitle":  "Continue discovery through this author",
+                                   "booksDescription":  "The first page is ready on entry, then additional pages append below the same author summary.",
+                                   "bookCountLabel":  "books in catalog",
+                                   "empty":  {
+                                                 "title":  "No books are available for this author yet",
+                                                 "description":  "This author page loaded successfully, but the current catalog does not list any books here yet."
+                                             },
+                                   "states":  {
+                                                  "invalidId":  {
+                                                                    "title":  "This author link is invalid",
+                                                                    "description":  "Use a positive author ID to open a localized author catalog."
+                                                                },
+                                                  "notFound":  {
+                                                                   "title":  "This author could not be found",
+                                                                   "description":  "The author ID is valid, but the public catalog does not have a matching author page."
+                                                               },
+                                                  "error":  {
+                                                                "title":  "This author page could not be loaded",
+                                                                "description":  "Retry the same route to request the author catalog again.",
+                                                                "retry":  "Retry author page"
+                                                            }
+                                              },
+                                   "loadMore":  {
+                                                    "idle":  "Load more books",
+                                                    "pending":  "Loading more books",
+                                                    "exhausted":  "All books loaded",
+                                                    "errorTitle":  "More books could not be loaded",
+                                                    "errorDescription":  "Retry to append the next page for this author without resetting the summary.",
+                                                    "retry":  "Retry load more"
+                                                }
+                               },
+                    "detail":  {
+                                   "headerLabel":  "Book detail",
+                                   "description":  "Review approved book metadata, public reviews, and related recommendations without unsupported fields.",
+                                   "authorLabel":  "Author",
+                                   "categoryLabel":  "Category",
+                                   "descriptionLabel":  "Description",
+                                   "availabilityLabel":  "Availability",
+                                   "descriptionFallback":  "No supported description is available for this book yet.",
+                                   "metrics":  {
+                                                   "rating":  "Rating",
+                                                   "reviews":  "Reviews",
+                                                   "copies":  "Copies available",
+                                                   "borrowed":  "Borrowed"
+                                               },
+                                   "availability":  {
+                                                        "available":  "Available",
+                                                        "borrowed":  "Partially borrowed",
+                                                        "unavailable":  "Unavailable",
+                                                        "unknown":  "Availability unavailable"
+                                                    },
+                                   "states":  {
+                                                  "invalidId":  {
+                                                                    "title":  "This book link is invalid",
+                                                                    "description":  "Use a positive book ID to open a localized book detail page."
+                                                                },
+                                                  "notFound":  {
+                                                                   "title":  "This book could not be found",
+                                                                   "description":  "The book ID is valid, but the public catalog does not have a matching detail page."
+                                                               },
+                                                  "error":  {
+                                                                "title":  "This book detail could not be loaded",
+                                                                "description":  "Retry the same route to request the latest supported detail data again.",
+                                                                "retry":  "Retry detail page"
+                                                            }
+                                              },
+                                   "reviews":  {
+                                                   "eyebrow":  "Public reviews",
+                                                   "title":  "What readers are saying",
+                                                   "description":  "Review content remains in the reader\u0027s original language while system copy stays localized.",
+                                                   "anonymousReviewer":  "Anonymous reader",
+                                                   "empty":  {
+                                                                 "title":  "No public reviews are available yet",
+                                                                 "description":  "This book detail loaded successfully, but there are no public reviews to display right now."
+                                                             },
+                                                   "error":  {
+                                                                 "title":  "Public reviews could not be loaded",
+                                                                 "description":  "Retry this detail route to request the public review list again.",
+                                                                 "retry":  "Retry reviews"
+                                                             },
+                                                   "loadMore":  {
+                                                                    "idle":  "Load more reviews",
+                                                                    "pending":  "Loading more reviews",
+                                                                    "exhausted":  "All reviews loaded",
+                                                                    "errorTitle":  "More reviews could not be loaded",
+                                                                    "errorDescription":  "Retry to append the next review page without resetting this detail view.",
+                                                                    "retry":  "Retry load more"
+                                                                }
+                                               },
+                                   "related":  {
+                                                   "eyebrow":  "Related books",
+                                                   "title":  "Continue from this shelf",
+                                                   "description":  "Recommendations are derived from the current book category context.",
+                                                   "empty":  {
+                                                                 "title":  "No related books are available right now",
+                                                                 "description":  "This detail page loaded successfully, but there are no related recommendations to show."
+                                                             },
+                                                   "error":  {
+                                                                 "title":  "Related books could not be loaded",
+                                                                 "description":  "Retry this detail route to request related recommendations again.",
+                                                                 "retry":  "Retry related books"
+                                                             }
+                                               }
+                               },
+                    "filters":  {
+                                    "searchLabel":  "Search books",
+                                    "searchPlaceholder":  "Search by title or author",
+                                    "categoryLabel":  "Category",
+                                    "categoryAllLabel":  "All categories",
+                                    "minRatingLabel":  "Minimum rating",
+                                    "minRatingAllLabel":  "Any rating",
+                                    "resetLabel":  "Reset",
+                                    "applyLabel":  "Apply",
+                                    "fixedCategoryLabel":  "Category"
+                                },
+                    "criteria":  {
+                                     "title":  "Active criteria",
+                                     "fallback":  "Showing all books for the current route.",
+                                     "search":  "Search",
+                                     "category":  "Category",
+                                     "fixedCategory":  "Category",
+                                     "minRating":  "Minimum rating",
+                                     "page":  "Page"
+                                 },
+                    "pagination":  {
+                                       "previous":  "Previous",
+                                       "next":  "Next",
+                                       "page":  "Page {page}"
+                                   },
+                    "states":  {
+                                   "loading":  {
+                                                   "title":  "Loading books",
+                                                   "description":  "Booky is preparing the current result set."
+                                               },
+                                   "empty":  {
+                                                 "title":  "No books matched this route",
+                                                 "description":  "Adjust the search text, category, or minimum rating and try again."
+                                             },
+                                   "error":  {
+                                                 "title":  "This result set could not be loaded",
+                                                 "description":  "Retry the same route to request the discovery data again without losing the current URL state.",
+                                                 "retry":  "Retry results"
+                                             },
+                                   "stale":  {
+                                                 "badge":  "Stale data",
+                                                 "description":  "Showing the previous result set while Booky loads the latest response."
+                                             }
+                               }
+                }
 }

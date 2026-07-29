@@ -4,6 +4,13 @@ import Link from "next/link";
 import type { BookPresentation } from "@/entities/book/model";
 import { cn } from "@/shared/lib/utils";
 
+const HOME_BOOK_CARD_SIZES =
+  "(max-width: 639px) calc((100vw - 3rem) / 2), (max-width: 1023px) calc((100vw - 4rem) / 2), (max-width: 1279px) calc((100vw - 7rem) / 3), 224px";
+const GRID_BOOK_CARD_SIZES =
+  "(max-width: 639px) calc((100vw - 3rem) / 2), (max-width: 1023px) calc((100vw - 4rem) / 2), (max-width: 1279px) calc((100vw - 6rem) / 4), 20rem";
+const RELATED_BOOK_CARD_SIZES =
+  "(max-width: 639px) calc((100vw - 3rem) / 2), (max-width: 1023px) calc((100vw - 4rem) / 2), (max-width: 1279px) calc((100vw - 5rem) / 3), 18rem";
+
 function StarIcon() {
   return (
     <svg aria-hidden="true" className="h-6 w-6 shrink-0 text-warning" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -40,7 +47,7 @@ export function BookCard({ book, variant = "grid", className }: BookCardProps) {
             alt={book.coverImage.alt}
             className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
             fill
-            sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 224px"
+            sizes={HOME_BOOK_CARD_SIZES}
             src={book.coverImage.src}
             unoptimized
           />
@@ -78,7 +85,7 @@ export function BookCard({ book, variant = "grid", className }: BookCardProps) {
           alt={book.coverImage.alt}
           className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
           fill
-          sizes={variant === "related" ? "(max-width: 768px) 45vw, 18rem" : "(max-width: 768px) 45vw, 20rem"}
+          sizes={variant === "related" ? RELATED_BOOK_CARD_SIZES : GRID_BOOK_CARD_SIZES}
           src={book.coverImage.src}
           unoptimized
         />

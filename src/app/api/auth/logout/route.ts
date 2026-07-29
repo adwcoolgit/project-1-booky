@@ -36,11 +36,14 @@ function createLogoutSuccess({
   reason: LogoutReason;
 }): LogoutSuccessResult {
   const paths = getLocalizedAuthPaths(resolveLocale(locale));
-  const loginPath = surface === "admin" ? paths.adminLogin : paths.login;
+  const redirectTo =
+    reason === "logged-out"
+      ? paths.userHome
+      : buildRedirectPath(surface === "admin" ? paths.adminLogin : paths.login, returnTo, reason);
 
   return logoutSuccessResultSchema.parse({
     status: "logged-out",
-    redirectTo: buildRedirectPath(loginPath, returnTo, reason),
+    redirectTo,
   });
 }
 

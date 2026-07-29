@@ -6,6 +6,8 @@ export type PartialResponsePagination = {
   hasMore?: boolean;
 };
 
+const nestedEnvelopeKeys = ["data", "items"] as const;
+
 export function isTransportRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
@@ -18,6 +20,20 @@ function isNonNegativeInteger(value: unknown): value is number {
   return typeof value === "number" && Number.isInteger(value) && value >= 0;
 }
 
+function collectRecordCandidates(payload: Record<string, unknown>) {
+  const candidates = [payload];
+
+  for (const key of nestedEnvelopeKeys) {
+    const value = payload[key];
+
+    if (isTransportRecord(value)) {
+      candidates.push(value);
+    }
+  }
+
+  return candidates;
+}
+
 export function extractCollectionItems<TItem>(payload: unknown, keys: readonly string[]): TItem[] {
   if (Array.isArray(payload)) {
     return payload as TItem[];
@@ -27,11 +43,13 @@ export function extractCollectionItems<TItem>(payload: unknown, keys: readonly s
     return [];
   }
 
-  for (const key of ["data", "items", ...keys]) {
-    const value = payload[key];
+  for (const candidate of collectRecordCandidates(payload)) {
+    for (const key of ["data", "items", ...keys]) {
+      const value = candidate[key];
 
-    if (Array.isArray(value)) {
-      return value as TItem[];
+      if (Array.isArray(value)) {
+        return value as TItem[];
+      }
     }
   }
 
@@ -47,11 +65,19 @@ export function extractSingleItem<TItem>(payload: unknown, keys: readonly string
     return null;
   }
 
-  for (const key of keys) {
-    const value = payload[key];
+  const candidates = collectRecordCandidates(payload);
+  const directKeys = keys.filter((key) => !nestedEnvelopeKeys.includes(key as (typeof nestedEnvelopeKeys)[number]));
+  const envelopeKeys = keys.filter((key) => nestedEnvelopeKeys.includes(key as (typeof nestedEnvelopeKeys)[number]));
 
-    if (value !== undefined && value !== null && !Array.isArray(value)) {
-      return value as TItem;
+  for (const keyGroup of [directKeys, envelopeKeys]) {
+    for (const candidate of candidates) {
+      for (const key of keyGroup) {
+        const value = candidate[key];
+
+        if (value !== undefined && value !== null && !Array.isArray(value)) {
+          return value as TItem;
+        }
+      }
     }
   }
 
@@ -63,7 +89,13 @@ export function extractPaginationShape(payload: unknown): PartialResponsePaginat
     return null;
   }
 
-  for (const candidate of [payload.pagination, payload.meta, payload]) {
+  const candidates: unknown[] = [];
+
+  for (const candidate of collectRecordCandidates(payload)) {
+    candidates.push(candidate.pagination, candidate.meta, candidate);
+  }
+
+  for (const candidate of candidates) {
     if (!isTransportRecord(candidate)) {
       continue;
     }

@@ -1,145 +1,228 @@
 {
-  "home": {
-    "headerLabel": "Beranda pembaca",
-    "welcomeLabel": "Masuk sebagai",
-    "title": "Temukan bacaan berikutnya tanpa kehilangan konteks pencarian Anda.",
-    "description": "Jelajahi rekomendasi terkurasi dan rak kategori yang siap membawa pengguna ke alur discovery berikutnya.",
-    "hero": {
-      "lineOne": "Selamat datang di"
-    },
-    "actions": {
-      "viewAllBooks": "Lihat semua buku",
-      "socialLabel": "Media sosial"
-    },
-    "metrics": {
-      "recommendations": "Pilihan terkurasi",
-      "categories": "Rak kategori"
-    },
-    "footer": "Rekomendasi dan kategori tetap tersedia di beranda ini sementara pencarian, penulis, dan detail buku memakai kontrak discovery yang sama.",
-    "sections": {
-      "categories": {
-        "eyebrow": "Jelajah per rak",
-        "description": "Masuk ke kategori domain terlebih dulu sebelum mempersempit hasil."
-      },
-      "recommendations": {
-        "eyebrow": "Rekomendasi saat ini",
-        "description": "Kartu discovery terbaru berdasarkan mode rekomendasi yang sudah disetujui."
-      },
-      "popularAuthors": {
-        "eyebrow": "Penulis pilihan",
-        "description": "Jelajahi penulis yang menonjol dari katalog publik saat ini tanpa menerjemahkan konten domain mereka."
-      }
-    },
-    "states": {
-      "loading": {
-        "title": "Data discovery sedang dimuat",
-        "description": "Booky sedang menyiapkan bagian ini."
-      },
-      "empty": {
-        "title": "Belum ada yang ditampilkan",
-        "description": "Bagian ini tersedia, tetapi respons saat ini tidak memuat item apa pun."
-      },
-      "error": {
-        "title": "Bagian ini gagal dimuat",
-        "description": "Segarkan atau ulangi rute ini untuk meminta data discovery lagi.",
-        "retry": "Coba lagi"
-      },
-      "stale": {
-        "badge": "Data lama",
-        "description": "Menampilkan respons berhasil terakhir saat data terbaru belum tersedia."
-      }
-    }
-  },
-  "results": {
-    "books": {
-      "headerLabel": "Discovery buku",
-      "title": "Cari, saring, dan simpan konteks rak yang ingin Anda kunjungi lagi.",
-      "description": "Himpunan hasil tetap mengikuti URL sehingga refresh dan navigasi mempertahankan konteks discovery yang sama."
-    },
-    "category": {
-      "headerLabel": "Rak kategori",
-      "title": "Jelajahi satu kategori tanpa kehilangan konteks filter.",
-      "description": "Rute ini menjaga kategori tetap terkunci sementara rating minimum dan state halaman tetap dapat dibookmark."
-    },
-    "author": {
-      "headerLabel": "Rak penulis",
-      "description": "Jelajahi katalog satu penulis tanpa membuat ringkasan penulis menyatu dengan grid buku.",
-      "summaryEyebrow": "Ringkasan penulis",
-      "booksEyebrow": "Buku oleh penulis",
-      "booksTitle": "Lanjutkan discovery lewat penulis ini",
-      "booksDescription": "Halaman pertama sudah siap saat rute dibuka, lalu halaman berikutnya ditambahkan di bawah ringkasan penulis yang sama.",
-      "bookCountLabel": "buku di katalog",
-      "empty": {
-        "title": "Belum ada buku untuk penulis ini",
-        "description": "Halaman penulis berhasil dimuat, tetapi katalog saat ini belum menampilkan buku apa pun di sini."
-      },
-      "states": {
-        "invalidId": {
-          "title": "Tautan penulis ini tidak valid",
-          "description": "Gunakan ID penulis positif untuk membuka katalog penulis yang terlokalisasi."
-        },
-        "notFound": {
-          "title": "Penulis ini tidak ditemukan",
-          "description": "ID penulis valid, tetapi katalog publik tidak memiliki halaman penulis yang cocok."
-        },
-        "error": {
-          "title": "Halaman penulis ini gagal dimuat",
-          "description": "Coba lagi rute yang sama untuk meminta katalog penulis ini kembali.",
-          "retry": "Muat ulang halaman penulis"
-        }
-      },
-      "loadMore": {
-        "idle": "Muat buku berikutnya",
-        "pending": "Memuat buku berikutnya",
-        "exhausted": "Semua buku sudah dimuat",
-        "errorTitle": "Buku berikutnya gagal dimuat",
-        "errorDescription": "Coba lagi untuk menambahkan halaman berikutnya tanpa mereset ringkasan penulis.",
-        "retry": "Coba lagi"
-      }
-    },
-    "filters": {
-      "searchLabel": "Cari buku",
-      "searchPlaceholder": "Cari berdasarkan judul atau penulis",
-      "categoryLabel": "Kategori",
-      "categoryAllLabel": "Semua kategori",
-      "minRatingLabel": "Rating minimum",
-      "minRatingAllLabel": "Semua rating",
-      "resetLabel": "Reset",
-      "applyLabel": "Terapkan",
-      "fixedCategoryLabel": "Kategori"
-    },
-    "criteria": {
-      "title": "Kriteria aktif",
-      "fallback": "Menampilkan semua buku untuk rute saat ini.",
-      "search": "Pencarian",
-      "category": "Kategori",
-      "fixedCategory": "Kategori",
-      "minRating": "Rating minimum",
-      "page": "Halaman"
-    },
-    "pagination": {
-      "previous": "Sebelumnya",
-      "next": "Berikutnya",
-      "page": "Halaman {page}"
-    },
-    "states": {
-      "loading": {
-        "title": "Buku sedang dimuat",
-        "description": "Booky sedang menyiapkan himpunan hasil saat ini."
-      },
-      "empty": {
-        "title": "Belum ada buku yang cocok",
-        "description": "Ubah kata pencarian, kategori, atau rating minimum lalu coba lagi."
-      },
-      "error": {
-        "title": "Himpunan hasil ini gagal dimuat",
-        "description": "Coba ulang rute yang sama untuk meminta data discovery lagi tanpa kehilangan state URL saat ini.",
-        "retry": "Muat ulang hasil"
-      },
-      "stale": {
-        "badge": "Data lama",
-        "description": "Menampilkan himpunan hasil sebelumnya saat Booky memuat respons terbaru."
-      }
-    }
-  }
+    "home":  {
+                 "headerLabel":  "Beranda pembaca",
+                 "welcomeLabel":  "Masuk sebagai",
+                 "title":  "Temukan bacaan berikutnya tanpa kehilangan konteks pencarian Anda.",
+                 "description":  "Jelajahi rekomendasi terkurasi dan rak kategori yang siap membawa pengguna ke alur discovery berikutnya.",
+                 "hero":  {
+                              "lineOne":  "Selamat datang di"
+                          },
+                 "actions":  {
+                                 "socialLabel":  "Ikuti di Media Sosial"
+                             },
+                 "metrics":  {
+                                 "recommendations":  "Pilihan terkurasi",
+                                 "categories":  "Rak kategori"
+                             },
+                 "footer":  "Temukan kisah yang menginspirasi dan pengetahuan yang tak lekang waktu, siap dipinjam kapan saja. Jelajahi secara online atau kunjungi cabang perpustakaan terdekat kami.",
+                 "sections":  {
+                                  "categories":  {
+                                                     "eyebrow":  "Jelajah per rak",
+                                                     "description":  "Masuk ke kategori domain terlebih dulu sebelum mempersempit hasil."
+                                                 },
+                                  "recommendations":  {
+                                                          "eyebrow":  "Rekomendasi saat ini",
+                                                          "description":  "Kartu discovery terbaru berdasarkan mode rekomendasi yang sudah disetujui.",
+                                                          "loadMore":  {
+                                                                           "idle":  "Muat lebih banyak",
+                                                                           "pending":  "Memuat lebih banyak",
+                                                                           "exhausted":  "Semua rekomendasi sudah dimuat",
+                                                                           "errorTitle":  "Rekomendasi berikutnya gagal dimuat",
+                                                                           "errorDescription":  "Coba lagi untuk menambahkan batch rekomendasi berikutnya tanpa meninggalkan halaman ini.",
+                                                                           "retry":  "Coba lagi"
+                                                                       }
+                                                      },
+                                  "popularAuthors":  {
+                                                         "eyebrow":  "Penulis pilihan",
+                                                         "description":  "Jelajahi penulis yang menonjol dari katalog publik saat ini tanpa menerjemahkan konten domain mereka."
+                                                     }
+                              },
+                 "states":  {
+                                "loading":  {
+                                                "title":  "Data discovery sedang dimuat",
+                                                "description":  "Booky sedang menyiapkan bagian ini."
+                                            },
+                                "empty":  {
+                                              "title":  "Belum ada yang ditampilkan",
+                                              "description":  "Bagian ini tersedia, tetapi respons saat ini tidak memuat item apa pun."
+                                          },
+                                "error":  {
+                                              "title":  "Bagian ini gagal dimuat",
+                                              "description":  "Segarkan atau ulangi rute ini untuk meminta data discovery lagi.",
+                                              "retry":  "Coba lagi"
+                                          },
+                                "stale":  {
+                                              "badge":  "Data lama",
+                                              "description":  "Menampilkan respons berhasil terakhir saat data terbaru belum tersedia."
+                                          }
+                            },
+                 "profileMenu":  {
+                                     "trigger":  "Buka menu profil"
+                                 }
+             },
+    "results":  {
+                    "books":  {
+                                  "headerLabel":  "Discovery buku",
+                                  "title":  "Cari, saring, dan simpan konteks rak yang ingin Anda kunjungi lagi.",
+                                  "description":  "Himpunan hasil tetap mengikuti URL sehingga refresh dan navigasi mempertahankan konteks discovery yang sama."
+                              },
+                    "category":  {
+                                     "headerLabel":  "Rak kategori",
+                                     "title":  "Jelajahi satu kategori tanpa kehilangan konteks filter.",
+                                     "description":  "Rute ini menjaga kategori tetap terkunci sementara rating minimum dan state halaman tetap dapat dibookmark."
+                                 },
+                    "author":  {
+                                   "headerLabel":  "Rak penulis",
+                                   "description":  "Jelajahi katalog satu penulis tanpa membuat ringkasan penulis menyatu dengan grid buku.",
+                                   "summaryEyebrow":  "Ringkasan penulis",
+                                   "booksEyebrow":  "Buku oleh penulis",
+                                   "booksTitle":  "Lanjutkan discovery lewat penulis ini",
+                                   "booksDescription":  "Halaman pertama sudah siap saat rute dibuka, lalu halaman berikutnya ditambahkan di bawah ringkasan penulis yang sama.",
+                                   "bookCountLabel":  "buku di katalog",
+                                   "empty":  {
+                                                 "title":  "Belum ada buku untuk penulis ini",
+                                                 "description":  "Halaman penulis berhasil dimuat, tetapi katalog saat ini belum menampilkan buku apa pun di sini."
+                                             },
+                                   "states":  {
+                                                  "invalidId":  {
+                                                                    "title":  "Tautan penulis ini tidak valid",
+                                                                    "description":  "Gunakan ID penulis positif untuk membuka katalog penulis yang terlokalisasi."
+                                                                },
+                                                  "notFound":  {
+                                                                   "title":  "Penulis ini tidak ditemukan",
+                                                                   "description":  "ID penulis valid, tetapi katalog publik tidak memiliki halaman penulis yang cocok."
+                                                               },
+                                                  "error":  {
+                                                                "title":  "Halaman penulis ini gagal dimuat",
+                                                                "description":  "Coba lagi rute yang sama untuk meminta katalog penulis ini kembali.",
+                                                                "retry":  "Muat ulang halaman penulis"
+                                                            }
+                                              },
+                                   "loadMore":  {
+                                                    "idle":  "Muat buku berikutnya",
+                                                    "pending":  "Memuat buku berikutnya",
+                                                    "exhausted":  "Semua buku sudah dimuat",
+                                                    "errorTitle":  "Buku berikutnya gagal dimuat",
+                                                    "errorDescription":  "Coba lagi untuk menambahkan halaman berikutnya tanpa mereset ringkasan penulis.",
+                                                    "retry":  "Coba lagi"
+                                                }
+                               },
+                    "detail":  {
+                                   "headerLabel":  "Detail buku",
+                                   "description":  "Tinjau metadata buku yang didukung, review publik, dan rekomendasi terkait tanpa field yang tidak didukung.",
+                                   "authorLabel":  "Penulis",
+                                   "categoryLabel":  "Kategori",
+                                   "descriptionLabel":  "Deskripsi",
+                                   "availabilityLabel":  "Ketersediaan",
+                                   "descriptionFallback":  "Belum ada deskripsi yang didukung untuk buku ini.",
+                                   "metrics":  {
+                                                   "rating":  "Rating",
+                                                   "reviews":  "Review",
+                                                   "copies":  "Salinan tersedia",
+                                                   "borrowed":  "Dipinjam"
+                                               },
+                                   "availability":  {
+                                                        "available":  "Tersedia",
+                                                        "borrowed":  "Sebagian dipinjam",
+                                                        "unavailable":  "Tidak tersedia",
+                                                        "unknown":  "Ketersediaan belum tersedia"
+                                                    },
+                                   "states":  {
+                                                  "invalidId":  {
+                                                                    "title":  "Tautan buku ini tidak valid",
+                                                                    "description":  "Gunakan ID buku positif untuk membuka halaman detail buku yang terlokalisasi."
+                                                                },
+                                                  "notFound":  {
+                                                                   "title":  "Buku ini tidak ditemukan",
+                                                                   "description":  "ID buku valid, tetapi katalog publik tidak memiliki halaman detail yang cocok."
+                                                               },
+                                                  "error":  {
+                                                                "title":  "Detail buku ini gagal dimuat",
+                                                                "description":  "Coba lagi rute yang sama untuk meminta data detail yang didukung kembali.",
+                                                                "retry":  "Muat ulang detail buku"
+                                                            }
+                                              },
+                                   "reviews":  {
+                                                   "eyebrow":  "Review publik",
+                                                   "title":  "Apa kata pembaca",
+                                                   "description":  "Konten review tetap memakai bahasa asli pembaca, sementara copy sistem tetap terlokalisasi.",
+                                                   "anonymousReviewer":  "Pembaca anonim",
+                                                   "empty":  {
+                                                                 "title":  "Belum ada review publik",
+                                                                 "description":  "Halaman detail buku berhasil dimuat, tetapi belum ada review publik yang bisa ditampilkan saat ini."
+                                                             },
+                                                   "error":  {
+                                                                 "title":  "Review publik gagal dimuat",
+                                                                 "description":  "Coba ulang rute detail ini untuk meminta daftar review publik lagi.",
+                                                                 "retry":  "Muat ulang review"
+                                                             },
+                                                   "loadMore":  {
+                                                                    "idle":  "Muat review berikutnya",
+                                                                    "pending":  "Memuat review berikutnya",
+                                                                    "exhausted":  "Semua review sudah dimuat",
+                                                                    "errorTitle":  "Review berikutnya gagal dimuat",
+                                                                    "errorDescription":  "Coba lagi untuk menambahkan halaman review berikutnya tanpa mereset halaman detail ini.",
+                                                                    "retry":  "Coba lagi"
+                                                                }
+                                               },
+                                   "related":  {
+                                                   "eyebrow":  "Buku terkait",
+                                                   "title":  "Lanjutkan dari rak ini",
+                                                   "description":  "Rekomendasi diambil dari konteks kategori buku saat ini.",
+                                                   "empty":  {
+                                                                 "title":  "Belum ada buku terkait saat ini",
+                                                                 "description":  "Halaman detail berhasil dimuat, tetapi belum ada rekomendasi terkait yang bisa ditampilkan."
+                                                             },
+                                                   "error":  {
+                                                                 "title":  "Buku terkait gagal dimuat",
+                                                                 "description":  "Coba ulang rute detail ini untuk meminta rekomendasi terkait lagi.",
+                                                                 "retry":  "Muat ulang buku terkait"
+                                                             }
+                                               }
+                               },
+                    "filters":  {
+                                    "searchLabel":  "Cari buku",
+                                    "searchPlaceholder":  "Cari berdasarkan judul atau penulis",
+                                    "categoryLabel":  "Kategori",
+                                    "categoryAllLabel":  "Semua kategori",
+                                    "minRatingLabel":  "Rating minimum",
+                                    "minRatingAllLabel":  "Semua rating",
+                                    "resetLabel":  "Reset",
+                                    "applyLabel":  "Terapkan",
+                                    "fixedCategoryLabel":  "Kategori"
+                                },
+                    "criteria":  {
+                                     "title":  "Kriteria aktif",
+                                     "fallback":  "Menampilkan semua buku untuk rute saat ini.",
+                                     "search":  "Pencarian",
+                                     "category":  "Kategori",
+                                     "fixedCategory":  "Kategori",
+                                     "minRating":  "Rating minimum",
+                                     "page":  "Halaman"
+                                 },
+                    "pagination":  {
+                                       "previous":  "Sebelumnya",
+                                       "next":  "Berikutnya",
+                                       "page":  "Halaman {page}"
+                                   },
+                    "states":  {
+                                   "loading":  {
+                                                   "title":  "Buku sedang dimuat",
+                                                   "description":  "Booky sedang menyiapkan himpunan hasil saat ini."
+                                               },
+                                   "empty":  {
+                                                 "title":  "Belum ada buku yang cocok",
+                                                 "description":  "Ubah kata pencarian, kategori, atau rating minimum lalu coba lagi."
+                                             },
+                                   "error":  {
+                                                 "title":  "Himpunan hasil ini gagal dimuat",
+                                                 "description":  "Coba ulang rute yang sama untuk meminta data discovery lagi tanpa kehilangan state URL saat ini.",
+                                                 "retry":  "Muat ulang hasil"
+                                             },
+                                   "stale":  {
+                                                 "badge":  "Data lama",
+                                                 "description":  "Menampilkan himpunan hasil sebelumnya saat Booky memuat respons terbaru."
+                                             }
+                               }
+                }
 }

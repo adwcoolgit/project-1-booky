@@ -4,6 +4,9 @@ import Link from "next/link";
 import type { AuthorPresentation } from "@/entities/author/model";
 import { cn } from "@/shared/lib/utils";
 
+const GRID_AUTHOR_CARD_SIZES =
+  "(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc((100vw - 5rem) / 3), 285px";
+
 function BookIcon() {
   return (
     <svg aria-hidden="true" className="h-6 w-6 shrink-0 text-brand" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -80,7 +83,7 @@ export function AuthorCard({ author, variant = "grid", className }: AuthorCardPr
           alt={author.portraitImage.alt}
           className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
           fill
-          sizes="(max-width: 768px) 100vw, 20rem"
+          sizes={GRID_AUTHOR_CARD_SIZES}
           src={author.portraitImage.src}
           unoptimized
         />

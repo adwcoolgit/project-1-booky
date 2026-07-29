@@ -3,13 +3,20 @@ export {
   mapBookDetailResponseDtoToDetail,
   mapBookDtoToDetail,
   mapBookDtoToSummary,
+  mapBooksCollectionDtoToPage,
   mapBooksCollectionDtoToSummaries,
   omitUnsupportedBookFields,
 } from "@/entities/book/mapper";
 export type {
+  BookAvailabilityState,
   BookDetail,
+  BookDetailPresentation,
   BookPresentation,
   BookPresentationOptions,
   BookSummary,
+  BookSummaryPage,
 } from "@/entities/book/model";
-export { mapBookSummaryToPresentation } from "@/entities/book/presentation";
+export {
+  mapBookDetailToPresentation,
+  mapBookSummaryToPresentation,
+} from "@/entities/book/presentation";

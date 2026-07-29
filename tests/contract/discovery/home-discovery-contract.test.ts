@@ -7,7 +7,7 @@ import {
   getRecommendedBooks,
   recommendationsCollectionDtoSchema,
 } from "@/features/discovery/api";
-import { mapBooksCollectionDtoToSummaries } from "@/entities/book";
+import { mapBooksCollectionDtoToPage, mapBooksCollectionDtoToSummaries } from "@/entities/book";
 import { mapCategoriesCollectionDtoToSummaries } from "@/entities/category";
 import {
   emptyHomeRecommendedBooksCollectionFixture,
@@ -19,7 +19,7 @@ import {
 } from "@/../tests/fixtures/discovery/categories-fixtures";
 
 describe("home discovery transport contract", () => {
-  it("maps localized home categories and recommendations from the shared adapters", async () => {
+  it("maps localized home categories and first-page recommendations from the shared adapters", async () => {
     const client = createDiscoveryApiClient("en");
     const categoriesPayload = await getCategories(client);
     const recommendationsPayload = await getRecommendedBooks(client, {
@@ -27,6 +27,7 @@ describe("home discovery transport contract", () => {
       page: 1,
       limit: 8,
     });
+    const recommendationsPage = mapBooksCollectionDtoToPage(recommendationsPayload, 8);
 
     expect(categoriesPayload).toEqual(homeCategoriesCollectionFixture);
     expect(recommendationsPayload).toEqual(homeRecommendedBooksCollectionFixture);
@@ -56,6 +57,10 @@ describe("home discovery transport contract", () => {
         artwork: null,
       },
     ]);
+    expect(recommendationsPage.page).toBe(1);
+    expect(recommendationsPage.limit).toBe(8);
+    expect(recommendationsPage.hasMore).toBe(true);
+    expect(recommendationsPage.items).toHaveLength(8);
     expect(mapBooksCollectionDtoToSummaries(recommendationsPayload)).toMatchObject([
       {
         id: 101,
@@ -80,6 +85,30 @@ describe("home discovery transport contract", () => {
         title: "Meditations",
         authorName: "Marcus Aurelius",
         categoryName: "Philosophy",
+      },
+      {
+        id: 102,
+        title: "A Wizard of Earthsea",
+        authorName: "Ursula K. Le Guin",
+        categoryName: "Science Fiction",
+      },
+      {
+        id: 103,
+        title: "The Dispossessed",
+        authorName: "Ursula K. Le Guin",
+        categoryName: "Science Fiction",
+      },
+      {
+        id: 202,
+        title: "The Silk Roads",
+        authorName: "Peter Frankopan",
+        categoryName: "History",
+      },
+      {
+        id: 302,
+        title: "Deep Work",
+        authorName: "Cal Newport",
+        categoryName: "Personal Growth",
       },
     ]);
   });

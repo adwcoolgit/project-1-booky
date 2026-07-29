@@ -1,4 +1,5 @@
-import { CategoryCard, type CategoryPresentation } from "@/entities/category";
+import { type CategoryPresentation } from "@/entities/category";
+import { HomeCategoryCarousel } from "@/features/discovery/components/home-category-carousel";
 import {
   HomeDiscoveryState,
   HomeDiscoveryStaleNotice,
@@ -15,10 +16,12 @@ export type HomeCategorySectionProps = {
   stateCopy: HomeDiscoveryStateCopy;
 };
 
-export function HomeCategorySection({ title, categories, retryHref, stateCopy }: HomeCategorySectionProps) {
+const HOME_CATEGORIES_TITLE_ID = "home-categories-title";
+
+export function HomeCategorySection({ eyebrow, title, categories, retryHref, stateCopy }: HomeCategorySectionProps) {
   return (
-    <section aria-labelledby="home-categories-title" className="flex flex-col gap-4" data-home-categories="true">
-      <h2 className="sr-only" id="home-categories-title">
+    <section aria-labelledby={HOME_CATEGORIES_TITLE_ID} className="flex flex-col gap-4" data-home-categories="true">
+      <h2 className="sr-only" id={HOME_CATEGORIES_TITLE_ID}>
         {title}
       </h2>
 
@@ -30,11 +33,7 @@ export function HomeCategorySection({ title, categories, retryHref, stateCopy }:
       {categories.status === "ready" ? (
         <>
           {categories.isStale ? <HomeDiscoveryStaleNotice copy={stateCopy} /> : null}
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6" data-home-categories-grid="true">
-            {categories.items.map((category) => (
-              <CategoryCard category={category} key={category.id} />
-            ))}
-          </div>
+          <HomeCategoryCarousel categories={categories.items} controlsLabel={eyebrow} labelledById={HOME_CATEGORIES_TITLE_ID} />
         </>
       ) : null}
     </section>

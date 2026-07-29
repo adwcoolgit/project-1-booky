@@ -73,6 +73,7 @@ export type FoundationShellChromeMessages = {
 
 export type SourceMetadataMessages = (typeof sourceMessages)[AppLocale]["Metadata"];
 export type SourceHomeMessages = (typeof sourceMessages)[AppLocale]["Home"];
+export type SourceNavigationMessages = (typeof sourceMessages)[AppLocale]["Navigation"];
 export type DiscoveryFeatureMessages = (typeof discoveryFeatureMessages)[AppLocale];
 export type AuthFeatureMessages = (typeof authFeatureMessages)[AppLocale];
 export type BoundaryMessages = (typeof boundaryMessages)[AppLocale];
@@ -144,6 +145,10 @@ export function getDiscoveryFeatureMessages(locale: AppLocale): DiscoveryFeature
 
 export function getSourceHomeMessages(locale: AppLocale): SourceHomeMessages {
   return sourceMessages[locale].Home;
+}
+
+export function getSourceNavigationMessages(locale: AppLocale): SourceNavigationMessages {
+  return sourceMessages[locale].Navigation;
 }
 
 export function getSourceMetadataMessages(locale: AppLocale): SourceMetadataMessages {

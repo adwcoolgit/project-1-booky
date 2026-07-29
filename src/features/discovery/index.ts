@@ -1,5 +1,15 @@
 export * from "@/features/discovery/api";
 export {
+  BookDetailHero,
+  BookRouteStatePanel,
+  type BookDetailHeroCopy,
+  type BookRouteStateCopy,
+} from "@/features/discovery/components/book-detail-hero";
+export {
+  BookReviewList,
+  type BookReviewListCopy,
+} from "@/features/discovery/components/book-review-list";
+export {
   AuthorBooksSection,
   AuthorRouteStatePanel,
   type AuthorBooksSectionCopy,
@@ -63,15 +73,24 @@ export {
   type PopularAuthorsStateVariant,
 } from "@/features/discovery/components/popular-authors-state";
 export {
+  RelatedBooksSection,
+  type RelatedBooksSectionCopy,
+} from "@/features/discovery/components/related-books-section";
+export {
   DiscoveryPagination,
   type DiscoveryPaginationProps,
 } from "@/features/discovery/components/discovery-pagination";
 export { useAuthorBooksLoadMore } from "@/features/discovery/hooks/use-author-books-load-more";
+export { useBookReviewsLoadMore } from "@/features/discovery/hooks/use-book-reviews-load-more";
 export { useDiscoverySearchParams } from "@/features/discovery/hooks/use-discovery-search-params";
 export {
   readAuthorBooksPageView,
   type AuthorBooksPageViewState,
 } from "@/features/discovery/author-books-discovery";
+export {
+  readBookDetailPageView,
+  type BookDetailPageViewState,
+} from "@/features/discovery/book-detail-discovery";
 export { readHomeDiscoveryViewModel } from "@/features/discovery/home-discovery";
 export {
   readDiscoveryBookResults,

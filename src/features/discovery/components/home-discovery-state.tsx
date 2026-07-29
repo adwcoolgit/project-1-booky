@@ -73,7 +73,12 @@ export function HomeDiscoveryStaleNotice({
   className?: string | undefined;
 }) {
   return (
-    <div className={cn("mb-4 rounded-3xl border border-border bg-brand-subtle px-4 py-3", className)}>
+    <div
+      aria-atomic="true"
+      aria-live="polite"
+      className={cn("mb-4 rounded-3xl border border-border bg-brand-subtle px-4 py-3", className)}
+      role="status"
+    >
       <div className="flex flex-wrap items-center gap-2">
         <span className="rounded-full bg-white px-2.5 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-brand">
           {copy.stale.badge}

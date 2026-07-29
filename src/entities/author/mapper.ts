@@ -1,7 +1,7 @@
 import type { BookSummary } from "@/entities/book/model";
 import { mapBookDtoToSummary } from "@/entities/book/mapper";
 import type { AuthorBookCollection, PopularAuthorSummary } from "@/entities/author/model";
-import { extractCollectionItems, extractPaginationShape, isTransportRecord, type PartialResponsePagination } from "@/shared/lib/transport/partial-response";
+import { extractCollectionItems, extractPaginationShape, extractSingleItem, type PartialResponsePagination } from "@/shared/lib/transport/partial-response";
 
 type AuthorMapperDto = {
   id?: unknown;
@@ -60,7 +60,7 @@ export function mapAuthorsCollectionDtoToSummaries(payload: unknown): PopularAut
 }
 
 export function mapAuthorBooksResponseDtoToCollection(payload: unknown, fallbackLimit = 12): AuthorBookCollection | null {
-  const authorDto = isTransportRecord(payload) ? ((payload.author as AuthorMapperDto | undefined) ?? null) : null;
+  const authorDto = extractSingleItem<AuthorMapperDto>(payload, ["author"]);
   const author = authorDto ? mapAuthorDtoToSummary(authorDto) : null;
 
   if (!author) {

@@ -1,6 +1,12 @@
-import type { BookDetail, BookSummary } from "@/entities/book/model";
+import type { BookDetail, BookSummary, BookSummaryPage } from "@/entities/book/model";
 import type { BookReviewPage } from "@/entities/review/model";
-import { extractCollectionItems, extractSingleItem, isTransportRecord } from "@/shared/lib/transport/partial-response";
+import {
+  extractCollectionItems,
+  extractPaginationShape,
+  extractSingleItem,
+  isTransportRecord,
+  type PartialResponsePagination,
+} from "@/shared/lib/transport/partial-response";
 
 type BookMapperReference = {
   id?: unknown;
@@ -78,6 +84,18 @@ function resolveCategoryId(dto: BookMapperDto): number | null {
   return resolveReferenceId(dto.category ?? null);
 }
 
+function derivePaginationState(pagination: PartialResponsePagination | null, fallbackLimit: number) {
+  return {
+    page: pagination?.page ?? 1,
+    limit: pagination?.limit ?? fallbackLimit,
+    hasMore:
+      pagination?.hasMore ??
+      (typeof pagination?.totalPages === "number" && typeof pagination.page === "number"
+        ? pagination.page < pagination.totalPages
+        : false),
+  };
+}
+
 export function omitUnsupportedBookFields<T extends object>(payload: T): Omit<T, "pageCount"> {
   const next = { ...payload } as T & { pageCount?: unknown };
 
@@ -115,6 +133,17 @@ export function mapBooksCollectionDtoToSummaries(payload: unknown): BookSummary[
   return extractCollectionItems<BookMapperDto>(payload, ["books"])
     .map((dto) => mapBookDtoToSummary(dto))
     .filter((book): book is BookSummary => book !== null);
+}
+
+export function mapBooksCollectionDtoToPage(payload: unknown, fallbackLimit = 12): BookSummaryPage {
+  const pagination = derivePaginationState(extractPaginationShape(payload), fallbackLimit);
+
+  return {
+    items: mapBooksCollectionDtoToSummaries(payload),
+    page: pagination.page,
+    limit: pagination.limit,
+    hasMore: pagination.hasMore,
+  };
 }
 
 export function mapBookDtoToDetail(

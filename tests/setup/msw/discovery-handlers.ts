@@ -3,7 +3,9 @@ import type { RequestHandler } from "msw";
 
 import { runtimeConfig } from "@/shared/config/runtime";
 import {
+  createBookDetailResponseFixture,
   createBooksCollectionFixture,
+  createRecommendedBooksCollectionFixture,
   homeRecommendedBooksCollectionFixture,
 } from "@/../tests/fixtures/discovery/books-fixtures";
 import {
@@ -12,6 +14,7 @@ import {
   homePopularAuthorsCollectionFixture,
 } from "@/../tests/fixtures/discovery/authors-fixtures";
 import { homeCategoriesCollectionFixture } from "@/../tests/fixtures/discovery/categories-fixtures";
+import { createReviewsCollectionFixture } from "@/../tests/fixtures/discovery/reviews-fixtures";
 
 const discoveryBaseUrl = runtimeConfig.apiBaseUrl;
 
@@ -25,7 +28,76 @@ function parseOptionalInteger(value: string | null | undefined) {
 
 export const discoveryHandlers: RequestHandler[] = [
   http.get(`${discoveryBaseUrl}/categories`, () => HttpResponse.json(homeCategoriesCollectionFixture)),
-  http.get(`${discoveryBaseUrl}/books/recommend`, () => HttpResponse.json(homeRecommendedBooksCollectionFixture)),
+  http.get(`${discoveryBaseUrl}/books/recommend`, ({ request }) => {
+    const url = new URL(request.url);
+    const categoryId = parseOptionalInteger(url.searchParams.get("categoryId"));
+    const page = parseOptionalInteger(url.searchParams.get("page"));
+    const limit = parseOptionalInteger(url.searchParams.get("limit"));
+
+    if (categoryId === 500) {
+      return HttpResponse.text("Related books request failed.", { status: 500 });
+    }
+
+    if (categoryId === undefined) {
+      if (!page || page <= 1) {
+        return HttpResponse.json(homeRecommendedBooksCollectionFixture);
+      }
+
+      return HttpResponse.json(
+        createRecommendedBooksCollectionFixture({
+          page,
+          limit,
+        }),
+      );
+    }
+
+    return HttpResponse.json(
+      createRecommendedBooksCollectionFixture({
+        categoryId,
+        page,
+        limit,
+      }),
+    );
+  }),
+  http.get(`${discoveryBaseUrl}/books/:bookId`, ({ params }) => {
+    const bookId = parseOptionalInteger(typeof params.bookId === "string" ? params.bookId : undefined);
+
+    if (!bookId) {
+      return HttpResponse.text("Invalid book id.", { status: 400 });
+    }
+
+    if (bookId === 500) {
+      return HttpResponse.text("Book detail request failed.", { status: 500 });
+    }
+
+    const fixture = createBookDetailResponseFixture({ bookId });
+
+    if (!fixture) {
+      return HttpResponse.text("Book not found.", { status: 404 });
+    }
+
+    return HttpResponse.json(fixture);
+  }),
+  http.get(`${discoveryBaseUrl}/reviews/book/:bookId`, ({ params, request }) => {
+    const url = new URL(request.url);
+    const bookId = parseOptionalInteger(typeof params.bookId === "string" ? params.bookId : undefined);
+
+    if (!bookId) {
+      return HttpResponse.text("Invalid book id.", { status: 400 });
+    }
+
+    if (bookId === 500) {
+      return HttpResponse.text("Book reviews request failed.", { status: 500 });
+    }
+
+    return HttpResponse.json(
+      createReviewsCollectionFixture({
+        bookId,
+        page: parseOptionalInteger(url.searchParams.get("page")),
+        limit: parseOptionalInteger(url.searchParams.get("limit")),
+      }),
+    );
+  }),
   http.get(`${discoveryBaseUrl}/authors/popular`, ({ request }) => {
     const url = new URL(request.url);
 

@@ -21,14 +21,24 @@ const expectations = {
     categories: "Categories",
     recommendations: "Recommendation",
     popularAuthors: "Popular Authors",
+    profile: "Profile",
+    borrowedList: "Borrowed List",
+    reviews: "Reviews",
     logoutLabel: "Logout",
+    loadMore: "Load More",
+    exhausted: "All recommendations loaded",
   },
   id: {
     title: "Selamat datang di Booky",
     categories: "Kategori",
     recommendations: "Rekomendasi untuk Anda",
     popularAuthors: "Penulis Populer",
+    profile: "Profil",
+    borrowedList: "Daftar Peminjaman",
+    reviews: "Ulasan",
     logoutLabel: "Keluar",
+    loadMore: "Muat lebih banyak",
+    exhausted: "Semua rekomendasi sudah dimuat",
   },
 } as const;
 
@@ -48,8 +58,9 @@ for (const locale of ["en", "id"] as const) {
     await expect(page.locator('[data-home-header-profile="true"]')).toBeVisible();
     await expect(page.locator('[data-home-header-profile-chevron="true"]')).toBeVisible();
     await expect(page.locator('[data-category-card="true"]')).toHaveCount(4);
-    await expect(page.locator('[data-book-card="true"]')).toHaveCount(4);
+    await expect(page.locator('[data-book-card="true"]')).toHaveCount(8);
     await expect(page.locator('[data-author-card="true"]')).toHaveCount(4);
+    await expect(page.getByRole("button", { name: expectations[locale].loadMore })).toBeVisible();
     await expect(page.getByRole("link", { name: "Science Fiction" })).toHaveAttribute(
       "href",
       `/${locale}/categories/science-fiction-7`,
@@ -58,6 +69,23 @@ for (const locale of ["en", "id"] as const) {
       "href",
       `/${locale}/books/101`,
     );
+  });
+}
+
+for (const locale of ["en", "id"] as const) {
+  test(`${locale} authenticated home opens the profile popup menu on demand`, async ({ page }) => {
+    await setUserSession(page, locale);
+    await page.goto(`/${locale}`);
+
+    await expect(page.locator('[data-home-header-profile-menu="true"]')).toHaveCount(0);
+
+    await page.locator('[data-home-header-profile-trigger="true"]').click();
+
+    await expect(page.locator('[data-home-header-profile-menu="true"]')).toBeVisible();
+    await expect(page.getByRole("link", { name: expectations[locale].profile })).toBeVisible();
+    await expect(page.getByRole("link", { name: expectations[locale].borrowedList })).toBeVisible();
+    await expect(page.getByRole("link", { name: expectations[locale].reviews })).toBeVisible();
+    await expect(page.getByRole("button", { name: expectations[locale].logoutLabel })).toBeVisible();
   });
 }
 
@@ -88,6 +116,19 @@ test("authenticated home carousel lets readers switch hero slides manually", asy
   await expect(thirdSlide).toHaveAttribute("data-home-hero-slide-active", "true");
 });
 
+test("authenticated home loads the next recommendation batch without leaving the page", async ({ page }) => {
+  await setUserSession(page, "en");
+  await page.goto("/en");
+
+  await expect(page.locator('[data-book-card="true"]')).toHaveCount(8);
+
+  await page.getByRole("button", { name: expectations.en.loadMore }).click();
+
+  await expect(page.locator('[data-book-card="true"]')).toHaveCount(11);
+  await expect(page.getByRole("link", { name: "Mindset" })).toBeVisible();
+  await expect(page.getByRole("button", { name: expectations.en.exhausted })).toBeVisible();
+});
+
 test("authenticated home hides the standalone logout button on desktop", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await setUserSession(page, "en");
@@ -95,6 +136,7 @@ test("authenticated home hides the standalone logout button on desktop", async (
 
   await expect(page.getByRole("button", { name: "Logout" })).toBeHidden();
 });
+
 test("authenticated home uses the configured Quicksand font stack", async ({ page }) => {
   await setUserSession(page, "en");
   await page.goto("/en");

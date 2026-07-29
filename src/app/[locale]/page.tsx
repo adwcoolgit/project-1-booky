@@ -11,14 +11,16 @@ import { HomePageFooter } from "@/features/discovery/components/home-page-footer
 import { HomePageHeader } from "@/features/discovery/components/home-page-header";
 import { executeProtectedServerRequest } from "@/shared/api/server/authenticated-client";
 import { resolveProtectedRequestFailure } from "@/shared/auth/guards";
-import { readSessionEnvelope } from "@/shared/auth/session.server";
 import { resolveProtectedProfileFixture } from "@/shared/auth/protected-profile-fixture";
+import { readSessionEnvelope } from "@/shared/auth/session.server";
 import { runtimeConfig } from "@/shared/config/runtime";
 import { resolveLocale } from "@/shared/i18n/config";
 import {
+  getAuthFeatureMessages,
   getDiscoveryFeatureMessages,
   getSourceHomeMessages,
   getSourceMetadataMessages,
+  getSourceNavigationMessages,
 } from "@/shared/i18n/get-messages";
 
 const BOOKY_BRAND_LABEL = "Booky";
@@ -93,52 +95,74 @@ export default async function UserHomePage({
     redirect(guard.redirectPath);
   }
 
-  if (guard.session.status !== "authenticated") {
-    throw new Error("Expected authenticated session after user route guard.");
-  }
+  const authenticatedSession =
+    guard.session.status === "authenticated" ? guard.session : null;
+  let displayName: string | null = null;
 
-  const protectedProfile = runtimeConfig.authE2eFixtureMode
-    ? resolveProtectedProfileFixture(await readSessionEnvelope())
-    : await executeProtectedServerRequest(
-        async (client) => (await client.get<UserProfileSummary>("/me")).data,
+  if (authenticatedSession) {
+    const protectedProfile = runtimeConfig.authE2eFixtureMode
+      ? resolveProtectedProfileFixture(await readSessionEnvelope())
+      : await executeProtectedServerRequest(
+          async (client) => (await client.get<UserProfileSummary>("/me")).data,
+          locale,
+        );
+
+    if (protectedProfile.status === "failure") {
+      const failure = resolveProtectedRequestFailure({
+        error: protectedProfile.error,
+        pathname: currentPath,
         locale,
-      );
+        returnTo: currentPath,
+        loginSurface: "user",
+      });
 
-  if (protectedProfile.status === "failure") {
-    const failure = resolveProtectedRequestFailure({
-      error: protectedProfile.error,
-      pathname: currentPath,
-      locale,
-      returnTo: currentPath,
-      loginSurface: "user",
-    });
+      if (failure.redirectPath) {
+        redirect(failure.redirectPath);
+      }
 
-    if (failure.redirectPath) {
-      redirect(failure.redirectPath);
+      throw protectedProfile.error;
     }
 
-    throw protectedProfile.error;
+    displayName =
+      protectedProfile.data.name ??
+      authenticatedSession.displayName ??
+      authenticatedSession.email;
   }
 
+  const authMessages = getAuthFeatureMessages(locale);
   const discoveryMessages = getDiscoveryFeatureMessages(locale);
   const homeSource = getSourceHomeMessages(locale);
+  const navigation = getSourceNavigationMessages(locale);
   const discovery = discoveryMessages.home;
   const bookFilters = discoveryMessages.results.filters;
   const data = await readHomeDiscoveryViewModel(locale);
-  const displayName =
-    protectedProfile.data.name ??
-    guard.session.displayName ??
-    guard.session.email;
 
   return (
     <div className="min-h-screen bg-white text-foreground">
-      <HomePageHeader
-        brandLabel={BOOKY_BRAND_LABEL}
-        displayName={displayName}
-        locale={locale}
-        searchLabel={bookFilters.searchLabel}
-        searchPlaceholder={bookFilters.searchPlaceholder}
-      />
+      {authenticatedSession ? (
+        <HomePageHeader
+          borrowedListLabel={navigation.borrowedList}
+          brandLabel={BOOKY_BRAND_LABEL}
+          displayName={displayName ?? authenticatedSession.displayName}
+          locale={locale}
+          profileLabel={navigation.profile}
+          profileMenuLabel={discovery.profileMenu.trigger}
+          reviewsLabel={navigation.reviews}
+          searchLabel={bookFilters.searchLabel}
+          searchPlaceholder={bookFilters.searchPlaceholder}
+          variant="authenticated"
+        />
+      ) : (
+        <HomePageHeader
+          brandLabel={BOOKY_BRAND_LABEL}
+          locale={locale}
+          loginLabel={authMessages.login.heading}
+          registerLabel={authMessages.register.heading}
+          searchLabel={bookFilters.searchLabel}
+          searchPlaceholder={bookFilters.searchPlaceholder}
+          variant="guest"
+        />
+      )}
 
       <main
         className="px-4 py-8 md:px-8 md:py-12 xl:px-[120px]"
@@ -151,7 +175,7 @@ export default async function UserHomePage({
           />
 
           <HomeDiscoverySections
-            catalogHref={`/${locale}/books`}
+            locale={locale}
             copy={{
               categories: {
                 eyebrow: discovery.sections.categories.eyebrow,
@@ -162,7 +186,7 @@ export default async function UserHomePage({
                 eyebrow: discovery.sections.recommendations.eyebrow,
                 title: homeSource.recommendations,
                 description: discovery.sections.recommendations.description,
-                ctaLabel: discovery.actions.viewAllBooks,
+                loadMore: discovery.sections.recommendations.loadMore,
               },
               popularAuthors: {
                 eyebrow: discovery.sections.popularAuthors.eyebrow,

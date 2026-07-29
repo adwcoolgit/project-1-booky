@@ -4,18 +4,26 @@ const apiPositiveIntegerSchema = z.number().int().positive();
 const apiNonNegativeIntegerSchema = z.number().int().min(0);
 const nullableTextSchema = z.string().nullable().optional();
 const isoDateTimeSchema = z.string().min(1);
+const nestedEnvelopeKeys = ["data", "items"] as const;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function createCollectionEnvelopeSchema<TItem extends z.ZodTypeAny>(
+function createPassthroughRecordSchema(shape: Record<string, z.ZodTypeAny>) {
+  return z.object(shape).partial().passthrough();
+}
+
+function createCollectionRecordSchema<TItem extends z.ZodTypeAny>(
   itemSchema: TItem,
   keys: readonly string[],
+  options: { allowNestedEnvelopes?: boolean } = {},
 ) {
+  const allowNestedEnvelopes = options.allowNestedEnvelopes ?? true;
+  const arraySchema = z.array(itemSchema);
   const shape: Record<string, z.ZodTypeAny> = {
-    data: z.array(itemSchema).optional(),
-    items: z.array(itemSchema).optional(),
+    data: arraySchema.optional(),
+    items: arraySchema.optional(),
     pagination: paginationDtoSchema.optional(),
     meta: paginationDtoSchema.optional(),
     page: apiPositiveIntegerSchema.optional(),
@@ -26,10 +34,73 @@ function createCollectionEnvelopeSchema<TItem extends z.ZodTypeAny>(
   };
 
   for (const key of keys) {
-    shape[key] = z.array(itemSchema).optional();
+    shape[key] = arraySchema.optional();
   }
 
-  return z.union([z.array(itemSchema), z.object(shape).partial().passthrough()]);
+  if (allowNestedEnvelopes) {
+    const nestedRecordSchema = createCollectionRecordSchema(itemSchema, keys, {
+      allowNestedEnvelopes: false,
+    });
+
+    shape.data = z.union([nestedRecordSchema, arraySchema]).optional();
+    shape.items = z.union([nestedRecordSchema, arraySchema]).optional();
+  }
+
+  return createPassthroughRecordSchema(shape);
+}
+
+function createCollectionEnvelopeSchema<TItem extends z.ZodTypeAny>(
+  itemSchema: TItem,
+  keys: readonly string[],
+) {
+  return z.union([z.array(itemSchema), createCollectionRecordSchema(itemSchema, keys)]);
+}
+
+function createNestedDetailRecordSchema<TItem extends z.ZodTypeAny>(
+  itemSchema: TItem,
+  keys: readonly string[],
+) {
+  const shape: Record<string, z.ZodTypeAny> = {};
+
+  for (const key of keys) {
+    shape[key] = itemSchema.optional();
+  }
+
+  return createPassthroughRecordSchema(shape).refine(
+    (value) => keys.some((key) => value[key] !== undefined),
+    {
+      message: `Expected a detail envelope with ${keys.join(", ")}.`,
+    },
+  );
+}
+
+function createAuthorBooksRecordSchema(options: { allowNestedEnvelopes?: boolean } = {}) {
+  const allowNestedEnvelopes = options.allowNestedEnvelopes ?? true;
+  const arraySchema = z.array(bookDtoSchema);
+  const shape: Record<string, z.ZodTypeAny> = {
+    author: authorDtoSchema.optional(),
+    data: arraySchema.optional(),
+    items: arraySchema.optional(),
+    books: arraySchema.optional(),
+    pagination: paginationDtoSchema.optional(),
+    meta: paginationDtoSchema.optional(),
+    page: apiPositiveIntegerSchema.optional(),
+    limit: apiPositiveIntegerSchema.optional(),
+    total: apiNonNegativeIntegerSchema.optional(),
+    totalPages: apiNonNegativeIntegerSchema.optional(),
+    hasMore: z.boolean().optional(),
+  };
+
+  if (allowNestedEnvelopes) {
+    const nestedRecordSchema = createAuthorBooksRecordSchema({
+      allowNestedEnvelopes: false,
+    });
+
+    shape.data = z.union([nestedRecordSchema, arraySchema]).optional();
+    shape.items = z.union([nestedRecordSchema, arraySchema]).optional();
+  }
+
+  return createPassthroughRecordSchema(shape);
 }
 
 export const paginationDtoSchema = z
@@ -104,35 +175,22 @@ export const categoriesCollectionDtoSchema = createCollectionEnvelopeSchema(cate
 export const reviewsCollectionDtoSchema = createCollectionEnvelopeSchema(reviewDtoSchema, ["reviews"] as const);
 export const authorBooksResponseDtoSchema = z.union([
   z.array(bookDtoSchema),
-  z
-    .object({
-      author: authorDtoSchema.optional(),
-      data: z.array(bookDtoSchema).optional(),
-      items: z.array(bookDtoSchema).optional(),
-      books: z.array(bookDtoSchema).optional(),
-      pagination: paginationDtoSchema.optional(),
-      meta: paginationDtoSchema.optional(),
-      page: apiPositiveIntegerSchema.optional(),
-      limit: apiPositiveIntegerSchema.optional(),
-      total: apiNonNegativeIntegerSchema.optional(),
-      totalPages: apiNonNegativeIntegerSchema.optional(),
-      hasMore: z.boolean().optional(),
-    })
-    .partial()
-    .passthrough(),
+  createAuthorBooksRecordSchema(),
 ]);
 
-const bookDetailEnvelopeDtoSchema = z
-  .object({
-    data: bookDtoSchema.optional(),
-    item: bookDtoSchema.optional(),
-    book: bookDtoSchema.optional(),
-  })
-  .partial()
-  .passthrough()
-  .refine((value) => value.data !== undefined || value.item !== undefined || value.book !== undefined, {
-    message: "Expected a detail envelope with data, item, or book.",
-  });
+const nestedBookDetailRecordSchema = createNestedDetailRecordSchema(bookDtoSchema, [
+  "data",
+  "item",
+  "book",
+] as const);
+
+const bookDetailEnvelopeDtoSchema = createPassthroughRecordSchema({
+  data: z.union([nestedBookDetailRecordSchema, bookDtoSchema]).optional(),
+  item: z.union([nestedBookDetailRecordSchema, bookDtoSchema]).optional(),
+  book: z.union([nestedBookDetailRecordSchema, bookDtoSchema]).optional(),
+}).refine((value) => value.data !== undefined || value.item !== undefined || value.book !== undefined, {
+  message: "Expected a detail envelope with data, item, or book.",
+});
 
 export const bookDetailResponseDtoSchema = z.union([bookDetailEnvelopeDtoSchema, bookDtoSchema]);
 
@@ -149,6 +207,20 @@ export type ReviewsCollectionDto = z.infer<typeof reviewsCollectionDtoSchema>;
 export type AuthorBooksResponseDto = z.infer<typeof authorBooksResponseDtoSchema>;
 export type BookDetailResponseDto = z.infer<typeof bookDetailResponseDtoSchema>;
 
+function collectRecordCandidates(payload: Record<string, unknown>) {
+  const candidates = [payload];
+
+  for (const key of nestedEnvelopeKeys) {
+    const value = payload[key];
+
+    if (isRecord(value)) {
+      candidates.push(value);
+    }
+  }
+
+  return candidates;
+}
+
 export function extractCollectionItems<TItem>(
   payload: unknown,
   keys: readonly string[],
@@ -161,13 +233,13 @@ export function extractCollectionItems<TItem>(
     return [];
   }
 
-  const preferredKeys = ["data", "items", ...keys];
+  for (const candidate of collectRecordCandidates(payload)) {
+    for (const key of ["data", "items", ...keys]) {
+      const value = candidate[key];
 
-  for (const key of preferredKeys) {
-    const value = payload[key];
-
-    if (Array.isArray(value)) {
-      return value as TItem[];
+      if (Array.isArray(value)) {
+        return value as TItem[];
+      }
     }
   }
 
@@ -186,11 +258,19 @@ export function extractSingleItem<TItem>(
     return null;
   }
 
-  for (const key of keys) {
-    const value = payload[key];
+  const candidates = collectRecordCandidates(payload);
+  const directKeys = keys.filter((key) => !nestedEnvelopeKeys.includes(key as (typeof nestedEnvelopeKeys)[number]));
+  const envelopeKeys = keys.filter((key) => nestedEnvelopeKeys.includes(key as (typeof nestedEnvelopeKeys)[number]));
 
-    if (value !== undefined && value !== null && !Array.isArray(value)) {
-      return value as TItem;
+  for (const keyGroup of [directKeys, envelopeKeys]) {
+    for (const candidate of candidates) {
+      for (const key of keyGroup) {
+        const value = candidate[key];
+
+        if (value !== undefined && value !== null && !Array.isArray(value)) {
+          return value as TItem;
+        }
+      }
     }
   }
 
@@ -202,12 +282,22 @@ export function extractPaginationDto(payload: unknown): PaginationDto | null {
     return null;
   }
 
-  const candidates = [payload.pagination, payload.meta, payload];
+  const candidates: unknown[] = [];
+
+  for (const candidate of collectRecordCandidates(payload)) {
+    candidates.push(candidate.pagination, candidate.meta, candidate);
+  }
 
   for (const candidate of candidates) {
     const result = paginationDtoSchema.safeParse(candidate);
 
-    if (result.success) {
+    if (!result.success) {
+      continue;
+    }
+
+    const { page, limit, total, totalPages, hasMore } = result.data;
+
+    if (page !== undefined || limit !== undefined || total !== undefined || totalPages !== undefined || hasMore !== undefined) {
       return result.data;
     }
   }

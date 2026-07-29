@@ -36,7 +36,7 @@ export function LogoutButton({ locale, surface, className }: LogoutButtonProps) 
   return (
     <button
       className={cn(
-        "rounded-full border border-border px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60",
+        "inline-flex items-center justify-center rounded-full border border-border px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60",
         className,
       )}
       disabled={logoutMutation.isPending}
@@ -49,3 +49,4 @@ export function LogoutButton({ locale, surface, className }: LogoutButtonProps) 
     </button>
   );
 }
+

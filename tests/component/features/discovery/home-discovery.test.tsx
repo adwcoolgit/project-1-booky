@@ -1,4 +1,6 @@
+import { QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import type { ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 
@@ -18,12 +20,24 @@ import {
   mapAuthorSummaryToPresentation,
   type PopularAuthorSummary,
 } from "@/entities/author";
-import { mapBookSummaryToPresentation, type BookSummary } from "@/entities/book";
+import {
+  mapBooksCollectionDtoToPage,
+  mapBookSummaryToPresentation,
+  type BookSummary,
+} from "@/entities/book";
 import { mapCategorySummaryToPresentation, type CategorySummary } from "@/entities/category";
 import { HomeDiscoverySections, type HomeDiscoverySectionsCopy } from "@/features/discovery";
 import type { HomeDiscoveryViewModel } from "@/features/discovery/model/home-discovery";
 import { getDiscoveryFeatureMessages, getSourceHomeMessages } from "@/shared/i18n/get-messages";
 import type { AppLocale } from "@/shared/i18n/config";
+import { createTestQueryClient } from "@/shared/test/create-test-query-client";
+import { homeRecommendedBooksCollectionFixture } from "@/../tests/fixtures/discovery/books-fixtures";
+
+function renderWithQueryClient(ui: ReactNode) {
+  const queryClient = createTestQueryClient();
+
+  return render(<QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>);
+}
 
 function createCopy(locale: AppLocale): HomeDiscoverySectionsCopy {
   const discovery = getDiscoveryFeatureMessages(locale).home;
@@ -39,7 +53,7 @@ function createCopy(locale: AppLocale): HomeDiscoverySectionsCopy {
       eyebrow: discovery.sections.recommendations.eyebrow,
       title: home.recommendations,
       description: discovery.sections.recommendations.description,
-      ctaLabel: discovery.actions.viewAllBooks,
+      loadMore: discovery.sections.recommendations.loadMore,
     },
     popularAuthors: {
       eyebrow: discovery.sections.popularAuthors.eyebrow,
@@ -57,19 +71,6 @@ function createReadyViewModel(locale: AppLocale): HomeDiscoveryViewModel {
     slug: "science-fiction-7",
     artwork: null,
   };
-  const book: BookSummary = {
-    id: 101,
-    title: "The Left Hand of Darkness",
-    authorId: 21,
-    authorName: "Ursula K. Le Guin",
-    categoryId: 7,
-    categoryName: "Science Fiction",
-    coverImageUrl: null,
-    rating: 4.7,
-    reviewCount: 128,
-    availableCopies: 4,
-    totalCopies: 12,
-  };
   const author: PopularAuthorSummary = {
     id: 21,
     name: "Ursula K. Le Guin",
@@ -77,6 +78,7 @@ function createReadyViewModel(locale: AppLocale): HomeDiscoveryViewModel {
     bookCount: 47,
     portrait: null,
   };
+  const recommendationPage = mapBooksCollectionDtoToPage(homeRecommendedBooksCollectionFixture, 8);
 
   return {
     categories: {
@@ -85,7 +87,10 @@ function createReadyViewModel(locale: AppLocale): HomeDiscoveryViewModel {
     },
     recommendations: {
       status: "ready",
-      items: [mapBookSummaryToPresentation(book, { locale })],
+      items: recommendationPage.items.map((book) => mapBookSummaryToPresentation(book, { locale })),
+      page: recommendationPage.page,
+      limit: recommendationPage.limit,
+      hasMore: recommendationPage.hasMore,
     },
     popularAuthors: {
       status: "ready",
@@ -95,12 +100,14 @@ function createReadyViewModel(locale: AppLocale): HomeDiscoveryViewModel {
 }
 
 describe("home discovery sections", () => {
-  it("renders localized category, recommendation, and popular-author cards for the authenticated home route", () => {
-    render(
-      <HomeDiscoverySections catalogHref="/en/books" copy={createCopy("en")} data={createReadyViewModel("en")} retryHref="/en" />,
+  it("renders localized sections and appends the next recommendation batch from Load More", async () => {
+    const user = userEvent.setup();
+
+    renderWithQueryClient(
+      <HomeDiscoverySections locale="en" copy={createCopy("en")} data={createReadyViewModel("en")} retryHref="/en" />,
     );
 
-    const bookLink = screen.getByText("The Left Hand of Darkness").closest("a");
+    const recommendationCardsBefore = screen.getAllByRole("link").filter((element) => element.getAttribute("data-book-card") === "true");
     const authorLink = screen.getByRole("link", { name: "Ursula K. Le Guin" });
 
     expect(screen.getByRole("heading", { name: "Categories" })).toBeInTheDocument();
@@ -110,9 +117,13 @@ describe("home discovery sections", () => {
       "href",
       "/en/categories/science-fiction-7",
     );
-    expect(bookLink).toHaveAttribute("href", "/en/books/101");
     expect(authorLink).toHaveAttribute("href", "/en/authors/21");
-    expect(screen.getByRole("link", { name: "View all books" })).toHaveAttribute("href", "/en/books");
+    expect(recommendationCardsBefore).toHaveLength(8);
+
+    await user.click(screen.getByRole("button", { name: "Load More" }));
+
+    expect(await screen.findByRole("link", { name: "Mindset" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "All recommendations loaded" })).toBeInTheDocument();
   });
 
   it("renders localized empty, stale, and untranslated domain-content states", () => {
@@ -126,9 +137,9 @@ describe("home discovery sections", () => {
       throw new Error("Expected ready popular authors fixture.");
     }
 
-    render(
+    renderWithQueryClient(
       <HomeDiscoverySections
-        catalogHref="/id/books"
+        locale="id"
         copy={createCopy("id")}
         data={{
           categories: { status: "empty" },
@@ -136,6 +147,9 @@ describe("home discovery sections", () => {
             status: "ready",
             isStale: true,
             items: readyIdViewModel.recommendations.items,
+            page: readyIdViewModel.recommendations.page,
+            limit: readyIdViewModel.recommendations.limit,
+            hasMore: readyIdViewModel.recommendations.hasMore,
           },
           popularAuthors: {
             status: "ready",
@@ -146,20 +160,18 @@ describe("home discovery sections", () => {
       />,
     );
 
-    const bookLink = screen.getByText("The Left Hand of Darkness").closest("a");
     const authorLink = screen.getByRole("link", { name: "Ursula K. Le Guin" });
 
     expect(screen.getByText("Belum ada yang ditampilkan")).toBeInTheDocument();
     expect(screen.getByText("Data lama")).toBeInTheDocument();
-    expect(bookLink).toHaveAttribute("href", "/id/books/101");
     expect(authorLink).toHaveAttribute("href", "/id/authors/21");
-    expect(screen.getByRole("link", { name: "Lihat semua buku" })).toHaveAttribute("href", "/id/books");
+    expect(screen.getByRole("button", { name: "Muat lebih banyak" })).toBeInTheDocument();
   });
 
   it("renders retryable error actions per section", () => {
-    render(
+    renderWithQueryClient(
       <HomeDiscoverySections
-        catalogHref="/id/books"
+        locale="id"
         copy={createCopy("id")}
         data={{
           categories: { status: "error" },

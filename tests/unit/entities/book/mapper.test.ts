@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   mapBookDetailResponseDtoToDetail,
   mapBookDtoToSummary,
+  mapBooksCollectionDtoToPage,
   mapBooksCollectionDtoToSummaries,
   omitUnsupportedBookFields,
 } from "@/entities/book";
@@ -11,6 +12,7 @@ import {
   discoveryBookDtoFixture,
   discoveryBooksPartialCollectionFixture,
   discoveryDirectBookDetailFixture,
+  homeRecommendedBooksCollectionFixture,
 } from "@/../tests/fixtures/discovery/books-fixtures";
 
 function hasOwnPageCount(value: unknown) {
@@ -36,6 +38,16 @@ describe("book mapper", () => {
       availableCopies: 4,
       totalCopies: 12,
     });
+  });
+
+  it("maps book pages with pagination metadata for progressive load-more surfaces", () => {
+    const page = mapBooksCollectionDtoToPage(homeRecommendedBooksCollectionFixture, 8);
+
+    expect(page.page).toBe(1);
+    expect(page.limit).toBe(8);
+    expect(page.hasMore).toBe(true);
+    expect(page.items).toHaveLength(8);
+    expect(page.items[0]?.id).toBe(101);
   });
 
   it("filters incomplete collection items conservatively", () => {

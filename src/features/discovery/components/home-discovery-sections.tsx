@@ -1,3 +1,4 @@
+import type { AppLocale } from "@/shared/i18n/config";
 import {
   HomeCategorySection,
   type HomeCategorySectionProps,
@@ -15,19 +16,19 @@ import type { HomeDiscoveryViewModel } from "@/features/discovery/model/home-dis
 
 export type HomeDiscoverySectionsCopy = {
   categories: Pick<HomeCategorySectionProps, "eyebrow" | "title" | "description">;
-  recommendations: Pick<HomeRecommendationSectionProps, "eyebrow" | "title" | "description" | "ctaLabel">;
+  recommendations: Pick<HomeRecommendationSectionProps, "eyebrow" | "title" | "description" | "loadMore">;
   popularAuthors: Pick<PopularAuthorsSectionProps, "eyebrow" | "title" | "description">;
   states: HomeDiscoveryStateCopy;
 };
 
 export type HomeDiscoverySectionsProps = {
+  locale: AppLocale;
   data: HomeDiscoveryViewModel;
   retryHref: string;
-  catalogHref: string;
   copy: HomeDiscoverySectionsCopy;
 };
 
-export function HomeDiscoverySections({ data, retryHref, catalogHref, copy }: HomeDiscoverySectionsProps) {
+export function HomeDiscoverySections({ locale, data, retryHref, copy }: HomeDiscoverySectionsProps) {
   return (
     <div className="flex flex-col gap-12">
       <HomeCategorySection
@@ -39,10 +40,10 @@ export function HomeDiscoverySections({ data, retryHref, catalogHref, copy }: Ho
         title={copy.categories.title}
       />
       <HomeRecommendationSection
-        ctaHref={catalogHref}
-        ctaLabel={copy.recommendations.ctaLabel}
         description={copy.recommendations.description}
         eyebrow={copy.recommendations.eyebrow}
+        loadMore={copy.recommendations.loadMore}
+        locale={locale}
         recommendations={data.recommendations}
         retryHref={retryHref}
         stateCopy={copy.states}
@@ -60,5 +61,3 @@ export function HomeDiscoverySections({ data, retryHref, catalogHref, copy }: Ho
     </div>
   );
 }
-
-

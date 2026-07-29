@@ -35,7 +35,7 @@ export function PopularAuthorsSection({ title, authors, retryHref, stateCopy }: 
         {authors.status === "ready" ? (
           <div className="flex flex-col gap-5">
             {authors.isStale ? <PopularAuthorsStaleNotice copy={stateCopy} /> : null}
-            <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4" data-home-popular-authors-grid="true">
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" data-home-popular-authors-grid="true">
               {authors.items.map((author) => (
                 <AuthorCard author={author} key={author.id} variant="list" />
               ))}

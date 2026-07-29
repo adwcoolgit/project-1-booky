@@ -13,6 +13,9 @@ import { useAuthorBooksLoadMore } from "@/features/discovery/hooks/use-author-bo
 import type { AppLocale } from "@/shared/i18n/config";
 import { cn } from "@/shared/lib/utils";
 
+const AUTHOR_SUMMARY_IMAGE_SIZES =
+  "(max-width: 1023px) calc(100vw - 3rem), 22rem";
+
 export type AuthorBooksSectionCopy = {
   summaryEyebrow: string;
   booksEyebrow: string;
@@ -140,7 +143,8 @@ export function AuthorBooksSection({
               alt={author.portraitImage.alt}
               className="h-full w-full object-cover"
               fill
-              sizes="(max-width: 1024px) 100vw, 22rem"
+              priority
+              sizes={AUTHOR_SUMMARY_IMAGE_SIZES}
               src={author.portraitImage.src}
               unoptimized
             />

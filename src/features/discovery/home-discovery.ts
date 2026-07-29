@@ -5,8 +5,8 @@ import {
   mapAuthorsCollectionDtoToSummaries,
 } from "@/entities/author";
 import {
+  mapBooksCollectionDtoToPage,
   mapBookSummaryToPresentation,
-  mapBooksCollectionDtoToSummaries,
 } from "@/entities/book";
 import {
   mapCategoriesCollectionDtoToSummaries,
@@ -21,10 +21,12 @@ import {
 import { discoveryLimitDefaults } from "@/features/discovery/model/discovery-query";
 import type {
   HomeDiscoveryCollectionState,
+  HomeDiscoveryPaginatedCollectionState,
   HomeDiscoveryViewModel,
 } from "@/features/discovery/model/home-discovery";
 import { runtimeConfig } from "@/shared/config/runtime";
 import type { AppLocale } from "@/shared/i18n/config";
+import { homeRecommendedBooksCollectionFixture } from "@/../tests/fixtures/discovery/books-fixtures";
 
 const homeCategoriesFixture = Object.freeze({
   categories: [
@@ -33,74 +35,6 @@ const homeCategoriesFixture = Object.freeze({
     { id: 9, name: "Personal Growth" },
     { id: 10, name: "Philosophy" },
   ],
-});
-
-const homeRecommendationsFixture = Object.freeze({
-  data: [
-    {
-      id: 101,
-      title: "The Left Hand of Darkness",
-      description: "A classic about politics, culture, and winter.",
-      coverImage: null,
-      rating: 4.7,
-      reviewCount: 128,
-      totalCopies: 12,
-      availableCopies: 4,
-      authorId: 21,
-      authorName: "Ursula K. Le Guin",
-      categoryId: 7,
-      categoryName: "Science Fiction",
-    },
-    {
-      id: 201,
-      title: "Sapiens",
-      description: "A brief history of humankind.",
-      coverImage: null,
-      rating: 4.8,
-      reviewCount: 245,
-      totalCopies: 14,
-      availableCopies: 6,
-      authorId: 31,
-      authorName: "Yuval Noah Harari",
-      categoryId: 8,
-      categoryName: "History",
-    },
-    {
-      id: 301,
-      title: "Atomic Habits",
-      description: "Practical guidance for building better routines.",
-      coverImage: null,
-      rating: 4.9,
-      reviewCount: 302,
-      totalCopies: 16,
-      availableCopies: 5,
-      authorId: 41,
-      authorName: "James Clear",
-      categoryId: 9,
-      categoryName: "Personal Growth",
-    },
-    {
-      id: 401,
-      title: "Meditations",
-      description: "Stoic reflections from Marcus Aurelius.",
-      coverImage: null,
-      rating: 4.6,
-      reviewCount: 188,
-      totalCopies: 10,
-      availableCopies: 3,
-      authorId: 51,
-      authorName: "Marcus Aurelius",
-      categoryId: 10,
-      categoryName: "Philosophy",
-    },
-  ],
-  pagination: {
-    page: 1,
-    limit: discoveryLimitDefaults.recommendations,
-    total: 4,
-    totalPages: 1,
-    hasMore: false,
-  },
 });
 
 const homePopularAuthorsFixture = Object.freeze({
@@ -132,8 +66,19 @@ const homePopularAuthorsFixture = Object.freeze({
   ],
 });
 
+type PaginatedHomeItems<TItem> = {
+  items: TItem[];
+  page: number;
+  limit: number;
+  hasMore: boolean;
+};
+
 function toCollectionState<TItem>(items: TItem[]): HomeDiscoveryCollectionState<TItem> {
   return items.length === 0 ? { status: "empty" } : { status: "ready", items };
+}
+
+function toPaginatedCollectionState<TItem>(page: PaginatedHomeItems<TItem>): HomeDiscoveryPaginatedCollectionState<TItem> {
+  return page.items.length === 0 ? { status: "empty" } : { status: "ready", ...page };
 }
 
 async function readHomeCategories(locale: AppLocale) {
@@ -146,18 +91,23 @@ async function readHomeCategories(locale: AppLocale) {
   );
 }
 
-async function readHomeRecommendations(locale: AppLocale) {
+async function readHomeRecommendations(locale: AppLocale): Promise<PaginatedHomeItems<ReturnType<typeof mapBookSummaryToPresentation>>> {
+  const limit = discoveryLimitDefaults.recommendations;
   const payload = runtimeConfig.authE2eFixtureMode
-    ? homeRecommendationsFixture
+    ? homeRecommendedBooksCollectionFixture
     : await getRecommendedBooks(createDiscoveryApiClient(locale), {
         by: "rating",
         page: 1,
-        limit: discoveryLimitDefaults.recommendations,
+        limit,
       });
+  const page = mapBooksCollectionDtoToPage(payload, limit);
 
-  return mapBooksCollectionDtoToSummaries(payload).map((book) =>
-    mapBookSummaryToPresentation(book, { locale }),
-  );
+  return {
+    items: page.items.map((book) => mapBookSummaryToPresentation(book, { locale })),
+    page: page.page,
+    limit: page.limit,
+    hasMore: page.hasMore,
+  };
 }
 
 async function readHomePopularAuthors(locale: AppLocale) {
@@ -183,7 +133,7 @@ export async function readHomeDiscoveryViewModel(locale: AppLocale): Promise<Hom
     categories: categories.status === "fulfilled" ? toCollectionState(categories.value) : { status: "error" },
     recommendations:
       recommendations.status === "fulfilled"
-        ? toCollectionState(recommendations.value)
+        ? toPaginatedCollectionState(recommendations.value)
         : { status: "error" },
     popularAuthors:
       popularAuthors.status === "fulfilled"
