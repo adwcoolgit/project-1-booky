@@ -90,6 +90,12 @@ export default async function BooksPage({
     readDiscoveryBookResults(locale, normalizedState),
   ]);
   const navigation = getSourceNavigationMessages(locale);
+  const searchHiddenFields = {
+    categoryId: normalizedState.categoryId,
+    authorId: normalizedState.authorId,
+    minRating: normalizedState.minRating,
+    ...(normalizedState.limit !== discoveryLimitDefaults.books ? { limit: normalizedState.limit } : {}),
+  };
 
   return (
     <UserFacingPageShell
@@ -97,7 +103,9 @@ export default async function BooksPage({
       displayName={displayName}
       locale={locale}
       mainClassName="px-4 py-8 sm:px-6 sm:py-10 md:px-8 md:py-12 xl:px-[120px] xl:py-12"
+      searchActionHref={pathname}
       searchDefaultValue={normalizedState.q}
+      searchHiddenFields={searchHiddenFields}
       variant="authenticated"
     >
       <section className="flex flex-col gap-6 sm:gap-8">

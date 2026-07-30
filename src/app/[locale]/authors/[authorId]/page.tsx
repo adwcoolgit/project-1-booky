@@ -20,6 +20,9 @@ import {
   getSourceNavigationMessages,
 } from "@/shared/i18n/get-messages";
 
+const authorPageMainClassName = "px-4 py-4 sm:px-6 sm:py-5 md:px-8 md:py-8 lg:px-10 lg:py-10 xl:px-[120px] xl:py-12";
+const authorPageContentClassName = "gap-4 sm:gap-5 md:gap-6 lg:gap-8";
+
 function createAuthorSectionCopy(locale: AppLocale) {
   const discovery = getDiscoveryFeatureMessages(locale).results.author;
   const navigation = getSourceNavigationMessages(locale);
@@ -150,7 +153,15 @@ export default async function AuthorBooksPage({
   }
 
   return (
-    <UserFacingPageShell displayName={displayName} locale={locale} variant="authenticated">
+    <UserFacingPageShell
+      contentClassName={authorPageContentClassName}
+      displayName={displayName}
+      locale={locale}
+      mainClassName={authorPageMainClassName}
+      searchActionHref={`/${locale}/books`}
+      searchHiddenFields={{ authorId: parsedRoute.status === "valid" ? parsedRoute.params.authorId : null }}
+      variant="authenticated"
+    >
       {content}
     </UserFacingPageShell>
   );

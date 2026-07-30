@@ -6,6 +6,8 @@ import { cn } from "@/shared/lib/utils";
 
 const GRID_AUTHOR_CARD_SIZES =
   "(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc((100vw - 5rem) / 3), 285px";
+const LIST_AUTHOR_CARD_SIZES =
+  "(max-width: 639px) 60px, (max-width: 767px) 64px, (max-width: 1023px) 68px, (max-width: 1279px) 72px, 81px";
 
 function BookIcon() {
   return (
@@ -29,7 +31,7 @@ export function AuthorCard({ author, variant = "grid", className }: AuthorCardPr
       <Link
         aria-label={author.name}
         className={cn(
-          "home-card-shadow group flex h-full items-center gap-4 rounded-[12px] bg-white p-4 transition hover:-translate-y-0.5",
+          "home-card-shadow group flex h-full items-center gap-3 rounded-[12px] bg-white p-3 transition hover:-translate-y-0.5 sm:gap-3.5 sm:p-3.5 md:gap-4 md:p-4 lg:rounded-[16px]",
           className,
         )}
         data-author-card="true"
@@ -37,22 +39,24 @@ export function AuthorCard({ author, variant = "grid", className }: AuthorCardPr
         href={author.href}
       >
         <div
-          className="relative h-[81px] w-[81px] shrink-0 overflow-hidden rounded-full bg-brand-subtle"
+          className="relative h-[60px] w-[60px] shrink-0 overflow-hidden rounded-full bg-brand-subtle sm:h-16 sm:w-16 md:h-[68px] md:w-[68px] lg:h-[72px] lg:w-[72px] xl:h-[81px] xl:w-[81px]"
           data-author-portrait-fallback={author.portraitImage.isFallback ? "true" : "false"}
         >
           <Image
             alt={author.portraitImage.alt}
             className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
             fill
-            sizes="81px"
+            sizes={LIST_AUTHOR_CARD_SIZES}
             src={author.portraitImage.src}
             unoptimized
           />
         </div>
         <div className="min-w-0 flex-1">
-          <h3 className="truncate text-lg font-bold leading-8 tracking-[-0.03em] text-neutral-900">{author.name}</h3>
+          <h3 className="truncate text-base font-bold leading-[30px] tracking-[-0.02em] text-neutral-900 md:text-[17px] md:leading-[30px] lg:text-lg lg:leading-8">
+            {author.name}
+          </h3>
           {author.bookCountLabel ? (
-            <div className="mt-0.5 flex items-center gap-[6px] text-base font-medium leading-[30px] tracking-[-0.03em] text-neutral-950">
+            <div className="mt-0.5 flex items-center gap-[6px] text-sm font-medium leading-7 tracking-[-0.03em] text-neutral-950 md:text-[15px] md:leading-7 lg:text-base lg:leading-[30px]">
               <BookIcon />
               <span>{author.bookCountLabel}</span>
             </div>

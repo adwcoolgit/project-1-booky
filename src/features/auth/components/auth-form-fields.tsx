@@ -8,19 +8,19 @@ import { useState } from "react";
 import { cn } from "@/shared/lib/utils";
 
 const fieldClassName =
-  "h-12 w-full rounded-xl border border-border bg-white px-4 py-2 text-body-sm text-foreground outline-none transition placeholder:text-text-muted focus:border-brand focus-visible:ring-2 focus-visible:ring-brand/20";
+  "h-12 w-full rounded-xl border border-border bg-white px-4 py-2 text-[14px] leading-7 text-foreground outline-none transition placeholder:text-text-muted focus:border-brand focus-visible:ring-2 focus-visible:ring-brand/20 sm:h-[50px] sm:text-[14px] md:h-12 md:text-body-sm lg:h-14 lg:rounded-[14px] lg:px-5 lg:text-base lg:leading-[30px]";
 
 const fieldErrorClassName =
   "border-danger focus:border-danger focus-visible:ring-danger/20";
 
 const passwordToggleClassName =
-  "absolute right-3 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center text-foreground transition hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/20";
+  "absolute right-3 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center text-foreground transition hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/20 sm:h-9 sm:w-9 lg:right-4 lg:h-10 lg:w-10";
 
 const labelClassName =
-  "w-full text-body-sm font-bold tracking-auth text-foreground";
+  "w-full text-[14px] font-bold leading-7 tracking-[-0.02em] text-foreground md:text-body-sm md:tracking-auth lg:text-[15px] lg:leading-[30px]";
 
 const helperClassName =
-  "text-body-sm font-medium tracking-auth-helper text-danger";
+  "text-[13px] font-medium leading-6 tracking-[-0.02em] text-danger md:text-body-sm md:tracking-auth-helper";
 
 type AuthFieldShellProps = {
   label: string;
@@ -38,7 +38,7 @@ function AuthFieldShell({
   children,
 }: AuthFieldShellProps) {
   return (
-    <div className="flex w-full flex-col items-start gap-0.5">
+    <div className="flex w-full flex-col items-start gap-0.5 sm:gap-1">
       <label className={labelClassName} htmlFor={labelFor}>
         {label}
       </label>
@@ -111,7 +111,7 @@ export function AuthPasswordField({
           {...inputProps}
           aria-describedby={error ? helperId : undefined}
           aria-invalid={Boolean(error)}
-          className={cn(`${fieldClassName} pr-12`, error && fieldErrorClassName)}
+          className={cn(`${fieldClassName} pr-12 lg:pr-14`, error && fieldErrorClassName)}
           id={id}
           type={visible ? "text" : "password"}
         />
@@ -123,9 +123,9 @@ export function AuthPasswordField({
           type="button"
         >
           {visible ? (
-            <EyeOffIcon aria-hidden="true" className="h-5 w-5" />
+            <EyeOffIcon aria-hidden="true" className="h-5 w-5 lg:h-5 lg:w-5" />
           ) : (
-            <EyeIcon aria-hidden="true" className="h-5 w-5" />
+            <EyeIcon aria-hidden="true" className="h-5 w-5 lg:h-5 lg:w-5" />
           )}
         </button>
       </div>
@@ -146,8 +146,8 @@ export function AuthCheckboxField({
   ...inputProps
 }: AuthCheckboxFieldProps) {
   return (
-    <div className="flex w-full flex-col items-start gap-0.5">
-      <label className="flex w-full items-start gap-3 rounded-xl border border-border bg-white px-4 py-3 text-body-sm font-semibold tracking-auth text-text-strong">
+    <div className="flex w-full flex-col items-start gap-0.5 sm:gap-1">
+      <label className="flex w-full items-start gap-3 rounded-xl border border-border bg-white px-4 py-3 text-[14px] font-semibold leading-7 tracking-[-0.02em] text-text-strong md:text-body-sm md:tracking-auth lg:rounded-[14px] lg:px-5 lg:text-[15px] lg:leading-[30px]">
         <input
           {...inputProps}
           aria-describedby={error ? helperId : undefined}

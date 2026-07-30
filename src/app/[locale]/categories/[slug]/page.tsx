@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 
 import type { CategorySummary } from "@/entities/category";
@@ -42,8 +42,8 @@ function renderCategoryContent({
   const navigation = getSourceNavigationMessages(locale);
 
   return (
-    <section className="flex flex-col gap-6 sm:gap-8">
-      <h1 className="text-[24px] font-bold leading-9 text-neutral-950 sm:text-[28px] sm:leading-10 md:text-[32px] md:leading-[42px] xl:text-[36px] xl:leading-[44px]">
+    <section className="flex flex-col gap-4 sm:gap-5 md:gap-6 lg:gap-8">
+      <h1 className="text-[24px] font-bold leading-9 text-neutral-950 sm:text-[26px] sm:leading-9 md:text-[28px] md:leading-10 lg:text-[32px] lg:leading-[42px] xl:text-[36px] xl:leading-[44px]">
         {navigation.bookList}
       </h1>
 
@@ -115,10 +115,10 @@ export default async function CategoryBooksPage({
   if (!categories) {
     return (
       <UserFacingPageShell
-        contentClassName="gap-8 sm:gap-10 xl:gap-8"
+        contentClassName="gap-4 sm:gap-5 md:gap-6 lg:gap-8"
         displayName={displayName}
         locale={locale}
-        mainClassName="px-4 py-8 sm:px-6 sm:py-10 md:px-8 md:py-12 xl:px-[120px] xl:py-12"
+        mainClassName="px-4 py-4 sm:px-6 sm:py-5 md:px-8 md:py-8 lg:px-10 lg:py-10 xl:px-[120px] xl:py-12"
         searchActionHref={pathname}
         variant="authenticated"
       >
@@ -160,10 +160,10 @@ export default async function CategoryBooksPage({
 
   return (
     <UserFacingPageShell
-      contentClassName="gap-8 sm:gap-10 xl:gap-8"
+      contentClassName="gap-4 sm:gap-5 md:gap-6 lg:gap-8"
       displayName={displayName}
       locale={locale}
-      mainClassName="px-4 py-8 sm:px-6 sm:py-10 md:px-8 md:py-12 xl:px-[120px] xl:py-12"
+      mainClassName="px-4 py-4 sm:px-6 sm:py-5 md:px-8 md:py-8 lg:px-10 lg:py-10 xl:px-[120px] xl:py-12"
       searchActionHref={pathname}
       searchDefaultValue={normalizedState.q}
       searchHiddenFields={searchHiddenFields}

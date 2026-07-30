@@ -38,8 +38,10 @@ export type DiscoveryFilterPanelProps = {
   labels: DiscoveryFilterPanelLabels;
   isPending?: boolean | undefined;
   className?: string | undefined;
+  id?: string | undefined;
   showSearchField?: boolean | undefined;
   showCategoryField?: boolean | undefined;
+  showPanelTitle?: boolean | undefined;
   categorySelectionMode?: "toggle" | "required" | undefined;
   fixedCategoryLabel?: string | undefined;
   fixedCategoryValue?: string | undefined;
@@ -130,8 +132,10 @@ export function DiscoveryFilterPanel({
   labels,
   isPending = false,
   className,
+  id,
   showSearchField = true,
   showCategoryField = true,
+  showPanelTitle = true,
   categorySelectionMode = "toggle",
   fixedCategoryLabel,
   fixedCategoryValue,
@@ -186,6 +190,7 @@ export function DiscoveryFilterPanel({
     <form
       aria-busy={isPending}
       className={cn("home-card-shadow flex flex-col overflow-hidden rounded-[12px] bg-white", className)}
+      id={id}
       onSubmit={handleSubmit}
     >
       <input name="categoryId" type="hidden" value={draftCategory} />
@@ -212,8 +217,8 @@ export function DiscoveryFilterPanel({
         </div>
       ) : null}
 
-      <div className="flex flex-col gap-6 px-4 py-4">
-        <p className="text-base font-bold leading-[30px] text-neutral-950">{labels.panelTitle}</p>
+      <div className={cn("flex flex-col px-4 py-4", showPanelTitle ? "gap-6" : "gap-5") }>
+        {showPanelTitle ? <p className="text-base font-bold leading-[30px] text-neutral-950">{labels.panelTitle}</p> : null}
 
         {shouldRenderCategorySection ? (
           <fieldset className="flex flex-col gap-[10px]">

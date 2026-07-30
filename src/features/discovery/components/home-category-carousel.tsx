@@ -133,98 +133,113 @@ export function HomeCategoryCarousel({
 
   return (
     <div className={cn("relative", className)}>
-      {controls.hasOverflow ? (
-        <div className="mb-4 flex items-center justify-between gap-4" data-home-categories-controls="true">
-          <div className="min-w-0">
-            {controlsLabel ? (
-              <p className="text-sm font-semibold uppercase tracking-[0.08em] text-text-muted">
-                {controlsLabel}
-              </p>
-            ) : null}
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              aria-label="Scroll categories left"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-white text-neutral-950 shadow-sm transition hover:bg-muted disabled:cursor-default disabled:opacity-40"
-              disabled={!controls.canScrollPrev}
-              onClick={() => {
-                scrollByDirection(-1);
-              }}
-              type="button"
-            >
-              <ChevronLeftIcon />
-            </button>
-            <button
-              aria-label="Scroll categories right"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-white text-neutral-950 shadow-sm transition hover:bg-muted disabled:cursor-default disabled:opacity-40"
-              disabled={!controls.canScrollNext}
-              onClick={() => {
-                scrollByDirection(1);
-              }}
-              type="button"
-            >
-              <ChevronRightIcon />
-            </button>
-          </div>
-        </div>
-      ) : null}
-
       <ul
         aria-labelledby={labelledById}
-        className="flex gap-4 overflow-x-auto overscroll-x-contain overscroll-y-contain scroll-smooth pb-2 pr-1 snap-x snap-mandatory touch-pan-x [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        className="grid grid-cols-3 gap-3 lg:hidden"
         data-home-categories-carousel="true"
         data-home-categories-grid="true"
-        onScroll={() => {
-          const scroller = scrollerRef.current;
-
-          if (!scroller) {
-            return;
-          }
-
-          if (Math.abs(scroller.scrollLeft - targetScrollLeftRef.current) <= 1) {
-            targetScrollLeftRef.current = scroller.scrollLeft;
-          }
-
-          updateControls();
-        }}
-        onWheelCapture={(event) => {
-          const scroller = scrollerRef.current;
-
-          if (!scroller || event.shiftKey) {
-            return;
-          }
-
-          const hasHorizontalOverflow = scroller.scrollWidth > scroller.clientWidth;
-          const dominantDelta = Math.abs(event.deltaY) >= Math.abs(event.deltaX)
-            ? event.deltaY
-            : event.deltaX;
-
-          if (!hasHorizontalOverflow || dominantDelta === 0) {
-            return;
-          }
-
-          const didScroll = scrollByDirection(dominantDelta > 0 ? 1 : -1);
-
-          if (!didScroll) {
-            return;
-          }
-
-          event.preventDefault();
-          event.stopPropagation();
-        }}
-        ref={scrollerRef}
-        tabIndex={0}
       >
         {categories.map((category) => (
-          <li
-            className="min-w-0 shrink-0 snap-start basis-[14rem] sm:basis-[13.5rem] lg:basis-[13rem] xl:basis-[13rem]"
-            data-home-category-slide="true"
-            key={category.id}
-          >
+          <li className="min-w-0" data-home-category-slide="true" key={category.id}>
             <CategoryCard category={category} className="h-full" />
           </li>
         ))}
       </ul>
+
+      <div className="hidden lg:block">
+        {controls.hasOverflow ? (
+          <div className="mb-4 flex items-center justify-between gap-4" data-home-categories-controls="true">
+            <div className="min-w-0">
+              {controlsLabel ? (
+                <p className="text-sm font-semibold uppercase tracking-[0.08em] text-text-muted">
+                  {controlsLabel}
+                </p>
+              ) : null}
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                aria-label="Scroll categories left"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-white text-neutral-950 shadow-sm transition hover:bg-muted disabled:cursor-default disabled:opacity-40"
+                disabled={!controls.canScrollPrev}
+                onClick={() => {
+                  scrollByDirection(-1);
+                }}
+                type="button"
+              >
+                <ChevronLeftIcon />
+              </button>
+              <button
+                aria-label="Scroll categories right"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-white text-neutral-950 shadow-sm transition hover:bg-muted disabled:cursor-default disabled:opacity-40"
+                disabled={!controls.canScrollNext}
+                onClick={() => {
+                  scrollByDirection(1);
+                }}
+                type="button"
+              >
+                <ChevronRightIcon />
+              </button>
+            </div>
+          </div>
+        ) : null}
+
+        <ul
+          aria-labelledby={labelledById}
+          className="flex gap-4 overflow-x-auto overscroll-x-contain overscroll-y-contain scroll-smooth pb-2 pr-1 snap-x snap-mandatory touch-pan-x [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+          data-home-categories-carousel="true"
+          data-home-categories-grid="true"
+          onScroll={() => {
+            const scroller = scrollerRef.current;
+
+            if (!scroller) {
+              return;
+            }
+
+            if (Math.abs(scroller.scrollLeft - targetScrollLeftRef.current) <= 1) {
+              targetScrollLeftRef.current = scroller.scrollLeft;
+            }
+
+            updateControls();
+          }}
+          onWheelCapture={(event) => {
+            const scroller = scrollerRef.current;
+
+            if (!scroller || event.shiftKey) {
+              return;
+            }
+
+            const hasHorizontalOverflow = scroller.scrollWidth > scroller.clientWidth;
+            const dominantDelta = Math.abs(event.deltaY) >= Math.abs(event.deltaX)
+              ? event.deltaY
+              : event.deltaX;
+
+            if (!hasHorizontalOverflow || dominantDelta === 0) {
+              return;
+            }
+
+            const didScroll = scrollByDirection(dominantDelta > 0 ? 1 : -1);
+
+            if (!didScroll) {
+              return;
+            }
+
+            event.preventDefault();
+            event.stopPropagation();
+          }}
+          ref={scrollerRef}
+          tabIndex={0}
+        >
+          {categories.map((category) => (
+            <li
+              className="min-w-0 shrink-0 snap-start basis-[13rem] xl:basis-[13rem]"
+              data-home-category-slide="true"
+              key={category.id}
+            >
+              <CategoryCard category={category} className="h-full" />
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

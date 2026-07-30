@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 
@@ -29,7 +29,7 @@ type PaginationActionProps = {
 
 function PaginationAction({ label, disabled, href, onActivate }: PaginationActionProps) {
   const className = cn(
-    "inline-flex h-12 min-w-[12.5rem] items-center justify-center rounded-full border border-border px-4 text-base font-bold leading-[30px] tracking-[-0.02em] transition",
+    "inline-flex h-10 min-w-[9.375rem] items-center justify-center rounded-full border border-border px-4 text-sm font-bold leading-7 tracking-[-0.02em] transition sm:h-11 sm:min-w-[10.5rem] md:h-12 md:min-w-[11.25rem] md:text-[15px] md:leading-7 lg:min-w-[12rem] lg:text-base lg:leading-[30px] xl:min-w-[12.5rem]",
     disabled
       ? "cursor-not-allowed text-text-muted opacity-60"
       : "text-foreground hover:bg-muted",

@@ -15,14 +15,16 @@ export type PopularAuthorsSectionProps = {
   stateCopy: PopularAuthorsStateCopy;
 };
 
+const homeSectionHeadingClassName = "font-display text-[24px] font-bold leading-9 text-neutral-950 md:text-[28px] md:leading-10 lg:text-[32px] lg:leading-[42px] xl:text-[36px] xl:leading-[44px]";
+
 export function PopularAuthorsSection({ title, authors, retryHref, stateCopy }: PopularAuthorsSectionProps) {
   return (
     <section
       aria-labelledby="home-popular-authors-title"
-      className="flex flex-col gap-10"
+      className="flex flex-col gap-6 sm:gap-8 lg:gap-10"
       data-home-popular-authors="true"
     >
-      <h2 className="home-section-heading" id="home-popular-authors-title">
+      <h2 className={homeSectionHeadingClassName} id="home-popular-authors-title">
         {title}
       </h2>
 
@@ -33,9 +35,9 @@ export function PopularAuthorsSection({ title, authors, retryHref, stateCopy }: 
           <PopularAuthorsState copy={stateCopy} retryHref={retryHref} state="error" />
         ) : null}
         {authors.status === "ready" ? (
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-4 sm:gap-5">
             {authors.isStale ? <PopularAuthorsStaleNotice copy={stateCopy} /> : null}
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" data-home-popular-authors-grid="true">
+            <div className="grid gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3 xl:grid-cols-4" data-home-popular-authors-grid="true">
               {authors.items.map((author) => (
                 <AuthorCard author={author} key={author.id} variant="list" />
               ))}

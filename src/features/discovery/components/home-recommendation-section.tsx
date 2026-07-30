@@ -31,6 +31,8 @@ export type HomeRecommendationSectionProps = {
   stateCopy: HomeDiscoveryStateCopy;
 };
 
+const homeSectionHeadingClassName = "font-display text-[24px] font-bold leading-9 text-neutral-950 md:text-[28px] md:leading-10 lg:text-[32px] lg:leading-[42px] xl:text-[36px] xl:leading-[44px]";
+
 function ReadyHomeRecommendationSection({
   locale,
   recommendations,
@@ -57,20 +59,25 @@ function ReadyHomeRecommendationSection({
   });
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-4 sm:gap-5">
       {recommendations.isStale ? <HomeDiscoveryStaleNotice copy={stateCopy} /> : null}
       <div
-        className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-[repeat(auto-fit,minmax(13.5rem,1fr))] xl:gap-5"
+        className="grid grid-cols-2 gap-4 md:gap-5 lg:grid-cols-3 xl:grid-cols-[repeat(auto-fit,minmax(13.5rem,1fr))]"
         data-home-recommendations-grid="true"
       >
-        {books.map((book) => (
-          <BookCard book={book} key={book.id} variant="home" />
+        {books.map((book, index) => (
+          <BookCard
+            book={book}
+            coverImageLoading={index < 2 ? "eager" : undefined}
+            key={book.id}
+            variant="home"
+          />
         ))}
       </div>
 
       {isLoadMoreError ? (
         <div
-          className="rounded-4xl border border-dashed border-border bg-white/90 p-5 shadow-sm"
+          className="rounded-[16px] border border-dashed border-border bg-white/90 p-5 shadow-sm"
           data-home-recommendations-load-more-error="true"
           role="alert"
         >
@@ -88,7 +95,7 @@ function ReadyHomeRecommendationSection({
 
       <div className="flex justify-center">
         <LoadMoreButton
-          className="min-w-[12rem]"
+          className="lg:min-w-[12rem]"
           hasMore={hasMore}
           hideWhenExhausted={books.length === 0}
           isPending={isPending}
@@ -111,11 +118,11 @@ export function HomeRecommendationSection({
   return (
     <section
       aria-labelledby="home-recommendations-title"
-      className="flex flex-col items-center gap-10"
+      className="flex flex-col items-center gap-5 sm:gap-6 md:gap-8 lg:gap-10"
       data-home-recommendations="true"
     >
       <div className="w-full">
-        <h2 className="home-section-heading" id="home-recommendations-title">
+        <h2 className={homeSectionHeadingClassName} id="home-recommendations-title">
           {title}
         </h2>
       </div>

@@ -1,4 +1,4 @@
-import { BookCard, type BookPresentation } from "@/entities/book";
+﻿import { BookCard, type BookPresentation } from "@/entities/book";
 import { DiscoveryPagination, type DiscoveryPaginationLabels } from "@/features/discovery/components/discovery-pagination";
 import {
   DiscoveryResultsStaleNotice,
@@ -30,10 +30,10 @@ export function DiscoveryResultsGrid({
   className,
 }: DiscoveryResultsGridProps) {
   return (
-    <div className={cn("flex flex-col gap-5", className)}>
+    <div className={cn("flex flex-col gap-4 md:gap-5", className)}>
       {isStale ? <DiscoveryResultsStaleNotice copy={stateCopy} /> : null}
 
-      <section className="grid grid-cols-2 gap-4 sm:gap-5 xl:grid-cols-4" data-discovery-results-grid="true">
+      <section className="grid grid-cols-2 gap-4 md:gap-5 lg:grid-cols-4" data-discovery-results-grid="true">
         {books.map((book, index) => (
           <BookCard
             key={book.id}
@@ -45,7 +45,7 @@ export function DiscoveryResultsGrid({
       </section>
 
       <DiscoveryPagination
-        className="pt-3"
+        className="pt-1 md:pt-3"
         getPageHref={pagination.getPageHref}
         hasNext={pagination.hasNext}
         hasPrevious={pagination.hasPrevious}

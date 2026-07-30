@@ -18,6 +18,8 @@ import {
 } from "@/shared/i18n/get-messages";
 
 const brandLabel = "Booky";
+const homeMainClassName = "px-4 py-4 sm:px-6 sm:py-5 md:px-8 md:py-8 lg:px-10 lg:py-10 xl:px-[120px] xl:py-12";
+const homeContentClassName = "gap-6 sm:gap-8 md:gap-10 lg:gap-12";
 
 export async function generateMetadata({
   params,
@@ -103,15 +105,22 @@ export default async function UserHomePage({
 
   return authenticatedSession ? (
     <UserFacingPageShell
-      contentClassName="gap-12"
+      contentClassName={homeContentClassName}
       displayName={displayName ?? authenticatedSession.displayName}
       locale={locale}
+      mainClassName={homeMainClassName}
+      searchActionHref={`/${locale}/books`}
       variant="authenticated"
     >
       {content}
     </UserFacingPageShell>
   ) : (
-    <UserFacingPageShell contentClassName="gap-12" locale={locale} variant="guest">
+    <UserFacingPageShell
+      contentClassName={homeContentClassName}
+      locale={locale}
+      mainClassName={homeMainClassName}
+      variant="guest"
+    >
       {content}
     </UserFacingPageShell>
   );

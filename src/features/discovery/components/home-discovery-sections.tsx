@@ -30,7 +30,7 @@ export type HomeDiscoverySectionsProps = {
 
 export function HomeDiscoverySections({ locale, data, retryHref, copy }: HomeDiscoverySectionsProps) {
   return (
-    <div className="flex flex-col gap-12">
+    <div className="flex flex-col gap-6 sm:gap-8 md:gap-10 lg:gap-12">
       <HomeCategorySection
         categories={data.categories}
         description={copy.categories.description}

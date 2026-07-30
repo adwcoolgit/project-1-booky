@@ -62,6 +62,36 @@ type GuestHomePageHeaderProps = HomePageHeaderBaseProps & {
 
 type HomePageHeaderProps = AuthenticatedHomePageHeaderProps | GuestHomePageHeaderProps;
 
+function createSearchHref({
+  actionHref,
+  defaultValue,
+  hiddenFields,
+}: {
+  actionHref: string;
+  defaultValue?: string | undefined;
+  hiddenFields?: Record<string, string | number | null | undefined> | undefined;
+}) {
+  const searchParams = new URLSearchParams();
+
+  if (defaultValue && defaultValue.trim().length > 0) {
+    searchParams.set("q", defaultValue);
+  }
+
+  if (hiddenFields) {
+    for (const [name, value] of Object.entries(hiddenFields)) {
+      if (value === null || value === undefined || value === "") {
+        continue;
+      }
+
+      searchParams.set(name, String(value));
+    }
+  }
+
+  const serializedSearch = searchParams.toString();
+
+  return serializedSearch.length > 0 ? `${actionHref}?${serializedSearch}` : actionHref;
+}
+
 export function HomePageHeader({
   locale,
   brandLabel,
@@ -74,6 +104,14 @@ export function HomePageHeader({
       ? (props.searchActionHref ?? `/${locale}/books`)
       : `/${locale}/books`;
   const searchHiddenFields = props.variant === "authenticated" ? props.searchHiddenFields : undefined;
+  const mobileSearchHref =
+    props.variant === "authenticated"
+      ? createSearchHref({
+          actionHref: searchActionHref,
+          defaultValue: props.searchDefaultValue,
+          hiddenFields: searchHiddenFields,
+        })
+      : searchActionHref;
   const cartBadgeLabel =
     props.variant === "authenticated" &&
     typeof props.cartCount === "number" &&
@@ -147,7 +185,7 @@ export function HomePageHeader({
                 <Link
                   aria-label={searchLabel}
                   className="inline-flex h-6 w-6 items-center justify-center text-neutral-950 lg:hidden"
-                  href={searchActionHref}
+                  href={mobileSearchHref}
                 >
                   <SearchIcon className="h-6 w-6 text-neutral-950" />
                 </Link>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 import type { CategorySummary } from "@/entities/category";
@@ -59,6 +59,26 @@ export type DiscoverySearchFormProps = {
 
 const searchDebounceMs = 300;
 
+function FilterLinesIcon({ className }: { className?: string | undefined }) {
+  return (
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      viewBox="0 0 20 20"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M3.333 5h13.334M5.833 10h8.334m-5.834 5h3.334"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.6667"
+      />
+    </svg>
+  );
+}
+
 type ProgressiveDiscoveryResultsProps = {
   locale: AppLocale;
   queryState: DiscoveryQueryState;
@@ -98,7 +118,7 @@ function ProgressiveDiscoveryResults({
   };
 
   return (
-    <div className="min-w-0 space-y-4 lg:space-y-5">
+    <div className="min-w-0 space-y-4 md:space-y-5">
       {books.length > 0 ? (
         <DiscoveryResultsGrid
           books={books}
@@ -150,12 +170,15 @@ export function DiscoverySearchForm({
 }: DiscoverySearchFormProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const mobileFilterPanelId = useId();
   const { state, isPending, replaceState } = useDiscoverySearchParams({
     ...(defaultLimit ? { defaultLimit } : {}),
   });
   const [pendingSearch, setPendingSearch] = useState(state.q ?? "");
+  const [isMobileCategoryFilterOpen, setIsMobileCategoryFilterOpen] = useState(false);
   const searchSyncTimeoutRef = useRef<number | null>(null);
   const categoryOptions = categories.map((category) => ({ value: String(category.id), label: category.name }));
+  const isCategorySurface = surface === "category";
   const filterLabels = {
     ...copy.filters,
     applyLabel: undefined,
@@ -318,16 +341,43 @@ export function DiscoverySearchForm({
       : state.categoryId
         ? String(state.categoryId)
         : "";
+  const filterPanelClassName = isCategorySurface
+    ? cn(
+        isMobileCategoryFilterOpen ? "flex" : "hidden",
+        "w-full lg:flex lg:w-[266px] lg:self-start",
+      )
+    : "w-full lg:w-[266px] lg:self-start";
 
   return (
-    <div className={cn("flex flex-col gap-5 lg:gap-8", className)} data-discovery-search-form="true">
-      <div className="flex flex-col gap-5 lg:grid lg:grid-cols-[266px_minmax(0,1fr)] lg:items-start lg:gap-10">
+    <div className={cn("flex flex-col gap-4 sm:gap-5 md:gap-6 lg:gap-8", className)} data-discovery-search-form="true">
+      <div className="flex flex-col gap-4 md:gap-5 lg:grid lg:grid-cols-[266px_minmax(0,1fr)] lg:items-start lg:gap-10">
+        {isCategorySurface ? (
+          <button
+            aria-controls={mobileFilterPanelId}
+            aria-expanded={isMobileCategoryFilterOpen}
+            className={cn(
+              "home-card-shadow inline-flex h-[52px] w-full items-center justify-between rounded-[12px] bg-white px-3 text-left lg:hidden",
+              isMobileCategoryFilterOpen ? "ring-1 ring-brand/20" : "",
+            )}
+            data-discovery-mobile-filter-trigger="true"
+            onClick={() => {
+              setIsMobileCategoryFilterOpen((current) => !current);
+            }}
+            type="button"
+          >
+            <span className="text-sm font-bold leading-7 text-neutral-950">{copy.filters.panelTitle}</span>
+            <FilterLinesIcon className="h-5 w-5 shrink-0 text-neutral-950" />
+          </button>
+        ) : null}
+
         <DiscoveryFilterPanel
           categories={categoryOptions}
-          categorySelectionMode={surface === "category" ? "required" : "toggle"}
+          categorySelectionMode={isCategorySurface ? "required" : "toggle"}
           categoryValue={categoryValue}
+          className={filterPanelClassName}
           fixedCategoryLabel={copy.filters.fixedCategoryLabel}
-          fixedCategoryValue={surface === "category" ? lockedCategory : undefined}
+          fixedCategoryValue={isCategorySurface ? lockedCategory : undefined}
+          id={isCategorySurface ? mobileFilterPanelId : undefined}
           isPending={isPending}
           labels={filterLabels}
           minRatingValue={state.minRating ? String(state.minRating) : ""}
@@ -337,23 +387,26 @@ export function DiscoverySearchForm({
           onSubmit={handleSubmit}
           searchValue={pendingSearch}
           showCategoryField={categoryOptions.length > 0}
+          showPanelTitle={!isCategorySurface || !isMobileCategoryFilterOpen}
           showSearchField={surface === "books"}
         />
 
-        {results.status === "error" ? (
-          <div className="min-w-0 space-y-4 lg:space-y-5">
-            <DiscoveryResultsState copy={copy.states} onRetry={() => router.refresh()} state="error" />
-          </div>
-        ) : (
-          <ProgressiveDiscoveryResults
-            isStale={isPending}
-            locale={locale}
-            paginationLabels={paginationLabels}
-            queryState={state}
-            results={results}
-            stateCopy={copy.states}
-          />
-        )}
+        <div className={cn("min-w-0", isCategorySurface ? "lg:col-start-2" : undefined)}>
+          {results.status === "error" ? (
+            <div className="min-w-0 space-y-4 md:space-y-5">
+              <DiscoveryResultsState copy={copy.states} onRetry={() => router.refresh()} state="error" />
+            </div>
+          ) : (
+            <ProgressiveDiscoveryResults
+              isStale={isPending}
+              locale={locale}
+              paginationLabels={paginationLabels}
+              queryState={state}
+              results={results}
+              stateCopy={copy.states}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

@@ -15,11 +15,11 @@ export function AuthFormPrompt({
 }: AuthFormPromptProps) {
   if (promptLabel) {
     return (
-      <p className="flex w-full justify-center gap-1 text-center text-body-md font-semibold tracking-auth text-text-strong">
+      <p className="flex w-full justify-center gap-1 text-center text-[14px] font-semibold leading-7 tracking-[-0.02em] text-text-strong sm:text-[14px] md:text-[15px] md:leading-7 lg:text-body-md lg:tracking-auth">
         <span>{promptLabel}</span>
         <AuthLink
           basePath={basePath}
-          className="text-body-md font-bold tracking-auth text-brand hover:underline"
+          className="text-[14px] font-bold leading-7 tracking-[-0.02em] text-brand hover:underline sm:text-[14px] md:text-[15px] md:leading-7 lg:text-body-md lg:tracking-auth"
           returnTo={returnTo ?? null}
         >
           {linkLabel}
@@ -32,7 +32,7 @@ export function AuthFormPrompt({
     <div className="flex w-full justify-center text-center">
       <AuthLink
         basePath={basePath}
-        className="text-body-md font-bold tracking-auth text-brand hover:underline"
+        className="text-[14px] font-bold leading-7 tracking-[-0.02em] text-brand hover:underline sm:text-[14px] md:text-[15px] md:leading-7 lg:text-body-md lg:tracking-auth"
         returnTo={returnTo ?? null}
       >
         {linkLabel}
