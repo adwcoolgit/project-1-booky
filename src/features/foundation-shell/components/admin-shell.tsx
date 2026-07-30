@@ -41,7 +41,7 @@ export function AdminShell({
 
   return (
     <div className="min-h-screen bg-page-admin-accent text-foreground">
-      <header className="home-card-shadow border-b border-border bg-white">
+      <header className="sticky top-0 z-50 home-card-shadow border-b border-border bg-white">
         <div className="mx-auto flex w-full max-w-canvas items-center justify-between gap-4 px-4 py-4 sm:px-6 md:px-8 lg:px-10 xl:px-[120px]">
           <Link className="flex shrink-0 items-center gap-[15px]" href={`/${locale}/foundation/admin`}>
             <Image

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
 
@@ -9,9 +9,11 @@ import {
 } from "@/entities/review";
 import { createDiscoveryApiClient, getBookReviews } from "@/features/discovery/api";
 import { discoveryQueryKeys } from "@/features/discovery/model/discovery-query-keys";
-import { runtimeConfig } from "@/shared/config/runtime";
+import {
+  browserFixtureMode,
+  loadReviewsFixture,
+} from "@/features/discovery/testing/discovery-fixtures.client";
 import type { AppLocale } from "@/shared/i18n/config";
-import { createReviewsCollectionFixture } from "@/../tests/fixtures/discovery/reviews-fixtures";
 
 type BookReviewsLoadMorePage = {
   reviews: ReviewPresentation[];
@@ -19,8 +21,6 @@ type BookReviewsLoadMorePage = {
   limit: number;
   hasMore: boolean;
 };
-
-const browserFixtureMode = process.env.NEXT_PUBLIC_AUTH_E2E_FIXTURE_MODE === "true";
 
 function dedupeReviewsById(reviews: readonly ReviewPresentation[]) {
   const seen = new Set<string>();
@@ -51,11 +51,11 @@ export function useBookReviewsLoadMore({
   hasMore: boolean;
 }) {
   const query = useInfiniteQuery({
-    queryKey: discoveryQueryKeys.reviews.book(bookId, { limit }),
+    queryKey: [locale, ...discoveryQueryKeys.reviews.book(bookId, { limit })],
     initialPageParam: initialPage,
     queryFn: async ({ pageParam }) => {
-      const payload = runtimeConfig.authE2eFixtureMode || browserFixtureMode
-        ? createReviewsCollectionFixture({
+      const payload = browserFixtureMode
+        ? await loadReviewsFixture({
             bookId,
             page: Number(pageParam),
             limit,

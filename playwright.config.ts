@@ -1,5 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
+process.env.AUTH_SESSION_SIGNING_SECRET ??= "booky-e2e-session-signing-secret-0123456789";
+
 export default defineConfig({
   testDir: "./tests",
   testMatch: ["e2e/**/*.spec.ts", "accessibility/**/*.spec.ts", "visual/**/*.spec.ts"],

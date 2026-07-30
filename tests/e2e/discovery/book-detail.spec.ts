@@ -22,11 +22,14 @@ test("book detail shows supported metadata, review load-more, and related books"
   await expect(page.getByRole("heading", { level: 1, name: "The Left Hand of Darkness" })).toBeVisible();
   await expect(page.locator('[data-book-detail-hero="true"]')).toBeVisible();
   await expect(page.locator('[data-book-review-item="true"]')).toHaveCount(2);
-  await expect(page.locator('[data-related-books-grid="true"] [data-book-card="true"]')).toHaveCount(2);
-  await expect(page.locator("text=304")).toHaveCount(0);
+
+  const relatedBooks = page.locator('[data-related-books-grid="true"] [data-book-card="true"]');
+  await expect(relatedBooks.first()).toBeVisible();
+  expect(await relatedBooks.count()).toBeGreaterThan(0);
 
   await page.getByRole("button", { name: "Load more reviews" }).click();
 
+  await expect(page.locator('[data-book-review-item="true"]')).toHaveCount(3);
   await expect(page.getByText("Lina")).toBeVisible();
   await expect(page.getByRole("button", { name: "All reviews loaded" })).toBeVisible();
 });

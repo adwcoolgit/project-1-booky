@@ -63,7 +63,7 @@ describe("home page header", () => {
   });
 
   it("keeps authenticated header actions for signed-in sessions", () => {
-    render(
+    const { container } = render(
       <HomePageHeader
         borrowedListLabel="Borrowed List"
         brandLabel="Booky"
@@ -72,15 +72,19 @@ describe("home page header", () => {
         profileLabel="Profil"
         profileMenuLabel="Menu profil"
         reviewsLabel="Ulasan"
+        searchActionHref="/id/categories/science-fiction-7"
+        searchDefaultValue="Dune"
         searchLabel="Cari"
         searchPlaceholder="Cari buku"
         variant="authenticated"
       />,
     );
 
-    expect(screen.getByRole("searchbox", { name: "Cari" })).toBeInTheDocument();
+    expect(screen.getByRole("searchbox", { name: "Cari" })).toHaveValue("Dune");
     expect(screen.getByTestId("locale-switcher")).toBeInTheDocument();
     expect(screen.getByTestId("bag-icon")).toBeInTheDocument();
     expect(screen.getByTestId("profile-menu")).toHaveTextContent("Booky Reader");
+    expect(container.querySelector('form[action="/id/categories/science-fiction-7"]')).not.toBeNull();
+    expect(container.querySelectorAll('input[type="hidden"]')).toHaveLength(0);
   });
 });

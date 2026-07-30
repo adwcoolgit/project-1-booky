@@ -73,7 +73,7 @@ function ReviewStars({
   starLabel: string;
 }) {
   return (
-    <div aria-label={`${starLabel}/5`} className="flex items-center gap-0.5">
+    <div aria-label={`${starLabel}/5`} className="flex items-center gap-0.5" role="img">
       {Array.from({ length: 5 }, (_, index) => (
         <StarIcon filled={index < star} key={index} />
       ))}

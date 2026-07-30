@@ -21,22 +21,25 @@ export function resolveCategoryBySlug(slug: string, categories: readonly Categor
 
 export type CategoryRouteState = Omit<DiscoveryQueryState, "authorId"> & {
   authorId: null;
+  selectedCategoryId: number | null;
   slug: string;
 };
 
 export function normalizeCategoryRouteState(
   input: DiscoverySearchInput,
   resolvedCategory: CategorySummary,
-  defaultLimit = discoveryLimitDefaults.books,
+  defaultLimit: number = discoveryLimitDefaults.books,
 ): CategoryRouteState {
   const normalized = normalizeDiscoverySearchParams(input, {
     defaultLimit,
   });
 
   return {
-    q: undefined,
+    q: normalized.q,
     categoryId: resolvedCategory.id,
     authorId: null,
+    selectedCategoryId:
+      normalized.categoryId === resolvedCategory.id ? normalized.categoryId : null,
     minRating: normalized.minRating,
     page: normalized.page,
     limit: normalized.limit,
@@ -45,10 +48,18 @@ export function normalizeCategoryRouteState(
 }
 
 export function createCategoryRouteSearchParams(
-  state: Pick<CategoryRouteState, "minRating" | "page" | "limit">,
-  defaultLimit = discoveryLimitDefaults.books,
+  state: Pick<CategoryRouteState, "q" | "selectedCategoryId" | "minRating" | "page" | "limit">,
+  defaultLimit: number = discoveryLimitDefaults.books,
 ) {
   const params = new URLSearchParams();
+
+  if (state.q) {
+    params.set("q", state.q);
+  }
+
+  if (state.selectedCategoryId !== null) {
+    params.set("categoryId", String(state.selectedCategoryId));
+  }
 
   if (state.minRating !== null) {
     params.set("minRating", String(state.minRating));

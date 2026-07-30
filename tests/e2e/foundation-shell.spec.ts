@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+﻿import { expect, test, type Page } from "@playwright/test";
 
 const expectations = {
   en: {
@@ -13,6 +13,10 @@ const expectations = {
   },
 } as const;
 
+function getFoundationBadge(page: Page, badge: string) {
+  return page.locator("#main-content section").first().locator("span").filter({ hasText: badge }).first();
+}
+
 for (const locale of ["en", "id"] as const) {
   for (const area of ["public", "user", "admin"] as const) {
     test(`${locale} ${area} foundation route renders the expected shell`, async ({ page }) => {
@@ -20,7 +24,7 @@ for (const locale of ["en", "id"] as const) {
 
       await expect(page.locator("html")).toHaveAttribute("lang", locale);
       await expect(page.getByRole("heading", { name: expectations[locale][area].title })).toBeVisible();
-      await expect(page.getByText(expectations[locale][area].badge, { exact: true })).toBeVisible();
+      await expect(getFoundationBadge(page, expectations[locale][area].badge)).toBeVisible();
       await expect(page.locator(`[data-locale-flag="${locale}"]`).first()).toBeVisible();
       await expect(page.locator(`[data-locale-label="${locale}"]`).first()).toHaveText(locale === "en" ? "English" : "Bahasa Indonesia");
       await expect(page).toHaveURL(new RegExp(`/${locale}/foundation/${area}$`));

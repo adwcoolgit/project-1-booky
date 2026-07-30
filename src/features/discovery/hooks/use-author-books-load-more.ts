@@ -9,17 +9,17 @@ import {
 } from "@/entities/book";
 import { createDiscoveryApiClient, getAuthorBooks } from "@/features/discovery/api";
 import { discoveryQueryKeys } from "@/features/discovery/model/discovery-query-keys";
-import { runtimeConfig } from "@/shared/config/runtime";
+import {
+  browserFixtureMode,
+  loadAuthorBooksFixture,
+} from "@/features/discovery/testing/discovery-fixtures.client";
 import type { AppLocale } from "@/shared/i18n/config";
-import { createAuthorBooksResponseFixture } from "@/../tests/fixtures/discovery/authors-fixtures";
 
 type AuthorBooksLoadMorePage = {
   books: BookPresentation[];
   page: number;
   hasMore: boolean;
 };
-
-const browserFixtureMode = process.env.NEXT_PUBLIC_AUTH_E2E_FIXTURE_MODE === "true";
 
 function dedupeBooksById(books: readonly BookPresentation[]) {
   const seen = new Set<number>();
@@ -50,12 +50,11 @@ export function useAuthorBooksLoadMore({
   hasMore: boolean;
 }) {
   const query = useInfiniteQuery({
-    queryKey: discoveryQueryKeys.authors.books(authorId, { limit }),
+    queryKey: [locale, ...discoveryQueryKeys.authors.books(authorId, { limit })],
     initialPageParam: initialPage,
     queryFn: async ({ pageParam }) => {
-      const useFixtureMode = runtimeConfig.authE2eFixtureMode || browserFixtureMode;
-      const payload = useFixtureMode
-        ? createAuthorBooksResponseFixture({
+      const payload = browserFixtureMode
+        ? await loadAuthorBooksFixture({
             authorId,
             page: Number(pageParam),
             limit,

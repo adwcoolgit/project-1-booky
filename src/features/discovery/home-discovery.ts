@@ -24,47 +24,13 @@ import type {
   HomeDiscoveryPaginatedCollectionState,
   HomeDiscoveryViewModel,
 } from "@/features/discovery/model/home-discovery";
+import {
+  getHomeCategoriesFixture,
+  getHomePopularAuthorsFixture,
+  loadRecommendedBooksCollectionFixture,
+} from "@/features/discovery/testing/discovery-fixtures.server";
 import { runtimeConfig } from "@/shared/config/runtime";
 import type { AppLocale } from "@/shared/i18n/config";
-import { homeRecommendedBooksCollectionFixture } from "@/../tests/fixtures/discovery/books-fixtures";
-
-const homeCategoriesFixture = Object.freeze({
-  categories: [
-    { id: 7, name: "Science Fiction" },
-    { id: 8, name: "History" },
-    { id: 9, name: "Personal Growth" },
-    { id: 10, name: "Philosophy" },
-  ],
-});
-
-const homePopularAuthorsFixture = Object.freeze({
-  authors: [
-    {
-      id: 21,
-      name: "Ursula K. Le Guin",
-      bio: "American novelist known for speculative fiction.",
-      bookCount: 47,
-    },
-    {
-      id: 22,
-      name: "N. K. Jemisin",
-      bio: "Award-winning fantasy and science fiction author.",
-      bookCount: 12,
-    },
-    {
-      id: 31,
-      name: "Yuval Noah Harari",
-      bio: "Historian focused on broad human narratives.",
-      bookCount: 9,
-    },
-    {
-      id: 41,
-      name: "James Clear",
-      bio: "Writer on behavior change and sustainable habits.",
-      bookCount: 6,
-    },
-  ],
-});
 
 type PaginatedHomeItems<TItem> = {
   items: TItem[];
@@ -83,7 +49,7 @@ function toPaginatedCollectionState<TItem>(page: PaginatedHomeItems<TItem>): Hom
 
 async function readHomeCategories(locale: AppLocale) {
   const payload = runtimeConfig.authE2eFixtureMode
-    ? homeCategoriesFixture
+    ? getHomeCategoriesFixture()
     : await getCategories(createDiscoveryApiClient(locale));
 
   return mapCategoriesCollectionDtoToSummaries(payload).map((category) =>
@@ -94,7 +60,10 @@ async function readHomeCategories(locale: AppLocale) {
 async function readHomeRecommendations(locale: AppLocale): Promise<PaginatedHomeItems<ReturnType<typeof mapBookSummaryToPresentation>>> {
   const limit = discoveryLimitDefaults.recommendations;
   const payload = runtimeConfig.authE2eFixtureMode
-    ? homeRecommendedBooksCollectionFixture
+    ? await loadRecommendedBooksCollectionFixture({
+        page: 1,
+        limit,
+      })
     : await getRecommendedBooks(createDiscoveryApiClient(locale), {
         by: "rating",
         page: 1,
@@ -112,7 +81,7 @@ async function readHomeRecommendations(locale: AppLocale): Promise<PaginatedHome
 
 async function readHomePopularAuthors(locale: AppLocale) {
   const payload = runtimeConfig.authE2eFixtureMode
-    ? homePopularAuthorsFixture
+    ? getHomePopularAuthorsFixture()
     : await getPopularAuthors(createDiscoveryApiClient(locale), {
         limit: discoveryLimitDefaults.authorsPopular,
       });

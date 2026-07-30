@@ -1,5 +1,6 @@
 import type { AppLocale } from "@/shared/i18n/config";
 import type { SessionEnvelope, SessionRole } from "@/shared/auth/session-schema";
+import { encodeSessionCookieValue } from "@/shared/auth/session-cookie";
 import type { LoginFormInput } from "@/features/auth/model/login-form";
 import type { RegisterFormInput } from "@/features/auth/model/register-form";
 
@@ -100,7 +101,7 @@ export function createSessionEnvelopeFixture(role: SessionRole, locale: AppLocal
 }
 
 export function encodeSessionEnvelopeFixture(envelope: SessionEnvelope): string {
-  return Buffer.from(JSON.stringify(envelope), "utf8").toString("base64url");
+  return encodeSessionCookieValue(envelope);
 }
 
 export function createEncodedSessionCookieFixture(role: SessionRole, locale: AppLocale = "en"): string {

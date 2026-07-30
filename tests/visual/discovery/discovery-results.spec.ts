@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+﻿import { expect, test, type Page } from "@playwright/test";
 
 import {
   authSessionCookieName,
@@ -18,13 +18,13 @@ async function setUserSession(page: Page, locale: "en" | "id") {
 const routes = [
   {
     locale: "en",
-    route: "/en/books?q=the&categoryId=7&minRating=4&limit=1&page=2",
-    title: "Search, filter, and bookmark the next shelf you want to revisit.",
+    route: "/en/books?q=the&categoryId=7&minRating=4&limit=1",
+    title: "Book List",
   },
   {
     locale: "id",
-    route: "/id/categories/science-fiction-7?minRating=4&limit=1&page=2",
-    title: "Science Fiction",
+    route: "/id/categories/science-fiction-7?minRating=4&limit=1",
+    title: "Daftar Buku",
   },
 ] as const;
 
@@ -42,7 +42,6 @@ for (const viewport of [
       const hasOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
       expect(hasOverflow).toBe(false);
       await expect(page.locator('[data-discovery-search-form="true"]')).toBeVisible();
-      await expect(page.locator('[data-discovery-criteria="true"]')).toBeVisible();
       await expect(page.locator('[data-book-card="true"]').first()).toBeVisible();
     });
   }

@@ -9,7 +9,7 @@ import { decodeSessionCookieValue, encodeSessionCookieValue } from "@/shared/aut
 import { createSessionEnvelopeFixture } from "@/../tests/fixtures/auth/auth-fixtures";
 
 describe("session schema and cookie helpers", () => {
-  it("round-trips a session envelope through the cookie encoder", () => {
+  it("round-trips a session envelope through the signed cookie encoder", () => {
     const envelope = createSessionEnvelopeFixture("ADMIN", "id");
     const encoded = encodeSessionCookieValue(envelope);
 
@@ -33,8 +33,14 @@ describe("session schema and cookie helpers", () => {
     expect(JSON.stringify(snapshot)).not.toContain(envelope.jwt);
   });
 
-  it("rejects invalid session envelopes", () => {
+  it("rejects invalid session envelopes and tampered cookie signatures", () => {
+    const envelope = createSessionEnvelopeFixture("USER", "en");
+    const encoded = encodeSessionCookieValue(envelope);
+    const [version, encodedPayload, signature] = encoded.split(".");
+    const tampered = `${version}.${encodedPayload}.tampered-${signature}`;
+
     expect(parseSessionEnvelope({ jwt: "", role: "SUPERADMIN" })).toBeNull();
     expect(decodeSessionCookieValue("not-valid-base64")).toBeNull();
+    expect(decodeSessionCookieValue(tampered)).toBeNull();
   });
 });

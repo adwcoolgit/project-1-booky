@@ -19,7 +19,12 @@ type FlagIconProps = SVGProps<SVGSVGElement> & {
 
 function EnglishFlagIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg fill="none" viewBox="0 0 64 48" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <svg
+      fill="none"
+      viewBox="0 0 64 48"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
       <rect width="64" height="48" rx="6" fill="#012169" />
       <path d="M0 0L64 48M64 0L0 48" stroke="#FFF" strokeWidth="10" />
       <path d="M0 0L64 48M64 0L0 48" stroke="#C8102E" strokeWidth="4.5" />
@@ -31,7 +36,12 @@ function EnglishFlagIcon(props: SVGProps<SVGSVGElement>) {
 
 function IndonesianFlagIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg fill="none" viewBox="0 0 64 48" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <svg
+      fill="none"
+      viewBox="0 0 64 48"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
       <rect width="64" height="48" rx="6" fill="#fff" />
       <path d="M0 0H64V24H0z" fill="#CE1126" />
       <rect x="0.5" y="0.5" width="63" height="47" rx="5.5" stroke="#D9DEE8" />
@@ -49,7 +59,10 @@ function FlagIcon({ locale, ...props }: FlagIconProps) {
 
 const localePrefixPattern = /^\/(en|id)(?=\/|$)/;
 
-export function LocaleSwitcher({ className, tone = "default" }: LocaleSwitcherProps) {
+export function LocaleSwitcher({
+  className,
+  tone = "default",
+}: LocaleSwitcherProps) {
   const locale = useLocale() as AppLocale;
   const pathname = usePathname() ?? `/${locale}/foundation/public`;
   const searchParams = useSearchParams();
@@ -65,7 +78,10 @@ export function LocaleSwitcher({ className, tone = "default" }: LocaleSwitcherPr
     return `/${nextLocale}/foundation/public`;
   }
 
-  function handleClick(event: MouseEvent<HTMLAnchorElement>, nextLocale: AppLocale) {
+  function handleClick(
+    event: MouseEvent<HTMLAnchorElement>,
+    nextLocale: AppLocale,
+  ) {
     if (nextLocale === locale) {
       event.preventDefault();
       return;
@@ -74,24 +90,26 @@ export function LocaleSwitcher({ className, tone = "default" }: LocaleSwitcherPr
     event.preventDefault();
     const query = searchParams.toString();
     const search = query ? `?${query}` : "";
-    window.location.assign(`${buildHref(nextLocale)}${search}${window.location.hash}`);
+    window.location.assign(
+      `${buildHref(nextLocale)}${search}${window.location.hash}`,
+    );
   }
 
   return (
-    <div className={cn("flex items-center gap-2", className)}>
-      <span className={cn("text-sm font-semibold", inverse ? "text-neutral-100" : "text-foreground")}>
-        {tFoundation("languageLabel")}
-      </span>
+    <div className={cn("flex items-center", className)}>
       <div
         aria-label={tFoundation("languageDescription")}
         className={cn(
           "inline-flex rounded-full p-1 shadow-card",
-          inverse ? "border border-white/15 bg-neutral-950" : "border border-border bg-white",
+          inverse
+            ? "border-white/15 border bg-neutral-950"
+            : "border border-border bg-white",
         )}
         role="group"
       >
         {supportedLocales.map((entry) => {
-          const label = entry === "en" ? tCommon("english") : tCommon("indonesian");
+          const label =
+            entry === "en" ? tCommon("english") : tCommon("indonesian");
           const active = entry === locale;
           const href = buildHref(entry);
 
@@ -106,7 +124,7 @@ export function LocaleSwitcher({ className, tone = "default" }: LocaleSwitcherPr
                     ? "bg-white text-neutral-950"
                     : "bg-brand text-white"
                   : inverse
-                    ? "text-neutral-100 hover:bg-white/10"
+                    ? "hover:bg-white/10 text-neutral-100"
                     : "text-foreground hover:bg-muted",
               )}
               href={href}

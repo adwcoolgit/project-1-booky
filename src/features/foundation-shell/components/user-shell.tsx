@@ -128,7 +128,7 @@ export function UserShell({
 
   return (
     <div className="min-h-screen bg-white text-foreground" data-foundation-user-shell="true">
-      <header className="home-card-shadow border-b border-border bg-white">
+      <header className="sticky top-0 z-50 home-card-shadow border-b border-border bg-white">
         <div className="mx-auto w-full max-w-canvas px-4 py-4 sm:px-6 md:px-8 lg:px-10 lg:py-4 xl:px-[120px] xl:py-[18px]">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-center justify-between gap-4">

@@ -1,55 +1,65 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 
+import type { CategorySummary } from "@/entities/category";
 import { readRouteGuardResult } from "@/features/auth/config/auth-routes";
 import {
   DiscoverySearchForm,
-  readDiscoveryBookResults,
-  readDiscoveryCategories,
-} from "@/features/discovery";
-import {
+  UserFacingPageShell,
   createCategoryRouteSearchParams,
+  createDiscoverySearchFormCopy,
   discoveryLimitDefaults,
   normalizeCategoryRouteState,
+  readDiscoveryAuthenticatedDisplayName,
+  readDiscoveryBookResults,
+  readDiscoveryCategories,
   resolveCategoryBySlug,
-} from "@/features/discovery/model";
+  serializeSearchParamsRecord,
+} from "@/features/discovery";
 import type { AppLocale } from "@/shared/i18n/config";
 import { resolveLocale } from "@/shared/i18n/config";
 import {
   getDiscoveryFeatureMessages,
   getSourceMetadataMessages,
+  getSourceNavigationMessages,
 } from "@/shared/i18n/get-messages";
 
-function serializeSearchParams(searchParams: Record<string, string | string[] | undefined>): string {
-  const params = new URLSearchParams();
+function renderCategoryContent({
+  locale,
+  categories,
+  results,
+  lockedCategory,
+  lockedCategoryId,
+  selectedCategoryId,
+}: {
+  locale: AppLocale;
+  categories: readonly CategorySummary[];
+  results: Awaited<ReturnType<typeof readDiscoveryBookResults>> | { status: "error" };
+  lockedCategory?: string | undefined;
+  lockedCategoryId?: number | undefined;
+  selectedCategoryId?: number | undefined;
+}) {
+  const navigation = getSourceNavigationMessages(locale);
 
-  for (const [key, value] of Object.entries(searchParams)) {
-    if (!value) {
-      continue;
-    }
+  return (
+    <section className="flex flex-col gap-6 sm:gap-8">
+      <h1 className="text-[24px] font-bold leading-9 text-neutral-950 sm:text-[28px] sm:leading-10 md:text-[32px] md:leading-[42px] xl:text-[36px] xl:leading-[44px]">
+        {navigation.bookList}
+      </h1>
 
-    if (Array.isArray(value)) {
-      for (const entry of value) {
-        params.append(key, entry);
-      }
-      continue;
-    }
-
-    params.set(key, value);
-  }
-
-  return params.toString();
-}
-
-function mapSearchCopy(locale: AppLocale) {
-  const discovery = getDiscoveryFeatureMessages(locale).results;
-
-  return {
-    filters: discovery.filters,
-    criteria: discovery.criteria,
-    pagination: discovery.pagination,
-    states: discovery.states,
-  };
+      <DiscoverySearchForm
+        categories={categories}
+        copy={createDiscoverySearchFormCopy(locale)}
+        defaultLimit={discoveryLimitDefaults.books}
+        locale={locale}
+        lockedCategory={lockedCategory}
+        lockedCategoryId={lockedCategoryId}
+        results={results}
+        selectedCategoryId={selectedCategoryId}
+        surface="category"
+      />
+    </section>
+  );
 }
 
 export async function generateMetadata({
@@ -79,7 +89,7 @@ export default async function CategoryBooksPage({
   const resolvedSearchParams = await searchParams;
   const locale = resolveLocale(rawLocale);
   const pathname = `/${locale}/categories/${slug}`;
-  const serializedSearch = serializeSearchParams(resolvedSearchParams);
+  const serializedSearch = serializeSearchParamsRecord(resolvedSearchParams);
   const currentPath = serializedSearch ? `${pathname}?${serializedSearch}` : pathname;
   const guard = await readRouteGuardResult({
     pathname,
@@ -95,30 +105,29 @@ export default async function CategoryBooksPage({
     throw new Error("Expected authenticated session after category discovery route guard.");
   }
 
+  const displayName = await readDiscoveryAuthenticatedDisplayName({
+    locale,
+    currentPath,
+    session: guard.session,
+  });
   const categories = await readDiscoveryCategories(locale).catch(() => null);
-  const discovery = getDiscoveryFeatureMessages(locale).results.category;
 
   if (!categories) {
     return (
-      <main className="min-h-screen bg-page-user-accent px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10" id="main-content" tabIndex={-1}>
-        <div className="mx-auto flex max-w-content flex-col gap-6 lg:gap-8">
-          <section className="rounded-5xl border border-border bg-white p-6 shadow-card md:p-8">
-            <p className="text-eyebrow font-semibold text-brand">{discovery.headerLabel}</p>
-            <h1 className="mt-3 text-page-title text-foreground">{discovery.title}</h1>
-            <p className="mt-3 max-w-3xl text-body-default text-text-muted">{discovery.description}</p>
-          </section>
-
-          <section className="rounded-5xl border border-border bg-white p-6 shadow-card md:p-8">
-            <DiscoverySearchForm
-              categories={[]}
-              copy={mapSearchCopy(locale)}
-              defaultLimit={discoveryLimitDefaults.books}
-              results={{ status: "error" }}
-              surface="category"
-            />
-          </section>
-        </div>
-      </main>
+      <UserFacingPageShell
+        contentClassName="gap-8 sm:gap-10 xl:gap-8"
+        displayName={displayName}
+        locale={locale}
+        mainClassName="px-4 py-8 sm:px-6 sm:py-10 md:px-8 md:py-12 xl:px-[120px] xl:py-12"
+        searchActionHref={pathname}
+        variant="authenticated"
+      >
+        {renderCategoryContent({
+          locale,
+          categories: [],
+          results: { status: "error" },
+        })}
+      </UserFacingPageShell>
     );
   }
 
@@ -143,27 +152,31 @@ export default async function CategoryBooksPage({
   }
 
   const results = await readDiscoveryBookResults(locale, normalizedState);
+  const searchHiddenFields = {
+    categoryId: normalizedState.selectedCategoryId,
+    minRating: normalizedState.minRating,
+    ...(normalizedState.limit !== discoveryLimitDefaults.books ? { limit: normalizedState.limit } : {}),
+  };
 
   return (
-    <main className="min-h-screen bg-page-user-accent px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10" id="main-content" tabIndex={-1}>
-      <div className="mx-auto flex max-w-content flex-col gap-6 lg:gap-8">
-        <section className="rounded-5xl border border-border bg-white p-6 shadow-card md:p-8">
-          <p className="text-eyebrow font-semibold text-brand">{discovery.headerLabel}</p>
-          <h1 className="mt-3 text-page-title text-foreground">{resolvedCategory.name}</h1>
-          <p className="mt-3 max-w-3xl text-body-default text-text-muted">{discovery.description}</p>
-        </section>
-
-        <section className="rounded-5xl border border-border bg-white p-6 shadow-card md:p-8">
-          <DiscoverySearchForm
-            categories={categories}
-            copy={mapSearchCopy(locale)}
-            defaultLimit={discoveryLimitDefaults.books}
-            lockedCategory={resolvedCategory.name}
-            results={results}
-            surface="category"
-          />
-        </section>
-      </div>
-    </main>
+    <UserFacingPageShell
+      contentClassName="gap-8 sm:gap-10 xl:gap-8"
+      displayName={displayName}
+      locale={locale}
+      mainClassName="px-4 py-8 sm:px-6 sm:py-10 md:px-8 md:py-12 xl:px-[120px] xl:py-12"
+      searchActionHref={pathname}
+      searchDefaultValue={normalizedState.q}
+      searchHiddenFields={searchHiddenFields}
+      variant="authenticated"
+    >
+      {renderCategoryContent({
+        locale,
+        categories,
+        lockedCategory: resolvedCategory.name,
+        lockedCategoryId: resolvedCategory.id,
+        results,
+        selectedCategoryId: normalizedState.selectedCategoryId ?? undefined,
+      })}
+    </UserFacingPageShell>
   );
 }

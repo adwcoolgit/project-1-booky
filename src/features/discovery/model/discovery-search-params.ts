@@ -86,8 +86,9 @@ export function applyDiscoverySearchPatch(
     ...current,
     ...patch,
   };
+  const hasExplicitQueryPatch = Object.prototype.hasOwnProperty.call(patch, "q");
   const shouldResetPage =
-    (patch.q !== undefined && patch.q !== current.q) ||
+    (hasExplicitQueryPatch && patch.q !== current.q) ||
     (patch.categoryId !== undefined && patch.categoryId !== current.categoryId) ||
     (patch.authorId !== undefined && patch.authorId !== current.authorId) ||
     (patch.minRating !== undefined && patch.minRating !== current.minRating);

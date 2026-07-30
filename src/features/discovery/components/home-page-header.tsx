@@ -1,4 +1,4 @@
-﻿import Image from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 
 import { DiscoveryBagIcon } from "@/features/discovery/components/discovery-bag-icon";
@@ -48,7 +48,10 @@ type AuthenticatedHomePageHeaderProps = HomePageHeaderBaseProps & {
   borrowedListLabel: string;
   reviewsLabel: string;
   profileMenuLabel: string;
-  cartCount?: number;
+  cartCount?: number | undefined;
+  searchActionHref?: string | undefined;
+  searchDefaultValue?: string | undefined;
+  searchHiddenFields?: Record<string, string | number | null | undefined> | undefined;
 };
 
 type GuestHomePageHeaderProps = HomePageHeaderBaseProps & {
@@ -66,6 +69,11 @@ export function HomePageHeader({
   searchPlaceholder,
   ...props
 }: HomePageHeaderProps) {
+  const searchActionHref =
+    props.variant === "authenticated"
+      ? (props.searchActionHref ?? `/${locale}/books`)
+      : `/${locale}/books`;
+  const searchHiddenFields = props.variant === "authenticated" ? props.searchHiddenFields : undefined;
   const cartBadgeLabel =
     props.variant === "authenticated" &&
     typeof props.cartCount === "number" &&
@@ -74,7 +82,7 @@ export function HomePageHeader({
       : null;
 
   return (
-    <header className="home-card-shadow border-b border-border bg-white">
+    <header className="sticky top-0 z-50 home-card-shadow border-b border-border bg-white">
       <div
         className={cn(
           "mx-auto w-full max-w-canvas",
@@ -106,17 +114,27 @@ export function HomePageHeader({
         {props.variant === "authenticated" ? (
           <>
             <form
-              action={`/${locale}/books`}
+              action={searchActionHref}
               className="hidden w-full max-w-[22rem] items-center gap-[6px] rounded-full border border-border bg-white px-4 py-2 lg:flex xl:max-w-[31.25rem]"
             >
               <SearchIcon className="h-5 w-5 text-neutral-600" />
               <input
                 aria-label={searchLabel}
                 className="w-full border-0 bg-transparent text-sm font-medium leading-7 tracking-[-0.03em] text-foreground placeholder:text-neutral-600 focus:outline-none"
+                defaultValue={props.searchDefaultValue}
                 name="q"
                 placeholder={searchPlaceholder}
                 type="search"
               />
+              {searchHiddenFields
+                ? Object.entries(searchHiddenFields).map(([name, value]) => {
+                    if (value === null || value === undefined || value === "") {
+                      return null;
+                    }
+
+                    return <input key={name} name={name} type="hidden" value={String(value)} />;
+                  })
+                : null}
               <button className="sr-only" type="submit">
                 {searchLabel}
               </button>
@@ -129,7 +147,7 @@ export function HomePageHeader({
                 <Link
                   aria-label={searchLabel}
                   className="inline-flex h-6 w-6 items-center justify-center text-neutral-950 lg:hidden"
-                  href={`/${locale}/books`}
+                  href={searchActionHref}
                 >
                   <SearchIcon className="h-6 w-6 text-neutral-950" />
                 </Link>

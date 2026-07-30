@@ -189,7 +189,8 @@
                                     "minRatingAllLabel":  "Semua rating",
                                     "resetLabel":  "Reset",
                                     "applyLabel":  "Terapkan",
-                                    "fixedCategoryLabel":  "Kategori"
+                                    "fixedCategoryLabel":  "Kategori",
+                                    "panelTitle":  "Filter"
                                 },
                     "criteria":  {
                                      "title":  "Kriteria aktif",
@@ -201,8 +202,7 @@
                                      "page":  "Halaman"
                                  },
                     "pagination":  {
-                                       "previous":  "Sebelumnya",
-                                       "next":  "Berikutnya",
+                                       "loadMore":  "Muat lebih banyak",
                                        "page":  "Halaman {page}"
                                    },
                     "states":  {

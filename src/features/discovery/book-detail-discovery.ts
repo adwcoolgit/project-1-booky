@@ -1,4 +1,4 @@
-﻿import "server-only";
+import "server-only";
 
 import {
   mapBookDetailResponseDtoToDetail,
@@ -20,14 +20,14 @@ import {
   getRecommendedBooks,
 } from "@/features/discovery/api";
 import { discoveryLimitDefaults } from "@/features/discovery/model/discovery-query";
+import {
+  loadBookDetailFixture,
+  loadRecommendedBooksCollectionFixture,
+  loadReviewsFixture,
+} from "@/features/discovery/testing/discovery-fixtures.server";
 import { toHttpError } from "@/shared/api/http-client";
 import { runtimeConfig } from "@/shared/config/runtime";
 import type { AppLocale } from "@/shared/i18n/config";
-import {
-  createBookDetailResponseFixture,
-  createRecommendedBooksCollectionFixture,
-} from "@/../tests/fixtures/discovery/books-fixtures";
-import { createReviewsCollectionFixture } from "@/../tests/fixtures/discovery/reviews-fixtures";
 
 export type BookDetailReviewsView =
   | {
@@ -80,7 +80,7 @@ async function readBookReviewsView(
 ): Promise<BookDetailReviewsView> {
   try {
     const payload = runtimeConfig.authE2eFixtureMode
-      ? createReviewsCollectionFixture({
+      ? await loadReviewsFixture({
           bookId,
           page: 1,
           limit,
@@ -127,7 +127,7 @@ async function readRelatedBooksView(
 
   try {
     const payload = runtimeConfig.authE2eFixtureMode
-      ? createRecommendedBooksCollectionFixture({
+      ? await loadRecommendedBooksCollectionFixture({
           categoryId,
           page: 1,
           limit: limit + 1,
@@ -175,7 +175,7 @@ export async function readBookDetailPageView(
 
   try {
     const detailPayload = runtimeConfig.authE2eFixtureMode
-      ? createBookDetailResponseFixture({ bookId })
+      ? await loadBookDetailFixture({ bookId })
       : await getBookDetail(createDiscoveryApiClient(locale), bookId);
 
     if (!detailPayload) {

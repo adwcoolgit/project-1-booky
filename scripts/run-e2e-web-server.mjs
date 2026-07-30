@@ -5,6 +5,7 @@ const sharedEnv = {
   APP_URL: "http://127.0.0.1:3000",
   NEXT_PUBLIC_APP_URL: "http://127.0.0.1:3000",
   AUTH_ALLOWED_ORIGINS: "http://127.0.0.1:3000",
+  AUTH_SESSION_SIGNING_SECRET: "booky-e2e-session-signing-secret-0123456789",
   AUTH_E2E_FIXTURE_MODE: "true",
   NEXT_PUBLIC_AUTH_E2E_FIXTURE_MODE: "true",
 };

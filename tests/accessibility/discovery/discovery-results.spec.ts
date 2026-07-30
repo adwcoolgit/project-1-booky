@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+﻿import { expect, test } from "@playwright/test";
 import { checkA11y, injectAxe } from "axe-playwright";
 
 import {
@@ -15,7 +15,7 @@ test("book discovery results keep skip links and pass axe checks", async ({ page
     },
   ]);
 
-  await page.goto("/id/books?q=the&categoryId=7&minRating=4&limit=1&page=2");
+  await page.goto("/id/books?q=the&categoryId=7&minRating=4&limit=1");
   await page.keyboard.press("Tab");
 
   await expect(page.locator("html")).toHaveAttribute("lang", "id");

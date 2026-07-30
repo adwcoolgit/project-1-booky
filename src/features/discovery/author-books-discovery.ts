@@ -11,10 +11,10 @@ import {
 } from "@/entities/book";
 import { createDiscoveryApiClient, getAuthorBooks } from "@/features/discovery/api";
 import { discoveryLimitDefaults } from "@/features/discovery/model/discovery-query";
+import { loadAuthorBooksFixture } from "@/features/discovery/testing/discovery-fixtures.server";
 import { toHttpError } from "@/shared/api/http-client";
 import { runtimeConfig } from "@/shared/config/runtime";
 import type { AppLocale } from "@/shared/i18n/config";
-import { createAuthorBooksResponseFixture } from "@/../tests/fixtures/discovery/authors-fixtures";
 
 export type AuthorBooksPageViewState =
   | {
@@ -47,7 +47,7 @@ export async function readAuthorBooksPageView(
 ): Promise<AuthorBooksPageViewState> {
   try {
     const payload = runtimeConfig.authE2eFixtureMode
-      ? createAuthorBooksResponseFixture({ authorId, page: 1, limit })
+      ? await loadAuthorBooksFixture({ authorId, page: 1, limit })
       : await getAuthorBooks(createDiscoveryApiClient(locale), authorId, { page: 1, limit });
 
     if (!payload) {

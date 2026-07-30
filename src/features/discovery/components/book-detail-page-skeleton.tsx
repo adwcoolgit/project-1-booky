@@ -23,7 +23,7 @@ function BookCardSkeleton() {
 export function BookDetailPageSkeleton() {
   return (
     <div className="min-h-screen bg-white text-foreground" data-book-detail-page-skeleton="true">
-      <header className="home-card-shadow border-b border-border bg-white" data-book-detail-skeleton-header="true">
+      <header className="sticky top-0 z-50 home-card-shadow border-b border-border bg-white" data-book-detail-skeleton-header="true">
         <div className="mx-auto flex min-h-16 w-full max-w-canvas items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-3.5 md:px-8 lg:min-h-[72px] lg:px-10 lg:py-4 xl:min-h-[80px] xl:px-[120px] xl:py-[18px]">
           <div className="flex items-center gap-[15px]">
             <SkeletonBlock className="h-10 w-10 rounded-full lg:h-[42px] lg:w-[42px]" />

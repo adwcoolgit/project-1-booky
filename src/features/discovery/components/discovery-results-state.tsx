@@ -36,7 +36,9 @@ export type DiscoveryResultsStateProps = {
     hasPrevious?: boolean | undefined;
     hasNext: boolean;
     labels: DiscoveryPaginationLabels;
-    getPageHref: (page: number) => string;
+    isPending?: boolean | undefined;
+    getPageHref?: ((page: number) => string) | undefined;
+    onPageChange?: ((page: number) => void) | undefined;
   } | undefined;
 };
 
@@ -107,7 +109,9 @@ export function DiscoveryResultsState({
           getPageHref={pagination.getPageHref}
           hasNext={pagination.hasNext}
           hasPrevious={pagination.hasPrevious}
+          isPending={pagination.isPending}
           labels={pagination.labels}
+          onPageChange={pagination.onPageChange}
           page={pagination.page}
         />
       ) : null}

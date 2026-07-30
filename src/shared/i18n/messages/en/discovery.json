@@ -189,7 +189,8 @@
                                     "minRatingAllLabel":  "Any rating",
                                     "resetLabel":  "Reset",
                                     "applyLabel":  "Apply",
-                                    "fixedCategoryLabel":  "Category"
+                                    "fixedCategoryLabel":  "Category",
+                                    "panelTitle":  "Filter"
                                 },
                     "criteria":  {
                                      "title":  "Active criteria",
@@ -201,8 +202,7 @@
                                      "page":  "Page"
                                  },
                     "pagination":  {
-                                       "previous":  "Previous",
-                                       "next":  "Next",
+                                       "loadMore":  "Load More",
                                        "page":  "Page {page}"
                                    },
                     "states":  {
@@ -226,4 +226,3 @@
                                }
                 }
 }
-

@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+﻿import { expect, test, type Page } from "@playwright/test";
 
 import {
   authSessionCookieName,
@@ -27,9 +27,9 @@ test("expired sessions redirect to the localized login screen with returnTo pres
     }),
   );
 
-  await page.goto("/id");
+  await page.goto("/id/books?limit=1");
 
-  await expect(page).toHaveURL(/\/id\/login\?returnTo=%2Fid&reason=expired$/);
+  await expect(page).toHaveURL(/\/id\/login\?returnTo=%2Fid%2Fbooks%3Flimit%3D1&reason=expired$/);
   await expect(page.getByRole("heading", { name: "Masuk" })).toBeVisible();
   await expect(page.getByText(/Sesi Anda telah berakhir/)).toBeVisible();
 });
@@ -43,6 +43,4 @@ test("local logout returns to the localized home screen without keeping protecte
 
   await expect(page).toHaveURL(/\/en$/);
   await expect(page.getByRole("heading", { name: "Recommendation" })).toBeVisible();
-
 });
-
