@@ -42,7 +42,7 @@ for (const viewport of [
       expect(hasOverflow).toBe(false);
       await expect(page.getByRole("region", { name: entry.title })).toBeVisible();
       await expect(page.locator('[data-home-hero="true"]')).toBeVisible();
-      await expect(page.locator('[data-category-card="true"]').first()).toBeVisible();
+      await expect(page.locator('[data-category-card="true"]:visible').first()).toBeVisible();
       await expect(page.locator('[data-book-card="true"]').first()).toBeVisible();
     });
   }

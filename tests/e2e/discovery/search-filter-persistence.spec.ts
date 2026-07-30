@@ -1,4 +1,4 @@
-﻿import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 
 import {
   authSessionCookieName,
@@ -20,7 +20,9 @@ test("bookmarkable book search keeps filters across refresh and navigation", asy
   await setUserSession(page, "en");
   await page.goto("/en/books?limit=1");
 
-  await page.locator("#discovery-search-input").fill("  the  ");
+  const searchInput = page.locator("#discovery-search-input");
+  await searchInput.click();
+  await searchInput.pressSequentially("  the  ", { delay: 50 });
   await expect(page).toHaveURL("/en/books?q=the&limit=1");
 
   await page.locator('[data-discovery-category-option="7"]').click();

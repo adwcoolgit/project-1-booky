@@ -57,7 +57,7 @@ for (const locale of ["en", "id"] as const) {
     await expect(page.locator('[data-home-header-bag="true"]')).toBeVisible();
     await expect(page.locator('[data-home-header-profile="true"]')).toBeVisible();
     await expect(page.locator('[data-home-header-profile-chevron="true"]')).toBeVisible();
-    await expect(page.locator('[data-category-card="true"]')).toHaveCount(4);
+    await expect(page.locator('[data-category-card="true"]:visible')).toHaveCount(4);
     await expect(page.locator('[data-book-card="true"]')).toHaveCount(8);
     await expect(page.locator('[data-author-card="true"]')).toHaveCount(4);
     await expect(page.getByRole("button", { name: expectations[locale].loadMore })).toBeVisible();

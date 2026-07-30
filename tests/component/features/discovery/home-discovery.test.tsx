@@ -1,4 +1,4 @@
-﻿import { QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ReactNode } from "react";
@@ -112,10 +112,9 @@ describe("home discovery sections", () => {
     expect(screen.getByRole("heading", { name: "Categories" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Recommendation" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Popular Authors" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Science Fiction" })).toHaveAttribute(
-      "href",
-      "/en/categories/science-fiction-7",
-    );
+    for (const categoryLink of screen.getAllByRole("link", { name: "Science Fiction" })) {
+      expect(categoryLink).toHaveAttribute("href", "/en/categories/science-fiction-7");
+    }
     expect(authorLink).toHaveAttribute("href", "/en/authors/21");
     expect(recommendationCardsBefore).toHaveLength(8);
 
