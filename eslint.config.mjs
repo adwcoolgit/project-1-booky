@@ -17,6 +17,7 @@ export default tseslint.config(
   {
     ignores: [
       ".agents/**",
+      "build/**",
       ".next/**",
       ".specify/**",
       "coverage/**",

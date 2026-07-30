@@ -27,5 +27,17 @@
     "description": "The route may be missing or is not yet prepared in this foundation slice.",
     "unsupportedLocaleDescription": "This locale is not supported for Booky yet. Use English or Bahasa Indonesia routes.",
     "recovery": "Go to public placeholder"
+  },
+  "authGuards": {
+    "eyebrow": "Protected content",
+    "userHomeTitle": "Authorized user experience",
+    "userHomeDescription": "This placeholder route only renders after the localized USER guard allows access.",
+    "adminUsersTitle": "Authorized admin experience",
+    "adminUsersDescription": "This placeholder route only renders after the localized ADMIN guard allows access.",
+    "forbiddenTitle": "This page is not available for your role",
+    "forbiddenDescription": "Booky preserved your session, but this localized route is reserved for a different authorized experience.",
+    "userHomeAction": "Go to user home",
+    "adminHomeAction": "Go to admin home",
+    "loginAction": "Go to login"
   }
 }

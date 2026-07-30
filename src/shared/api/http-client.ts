@@ -8,6 +8,18 @@ export type HttpError = NormalizedError & {
   source: "http";
 };
 
+function isHttpErrorLike(error: unknown): error is HttpError {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "source" in error &&
+    error.source === "http" &&
+    "code" in error &&
+    "message" in error &&
+    "status" in error
+  );
+}
+
 function mapStatusToCode(status: number | null): NormalizedError["code"] {
   switch (status) {
     case 0:
@@ -31,6 +43,10 @@ function mapStatusToCode(status: number | null): NormalizedError["code"] {
 }
 
 export function toHttpError(error: unknown): HttpError {
+  if (isHttpErrorLike(error)) {
+    return error;
+  }
+
   if (axios.isAxiosError(error)) {
     const status = error.response?.status ?? null;
 

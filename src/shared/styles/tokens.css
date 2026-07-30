@@ -1,6 +1,49 @@
 :root {
-  --font-display: var(--font-booky), sans-serif;
-  --font-body: var(--font-booky), sans-serif;
+  --font-display: var(--font-booky), "Quicksand", sans-serif;
+  --font-body: var(--font-booky), "Quicksand", sans-serif;
+
+  --font-size-display-3xl: 56px;
+  --font-size-display-2xl: 48px;
+  --font-size-display-xl: 60px;
+  --font-size-display-lg: 36px;
+  --font-size-display-md: 32px;
+  --font-size-display-sm: 28px;
+  --font-size-display-xs: 24px;
+  --font-size-text-xl: 20px;
+  --font-size-text-lg: 18px;
+  --font-size-text-md: 16px;
+  --font-size-text-sm: 14px;
+  --font-size-text-xs: 12px;
+
+  --line-height-display-3xl: 68px;
+  --line-height-display-2xl: 60px;
+  --line-height-display-xl: 72px;
+  --line-height-display-lg: 44px;
+  --line-height-display-md: 42px;
+  --line-height-display-sm: 38px;
+  --line-height-display-xs: 36px;
+  --line-height-text-xl: 34px;
+  --line-height-text-lg: 32px;
+  --line-height-text-md: 30px;
+  --line-height-text-sm: 28px;
+  --line-height-text-xs: 24px;
+
+  /* Repeated screen usage promoted to app-level semantic typography utilities. */
+  --tracking-eyebrow: 0.16em;
+  --text-page-title-mobile-size: var(--font-size-display-xs);
+  --text-page-title-mobile-line-height: var(--line-height-display-xs);
+  --text-page-title-desktop-size: var(--font-size-display-2xl);
+  --text-page-title-desktop-line-height: var(--line-height-display-2xl);
+  --text-section-title-mobile-size: var(--font-size-display-xs);
+  --text-section-title-mobile-line-height: var(--line-height-display-xs);
+  --text-section-title-desktop-size: var(--font-size-display-md);
+  --text-section-title-desktop-line-height: var(--line-height-display-md);
+  --text-body-mobile-size: var(--font-size-text-sm);
+  --text-body-mobile-line-height: var(--line-height-text-sm);
+  --text-body-desktop-size: var(--font-size-text-md);
+  --text-body-desktop-line-height: var(--line-height-text-md);
+  --text-caption-size: var(--font-size-text-xs);
+  --text-caption-line-height: var(--line-height-text-xs);
 
   --base-white: #ffffff;
   --base-black: #000000;
@@ -40,6 +83,11 @@
   --radius-4xl: 24px;
   --radius-full: 9999px;
 
+  --radius-field: var(--radius-xl);
+  --radius-card: var(--radius-2xl);
+  --radius-dialog: var(--radius-2xl);
+  --radius-pill: var(--radius-full);
+
   --space-none: 0;
   --space-xxs: 2px;
   --space-xs: 4px;
@@ -59,6 +107,8 @@
   --space-11xl: 160px;
 
   --shadow-card: 0 0 10px rgba(203, 202, 202, 0.25);
+  --shadow-lg: var(--shadow-card);
+  /* Exact shadow-xs value is not present in the saved token snapshot. */
 
   --layout-desktop-canvas: 1440px;
   --layout-desktop-header: 80px;
@@ -69,16 +119,24 @@
   --layout-mobile-content: 361px;
 
   --color-surface: var(--base-white);
+  --color-surface-elevated: var(--base-white);
   --color-surface-subtle: var(--neutral-50);
+  --color-surface-muted: var(--neutral-100);
+  --color-surface-brand: var(--primary-100);
+  --color-surface-brand-strong: var(--primary-200);
   --color-text: var(--neutral-900);
+  --color-text-strong: var(--neutral-950);
   --color-text-muted: var(--neutral-600);
+  --color-text-placeholder: var(--neutral-500);
   --color-border: var(--neutral-200);
   --color-border-strong: var(--neutral-300);
   --color-brand: var(--primary-300);
   --color-brand-subtle: var(--primary-100);
   --color-brand-strong: var(--primary-200);
   --color-danger: var(--screen-error);
+  --color-danger-accent: var(--accent-red);
   --color-success: var(--accent-green);
+  --color-status-active: var(--status-green);
   --color-warning: var(--accent-yellow);
   --color-muted: var(--neutral-100);
   --color-card-shadow: var(--shadow-card);

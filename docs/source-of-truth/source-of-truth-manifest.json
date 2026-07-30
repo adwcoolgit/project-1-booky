@@ -1,13 +1,13 @@
 {
   "name": "Booky Source-of-Truth Manifest",
   "packVersion": "1.0",
-  "generatedAtUtc": "2026-07-26T10:21:29.727120+00:00",
+  "generatedAtUtc": "2026-07-27T13:18:22.860Z",
   "hashAlgorithm": "SHA-256",
   "files": [
     {
       "path": "README.md",
-      "sha256": "214fc2a826d1494c8ec1559dd590a00225724d5bc6715269a053b97829211158",
-      "sizeBytes": 823
+      "sha256": "01c94d3570e1396088288809be2455fb8e45d14ea8dfd0b0cb4b606e3bdbbd36",
+      "sizeBytes": 813
     },
     {
       "path": "api/API_CONTRACT_INTEGRATION_SPEC_Library_App_v1.3.md",
@@ -16,8 +16,8 @@
     },
     {
       "path": "api/Library_App_API_Endpoint_Manifest_v1.3.csv",
-      "sha256": "2753f329a51cc654ca3eb090126e0038d9c5d198269e8dc7efdde4e2ec3d044b",
-      "sizeBytes": 7250
+      "sha256": "087ce05fb41824e6426674248c657c71b7e4ec2d83ac5c2d6d4c3778f14c0723",
+      "sizeBytes": 7208
     },
     {
       "path": "api/Library_App_OpenAPI_3.0.3_v1.0.0.json",
@@ -26,13 +26,13 @@
     },
     {
       "path": "api/library-app-api-reference.txt",
-      "sha256": "254be258a5eb01a36b75b29231b3047cfebf0e05673b53d67474ab92c628a7ee",
-      "sizeBytes": 53290
+      "sha256": "5dd0757510251e48d1b20dd219a180a0886dd2715f198aab01dd083298e9fb71",
+      "sizeBytes": 51291
     },
     {
       "path": "design/Library_App_Asset_Manifest.csv",
-      "sha256": "7a92f7b41efb8f0ced1a43ae94921a46949548e90b2053620098dba40e884c62",
-      "sizeBytes": 1580
+      "sha256": "cf693e724fede24f67cf9f37c7043e3410e5f99844a4947e117696611bd4cd7f",
+      "sizeBytes": 1569
     },
     {
       "path": "design/Library_App_Figma_Read_Ledger.md",
@@ -61,8 +61,8 @@
     },
     {
       "path": "i18n/I18N_IMPLEMENTATION_SPEC_Library_App_v1.3.md",
-      "sha256": "1f85939bdbcfb01b10ff8964774fd989d4a322f9a5b0bf51b4da275732c0682a",
-      "sizeBytes": 2138
+      "sha256": "890d68f4cd911dbcb8b5e3068d8faec95fac09f355a3ff4b2b3daa081a4cad2a",
+      "sizeBytes": 2273
     },
     {
       "path": "i18n/messages/en.json",
@@ -86,8 +86,8 @@
     },
     {
       "path": "product/PRD_Library_App_Figma_Aligned_v1.3.md",
-      "sha256": "53281bf1b422dcd3b04983100640d983440ba3516190f38b040068de805ff453",
-      "sizeBytes": 87894
+      "sha256": "bebbdb97c12fd394e2ceb3224371e3d0c3c8ad2a89743895f8df1d21161c788e",
+      "sizeBytes": 88171
     },
     {
       "path": "quality/a11y_audit_v1.3.json",

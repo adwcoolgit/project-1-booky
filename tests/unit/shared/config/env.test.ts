@@ -30,6 +30,19 @@ describe("environment parsing", () => {
       NODE_ENV: "production",
       APP_URL: "https://booky.example.com",
       API_BASE_URL: "https://booky.example.com/api",
+      AUTH_SESSION_COOKIE_NAME: "BOOKY_SESSION",
+    });
+  });
+
+  it("normalizes boolean env values with surrounding whitespace", () => {
+    expect(
+      getServerEnv({
+        AUTH_SESSION_COOKIE_SECURE: " true ",
+        AUTH_E2E_FIXTURE_MODE: " false ",
+      }),
+    ).toMatchObject({
+      AUTH_SESSION_COOKIE_SECURE: true,
+      AUTH_E2E_FIXTURE_MODE: false,
     });
   });
 });

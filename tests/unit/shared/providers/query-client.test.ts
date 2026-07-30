@@ -1,5 +1,6 @@
-﻿import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 
+import { clearPrivateQueryCache } from "@/shared/auth/private-query-cache";
 import { createQueryClient, queryClientDefaults } from "@/shared/providers/query-client";
 import { createTestQueryClient } from "@/shared/test/create-test-query-client";
 
@@ -22,5 +23,16 @@ describe("query client foundation", () => {
       gcTime: Infinity,
     });
     expect(firstClient.getDefaultOptions().mutations).toMatchObject(queryClientDefaults.mutations);
+  });
+
+  it("lets private cache cleanup remove auth session data without touching public data", () => {
+    const client = createTestQueryClient();
+
+    client.setQueryData(["auth-session", "id"], { status: "authenticated" });
+    client.setQueryData(["books", { page: 1 }], ["public"]);
+
+    expect(clearPrivateQueryCache(client)).toBe(1);
+    expect(client.getQueryData(["auth-session", "id"])).toBeUndefined();
+    expect(client.getQueryData(["books", { page: 1 }])).toEqual(["public"]);
   });
 });
