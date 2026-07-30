@@ -125,6 +125,30 @@
     @apply inline-flex h-12 w-full items-center justify-center rounded-full bg-brand px-md text-body-md font-bold tracking-auth text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70;
   }
 
+  .home-card-shadow {
+    box-shadow: var(--shadow-card);
+  }
+
+  .home-section-heading {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    line-height: 2.25rem;
+    font-weight: 700;
+    color: var(--neutral-950);
+  }
+
+  .home-hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 6vw, 5.15775rem);
+    line-height: 1.24;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    text-align: center;
+    color: #6597e8;
+    -webkit-text-stroke: 5px #ffffff;
+    text-shadow: 0 8px 20px rgba(255, 255, 255, 0.16);
+  }
+
   @media (min-width: 768px) {
     .text-page-title {
       font-size: var(--text-page-title-desktop-size);
@@ -140,6 +164,14 @@
       font-size: var(--text-body-desktop-size);
       line-height: var(--text-body-desktop-line-height);
     }
+
+    .home-section-heading {
+      font-size: 2.25rem;
+      line-height: 2.75rem;
+    }
+
+    .home-hero-title {
+      -webkit-text-stroke: 7.19318px #ffffff;
+    }
   }
 }
-

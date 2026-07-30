@@ -8,12 +8,29 @@ export const loginResponseUserSchema = z.object({
 });
 export type LoginResponseUserDto = z.infer<typeof loginResponseUserSchema>;
 
-export const loginResponseDtoSchema = z.object({
+const directLoginResponseDtoSchema = z.object({
   token: z.string().min(1),
   user: loginResponseUserSchema,
 });
-export type LoginResponseDto = z.infer<typeof loginResponseDtoSchema>;
+
+const loginResponseEnvelopeSchema = z.object({
+  success: z.boolean().optional(),
+  message: z.string().optional(),
+  data: directLoginResponseDtoSchema,
+});
+
+export const loginResponseDtoSchema = z.union([
+  directLoginResponseDtoSchema,
+  loginResponseEnvelopeSchema,
+]);
+export type LoginResponseDto = z.infer<typeof directLoginResponseDtoSchema>;
 
 export function parseLoginResponseDto(value: unknown): LoginResponseDto {
-  return loginResponseDtoSchema.parse(value);
+  const enveloped = loginResponseEnvelopeSchema.safeParse(value);
+
+  if (enveloped.success) {
+    return enveloped.data.data;
+  }
+
+  return directLoginResponseDtoSchema.parse(value);
 }

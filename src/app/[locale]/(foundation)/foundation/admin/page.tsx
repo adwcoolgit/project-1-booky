@@ -44,5 +44,6 @@ export default async function AdminFoundationPage({
   const shell = createShellDefinition(locale, "admin", getFoundationShellMessages(locale));
   const shellChrome = getFoundationShellChromeMessages(locale);
 
-  return <AdminShell areaLabel={shellChrome.areas.admin} helper={shellChrome.helper} shell={shell} />;
+  return <AdminShell areaLabel={shellChrome.areas.admin} helper={shellChrome.helper} locale={locale} shell={shell} />;
 }
+

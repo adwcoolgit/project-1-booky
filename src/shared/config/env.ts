@@ -1,8 +1,10 @@
 import { z } from "zod";
 
 const defaultAppUrl = "http://localhost:3000";
-const defaultApiBaseUrl = "https://library-backend-production-b9cf.up.railway.app/api";
+const defaultApiBaseUrl =
+  "https://library-backend-production-b9cf.up.railway.app/api";
 const defaultAuthSessionCookieName = "BOOKY_SESSION";
+const defaultDevelopmentSessionSigningSecret = "booky-development-session-signing-secret-0123456789";
 
 function normalizeBooleanEnvValue(value: unknown) {
   if (typeof value !== "string") {
@@ -66,16 +68,23 @@ const authAllowedOriginsSchema = z
 const publicEnvSchema = z.object({
   NEXT_PUBLIC_APP_URL: z.string().url().default(defaultAppUrl),
   NEXT_PUBLIC_API_BASE_URL: z.string().url().default(defaultApiBaseUrl),
+  NEXT_PUBLIC_AUTH_E2E_FIXTURE_MODE: authE2eFixtureModeSchema,
 });
 
 const serverEnvSchema = z.object({
-  NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
+  NODE_ENV: z
+    .enum(["development", "test", "production"])
+    .default("development"),
   APP_URL: z.string().url().optional(),
   API_BASE_URL: z.string().url().optional(),
   NEXT_PUBLIC_APP_URL: z.string().url().optional(),
   NEXT_PUBLIC_API_BASE_URL: z.string().url().optional(),
-  AUTH_SESSION_COOKIE_NAME: z.string().min(1).default(defaultAuthSessionCookieName),
+  AUTH_SESSION_COOKIE_NAME: z
+    .string()
+    .min(1)
+    .default(defaultAuthSessionCookieName),
   AUTH_SESSION_COOKIE_SECURE: authSessionCookieSecureSchema,
+  AUTH_SESSION_SIGNING_SECRET: z.string().min(32).optional(),
   AUTH_ALLOWED_ORIGINS: authAllowedOriginsSchema,
   AUTH_E2E_FIXTURE_MODE: authE2eFixtureModeSchema,
 });
@@ -90,4 +99,16 @@ export function getPublicEnv(source: EnvSource = process.env): PublicEnv {
 
 export function getServerEnv(source: EnvSource = process.env): ServerEnv {
   return serverEnvSchema.parse(source);
+}
+
+export function resolveAuthSessionSigningSecret(env: ServerEnv): string | undefined {
+  if (env.AUTH_SESSION_SIGNING_SECRET) {
+    return env.AUTH_SESSION_SIGNING_SECRET;
+  }
+
+  if (env.NODE_ENV === "production") {
+    return undefined;
+  }
+
+  return defaultDevelopmentSessionSigningSecret;
 }

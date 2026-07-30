@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+﻿import { expect, test, type Page } from "@playwright/test";
 
 import {
   authSessionCookieName,
@@ -27,21 +27,20 @@ test("expired sessions redirect to the localized login screen with returnTo pres
     }),
   );
 
-  await page.goto("/id");
+  await page.goto("/id/books?limit=1");
 
-  await expect(page).toHaveURL(/\/id\/login\?returnTo=%2Fid&reason=expired$/);
+  await expect(page).toHaveURL(/\/id\/login\?returnTo=%2Fid%2Fbooks%3Flimit%3D1&reason=expired$/);
   await expect(page.getByRole("heading", { name: "Masuk" })).toBeVisible();
   await expect(page.getByText(/Sesi Anda telah berakhir/)).toBeVisible();
 });
 
-test("local logout returns to the localized login screen without keeping protected content visible", async ({ page }) => {
+test("local logout returns to the localized home screen without keeping protected content visible", async ({ page }) => {
   await setSessionCookie(page, createEncodedSessionCookieFixture("ADMIN", "en"));
 
   await page.goto("/en/admin/users");
   await expect(page.getByRole("button", { name: "Logout" })).toBeVisible();
   await page.getByRole("button", { name: "Logout" }).click();
 
-  await expect(page).toHaveURL(/\/en\/admin\/login\?returnTo=%2Fen%2Fadmin%2Fusers&reason=logged-out$/);
-  await expect(page.getByRole("heading", { name: "Admin Login" })).toBeVisible();
-  await expect(page.getByText(/signed out/i)).toBeVisible();
+  await expect(page).toHaveURL(/\/en$/);
+  await expect(page.getByRole("heading", { name: "Recommendation" })).toBeVisible();
 });

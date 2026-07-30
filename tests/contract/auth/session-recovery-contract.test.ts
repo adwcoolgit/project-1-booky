@@ -67,7 +67,7 @@ describe("session recovery contract", () => {
     expect(cookieStore.delete).toHaveBeenCalledWith(runtimeConfig.authSessionCookieName);
   });
 
-  it("clears the local session and returns a localized logout redirect", async () => {
+  it("clears the local session and returns a localized home redirect after explicit logout", async () => {
     const deleteSessionEnvelope = vi.fn(() => Promise.resolve(undefined));
     const assertAllowedOrigin = vi.fn();
     const request = new Request("http://localhost:3000/api/auth/logout?locale=id&surface=admin&returnTo=%2Fid%2Fadmin%2Fusers", {
@@ -88,7 +88,7 @@ describe("session recovery contract", () => {
       status: 200,
       body: {
         status: "logged-out",
-        redirectTo: "/id/admin/login?returnTo=%2Fid%2Fadmin%2Fusers&reason=logged-out",
+        redirectTo: "/id",
       },
     });
   });
@@ -123,3 +123,4 @@ describe("session recovery contract", () => {
     });
   });
 });
+

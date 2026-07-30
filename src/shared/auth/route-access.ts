@@ -74,6 +74,17 @@ export function isLocalePrefixedPathname(pathname: string): boolean {
 export function getRouteAccessDefinition(pathname: string): RouteAccessDefinition {
   const { remainder } = splitPathname(pathname);
 
+  if (remainder === "/") {
+    return {
+      kind: "shared",
+      requirement: "public",
+      isProtected: false,
+      isAuthPage: false,
+      loginSurface: null,
+      allowAdmin: true,
+    };
+  }
+
   if (remainder === "/login" || remainder === "/register") {
     return {
       kind: "guest-only",

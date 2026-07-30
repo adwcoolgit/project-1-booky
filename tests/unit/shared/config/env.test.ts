@@ -6,7 +6,8 @@ describe("environment parsing", () => {
   it("uses documented defaults for the public runtime", () => {
     expect(getPublicEnv({})).toEqual({
       NEXT_PUBLIC_APP_URL: "http://localhost:3000",
-      NEXT_PUBLIC_API_BASE_URL: "https://library-backend-production-b9cf.up.railway.app/api",
+      NEXT_PUBLIC_API_BASE_URL:
+        "https://library-backend-production-b9cf.up.railway.app/api",
     });
   });
 
@@ -14,7 +15,8 @@ describe("environment parsing", () => {
     expect(() =>
       getPublicEnv({
         NEXT_PUBLIC_APP_URL: "not-a-url",
-        NEXT_PUBLIC_API_BASE_URL: "https://library-backend-production-b9cf.up.railway.app/api",
+        NEXT_PUBLIC_API_BASE_URL:
+          "https://library-backend-production-b9cf.up.railway.app/api",
       }),
     ).toThrow();
   });

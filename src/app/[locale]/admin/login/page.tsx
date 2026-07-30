@@ -76,11 +76,11 @@ export default async function AdminLoginPage({
   }
 
   return (
-    <main className="min-h-screen bg-white px-4 py-6 md:px-8 md:py-8" id="main-content" tabIndex={-1}>
-      <header className="mx-auto flex w-full max-w-canvas justify-end pb-10 md:pb-12">
+    <main className="relative min-h-screen overflow-x-hidden bg-white px-4 py-4 sm:px-5 sm:py-5 md:px-8 md:py-8 lg:px-10 lg:py-10 xl:px-12 xl:py-12" id="main-content" tabIndex={-1}>
+      <header className="absolute right-4 top-4 z-10 sm:right-5 sm:top-5 md:static md:mx-auto md:flex md:w-full md:max-w-canvas md:justify-end md:pb-10 lg:pb-12">
         <LocaleSwitcher />
       </header>
-      <div className="mx-auto flex min-h-auth-stage max-w-canvas items-center justify-center pb-10 md:pb-0">
+      <div className="mx-auto flex min-h-screen w-full max-w-canvas items-center justify-center md:min-h-auth-stage md:pb-0">
         <LoginSurface
           initialFeedback={resolveInitialFeedback(locale, resolvedSearchParams)}
           locale={locale}

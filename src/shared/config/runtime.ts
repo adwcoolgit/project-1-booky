@@ -1,5 +1,5 @@
 import { defaultLocale, localeCookieName, supportedLocales } from "@/shared/i18n/config";
-import { getPublicEnv, getServerEnv } from "@/shared/config/env";
+import { getPublicEnv, getServerEnv, resolveAuthSessionSigningSecret } from "@/shared/config/env";
 
 const publicEnv = getPublicEnv();
 const serverEnv = getServerEnv();
@@ -15,6 +15,8 @@ export const runtimeConfig = {
   authSessionCookieName: serverEnv.AUTH_SESSION_COOKIE_NAME,
   authSessionCookieSecure:
     serverEnv.AUTH_SESSION_COOKIE_SECURE ?? serverEnv.NODE_ENV === "production",
+  authSessionSigningSecret: resolveAuthSessionSigningSecret(serverEnv),
   authAllowedOrigins: serverEnv.AUTH_ALLOWED_ORIGINS ?? [appUrl],
-  authE2eFixtureMode: serverEnv.AUTH_E2E_FIXTURE_MODE ?? false,
+  authE2eFixtureMode:
+    serverEnv.AUTH_E2E_FIXTURE_MODE ?? publicEnv.NEXT_PUBLIC_AUTH_E2E_FIXTURE_MODE ?? false,
 } as const;

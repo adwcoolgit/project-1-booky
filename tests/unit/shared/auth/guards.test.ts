@@ -30,6 +30,21 @@ describe("server route guards", () => {
     expect(result.returnTo?.href).toBe("/id/admin/users?page=2");
   });
 
+  it("allows guests to stay on the localized public home route", async () => {
+    readSessionStateMock.mockResolvedValue(createGuestSession("en"));
+
+    const result = await readRouteGuardResult({
+      pathname: "/en",
+      locale: "en",
+      returnTo: "/en",
+    });
+
+    expect(result.routeAccess.kind).toBe("shared");
+    expect(result.routeAccess.isProtected).toBe(false);
+    expect(result.decision.outcome).toBe("allow");
+    expect(result.redirectPath).toBeNull();
+  });
+
   it("drops cross-locale returnTo values instead of replaying them", async () => {
     readSessionStateMock.mockResolvedValue(createGuestSession("id"));
 
@@ -56,5 +71,3 @@ describe("server route guards", () => {
     expect(resolveDecisionRedirectPath(result.decision)).toBe("/en/forbidden");
   });
 });
-
-

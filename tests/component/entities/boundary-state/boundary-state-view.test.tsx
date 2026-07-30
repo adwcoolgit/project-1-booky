@@ -3,6 +3,10 @@ import { describe, expect, it, vi } from "vitest";
 
 import { BoundaryStateView } from "@/features/foundation-shell";
 
+vi.mock("next/image", () => ({
+  default: ({ alt, src }: { alt: string; src: string }) => <span data-next-image={src} data-next-image-alt={alt} />,
+}));
+
 vi.mock("@/features/foundation-shell/components/locale-switcher", () => ({
   LocaleSwitcher: () => <div data-testid="locale-switcher">locale-switcher</div>,
 }));
@@ -22,7 +26,7 @@ describe("boundary state view", () => {
       />,
     );
 
-    expect(screen.getByText("Shell admin-facing")).toBeInTheDocument();
+    expect(screen.getAllByText("Shell admin-facing").length).toBeGreaterThan(0);
     expect(screen.getByRole("heading", { name: "Tampilan fondasi ini tidak dapat dirender" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Buka placeholder publik" })).toHaveAttribute(
       "href",
@@ -36,9 +40,10 @@ describe("boundary state view", () => {
   it("renders a polite loading boundary inside the public shell", () => {
     render(<BoundaryStateView locale="en" pathname="/en/foundation/public" state="loading" />);
 
-    expect(screen.getByText("User-facing shell")).toBeInTheDocument();
+    expect(screen.getAllByText("User-facing shell").length).toBeGreaterThan(0);
     expect(screen.getByRole("heading", { name: "Preparing foundation shell" })).toBeInTheDocument();
     expect(screen.getByRole("status")).toHaveAttribute("aria-busy", "true");
+    expect(screen.getByTestId("locale-switcher")).toBeInTheDocument();
   });
 
   it("falls back to English copy for unsupported locale not-found states", () => {
@@ -58,3 +63,6 @@ describe("boundary state view", () => {
     );
   });
 });
+
+
+
