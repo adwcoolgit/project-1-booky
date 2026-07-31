@@ -4,10 +4,14 @@ import sourceEnMessages from "../../../docs/source-of-truth/i18n/messages/en.jso
 import sourceIdMessages from "../../../docs/source-of-truth/i18n/messages/id.json";
 import authEnMessages from "@/shared/i18n/messages/en/auth.json";
 import boundariesEnMessages from "@/shared/i18n/messages/en/boundaries.json";
+import cartEnMessages from "@/shared/i18n/messages/en/cart.json";
+import checkoutEnMessages from "@/shared/i18n/messages/en/checkout.json";
 import discoveryEnMessages from "@/shared/i18n/messages/en/discovery.json";
 import foundationEnMessages from "@/shared/i18n/messages/en/foundation.json";
 import authIdMessages from "@/shared/i18n/messages/id/auth.json";
 import boundariesIdMessages from "@/shared/i18n/messages/id/boundaries.json";
+import cartIdMessages from "@/shared/i18n/messages/id/cart.json";
+import checkoutIdMessages from "@/shared/i18n/messages/id/checkout.json";
 import discoveryIdMessages from "@/shared/i18n/messages/id/discovery.json";
 import foundationIdMessages from "@/shared/i18n/messages/id/foundation.json";
 import type { AppLocale } from "@/shared/i18n/config";
@@ -35,6 +39,16 @@ const discoveryFeatureMessages = {
 const authFeatureMessages = {
   en: authEnMessages,
   id: authIdMessages,
+} as const;
+
+const cartFeatureMessages = {
+  en: cartEnMessages,
+  id: cartIdMessages,
+} as const;
+
+const checkoutFeatureMessages = {
+  en: checkoutEnMessages,
+  id: checkoutIdMessages,
 } as const;
 
 export type FoundationShellMessages = {
@@ -77,7 +91,11 @@ export type SourceNavigationMessages = (typeof sourceMessages)[AppLocale]["Navig
 export type SourceBookMessages = (typeof sourceMessages)[AppLocale]["Books"];
 export type DiscoveryFeatureMessages = (typeof discoveryFeatureMessages)[AppLocale];
 export type AuthFeatureMessages = (typeof authFeatureMessages)[AppLocale];
+export type CartFeatureMessages = (typeof cartFeatureMessages)[AppLocale];
+export type CheckoutFeatureMessages = (typeof checkoutFeatureMessages)[AppLocale];
 export type BoundaryMessages = (typeof boundaryMessages)[AppLocale];
+export type SourceCartMessages = (typeof sourceMessages)[AppLocale]["Cart"];
+export type SourceCheckoutMessages = (typeof sourceMessages)[AppLocale]["Checkout"];
 
 export function getMessages(locale: AppLocale): AbstractIntlMessages {
   return {
@@ -86,6 +104,8 @@ export function getMessages(locale: AppLocale): AbstractIntlMessages {
     Discovery: discoveryFeatureMessages[locale],
     Foundation: foundationMessages[locale],
     AuthFeature: authFeatureMessages[locale],
+    CartFeature: cartFeatureMessages[locale],
+    CheckoutFeature: checkoutFeatureMessages[locale],
   } satisfies AbstractIntlMessages;
 }
 
@@ -142,6 +162,22 @@ export function getBoundaryMessages(locale: AppLocale): BoundaryMessages {
 
 export function getDiscoveryFeatureMessages(locale: AppLocale): DiscoveryFeatureMessages {
   return discoveryFeatureMessages[locale];
+}
+
+export function getCartFeatureMessages(locale: AppLocale): CartFeatureMessages {
+  return cartFeatureMessages[locale];
+}
+
+export function getCheckoutFeatureMessages(locale: AppLocale): CheckoutFeatureMessages {
+  return checkoutFeatureMessages[locale];
+}
+
+export function getSourceCartMessages(locale: AppLocale): SourceCartMessages {
+  return sourceMessages[locale].Cart;
+}
+
+export function getSourceCheckoutMessages(locale: AppLocale): SourceCheckoutMessages {
+  return sourceMessages[locale].Checkout;
 }
 
 export function getSourceHomeMessages(locale: AppLocale): SourceHomeMessages {

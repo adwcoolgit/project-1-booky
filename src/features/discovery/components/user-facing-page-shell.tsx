@@ -51,6 +51,7 @@ export function UserFacingPageShell({
         <HomePageHeader
           borrowedListLabel={navigation.borrowedList}
           brandLabel={brandLabel}
+          cartLabel={navigation.cart}
           displayName={props.displayName}
           locale={locale}
           profileLabel={navigation.profile}

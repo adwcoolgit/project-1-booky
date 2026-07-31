@@ -1,0 +1,28 @@
+{
+  "loading": "Loading your cart...",
+  "unknownBookTitle": "Unavailable book",
+  "ineligibleUnavailable": "This book is no longer available to borrow.",
+  "ineligibleStale": "This cart row could not be verified and cannot be borrowed.",
+  "itemCountOne": "{count} Item",
+  "itemCountOther": "{count} Items",
+  "totalBookLabel": "Total Book",
+  "pageTitle": "My Cart",
+  "empty": {
+    "title": "Your cart is empty",
+    "description": "Browse the catalog and add a book to start your next loan."
+  },
+  "error": {
+    "title": "We could not load your cart",
+    "description": "Something went wrong while loading your cart. Try again.",
+    "retry": "Try again"
+  },
+  "select": "Select",
+  "remove": "Remove",
+  "removeError": "This item could not be removed. Try again.",
+  "clear": "Clear cart",
+  "clearError": "Your cart could not be cleared. Try again.",
+  "checkoutBlocked": "Select at least one eligible book to continue to checkout.",
+  "addToCartPending": "Adding...",
+  "addToCartAdded": "Added to cart",
+  "addToCartError": "This book could not be added to your cart. It may be out of stock, already in your cart, or unavailable."
+}

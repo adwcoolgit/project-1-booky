@@ -1,0 +1,28 @@
+{
+  "loading": "Memuat keranjang Anda...",
+  "unknownBookTitle": "Buku tidak tersedia",
+  "ineligibleUnavailable": "Buku ini sudah tidak tersedia untuk dipinjam.",
+  "ineligibleStale": "Baris keranjang ini tidak dapat diverifikasi dan tidak dapat dipinjam.",
+  "itemCountOne": "{count} Buku",
+  "itemCountOther": "{count} Buku",
+  "totalBookLabel": "Total Buku",
+  "pageTitle": "Keranjang Saya",
+  "empty": {
+    "title": "Keranjang Anda kosong",
+    "description": "Jelajahi katalog dan tambahkan buku untuk memulai peminjaman berikutnya."
+  },
+  "error": {
+    "title": "Keranjang tidak dapat dimuat",
+    "description": "Terjadi kesalahan saat memuat keranjang Anda. Coba lagi.",
+    "retry": "Coba lagi"
+  },
+  "select": "Pilih",
+  "remove": "Hapus",
+  "removeError": "Barang ini tidak dapat dihapus. Coba lagi.",
+  "clear": "Kosongkan keranjang",
+  "clearError": "Keranjang Anda tidak dapat dikosongkan. Coba lagi.",
+  "checkoutBlocked": "Pilih setidaknya satu buku yang memenuhi syarat untuk melanjutkan ke checkout.",
+  "addToCartPending": "Menambahkan...",
+  "addToCartAdded": "Ditambahkan ke keranjang",
+  "addToCartError": "Buku ini tidak dapat ditambahkan ke keranjang. Mungkin stok habis, sudah ada di keranjang, atau tidak tersedia."
+}

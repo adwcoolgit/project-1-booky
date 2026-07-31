@@ -23,6 +23,7 @@ import {
   protectedUnauthorizedToken,
 } from "@/../tests/fixtures/auth/protected-route-fixtures";
 import { discoveryHandlers } from "@/../tests/setup/msw/discovery-handlers";
+import { cartHandlers } from "@/../tests/setup/msw/cart-handlers";
 
 const foundationBaseUrl = runtimeConfig.apiBaseUrl;
 const authBaseUrl = runtimeConfig.apiBaseUrl;
@@ -103,4 +104,5 @@ export const handlers = [
   ...foundationHandlers,
   ...authHandlers,
   ...discoveryHandlers,
+  ...cartHandlers,
 ];

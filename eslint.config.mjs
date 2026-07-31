@@ -17,6 +17,8 @@ export default tseslint.config(
   {
     ignores: [
       ".agents/**",
+      ".venv/**",
+      "aider-env/**",
       "build/**",
       ".next/**",
       ".specify/**",

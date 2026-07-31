@@ -26,9 +26,11 @@ vi.mock("@/features/foundation-shell", () => ({
   LocaleSwitcher: () => <div data-testid="locale-switcher" />,
 }));
 
-vi.mock("@/features/discovery/components/discovery-bag-icon", () => ({
-  DiscoveryBagIcon: ({ className }: { className?: string }) => (
-    <svg className={className} data-testid="bag-icon" />
+vi.mock("@/features/cart", () => ({
+  CartBadge: ({ label, locale }: { label: string; locale: string }) => (
+    <a aria-label={label} data-testid="bag-icon" href={`/${locale}/cart`}>
+      {label}
+    </a>
   ),
 }));
 
@@ -67,6 +69,7 @@ describe("home page header", () => {
       <HomePageHeader
         borrowedListLabel="Borrowed List"
         brandLabel="Booky"
+        cartLabel="Keranjang"
         displayName="Booky Reader"
         locale="id"
         profileLabel="Profil"
