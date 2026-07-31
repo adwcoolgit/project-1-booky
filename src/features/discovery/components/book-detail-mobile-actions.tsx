@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import type { BookDetailHeroAction } from "@/features/discovery/components/book-detail-hero";
 import { cn } from "@/shared/lib/utils";
@@ -42,8 +42,10 @@ function renderBookDetailAction(
 
 export function BookDetailMobileActions({
   actions,
+  addToCartAction,
 }: {
   actions: readonly BookDetailHeroAction[];
+  addToCartAction?: ReactNode;
 }) {
   const [shouldShow, setShouldShow] = useState(false);
 
@@ -89,6 +91,7 @@ export function BookDetailMobileActions({
     >
       <div className="mx-auto w-full max-w-[75rem] px-4 py-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] sm:px-6 md:px-8">
         <div className="flex items-start gap-3">
+          {addToCartAction}
           {actions.map((action) =>
             renderBookDetailAction(
               action,

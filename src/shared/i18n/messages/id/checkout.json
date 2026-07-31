@@ -1,0 +1,24 @@
+{
+  "loading": "Memuat konfirmasi peminjaman...",
+  "unknownBookTitle": "Buku tidak tersedia",
+  "genericFailureReason": "Buku ini tidak dapat dipinjam.",
+  "pageTitle": "Checkout",
+  "previewTitle": "Informasi Anda",
+  "booksTitle": "Buku Terpilih",
+  "borrowDateEstimateNotice": "Ini hanya perkiraan. Tanggal jatuh tempo akhir dikonfirmasi oleh server setelah Anda mengirimkan permintaan.",
+  "policyRequired": "Anda harus menyetujui kebijakan peminjaman sebelum dapat mengonfirmasi peminjaman.",
+  "confirmPending": "Mengonfirmasi...",
+  "confirmError": "Permintaan peminjaman Anda tidak dapat diselesaikan. Coba lagi.",
+  "partialOutcomeTitle": "Beberapa buku tidak dapat dipinjam",
+  "partialOutcomeSucceededTitle": "Berhasil dipinjam",
+  "partialOutcomeFailedTitle": "Tidak dapat dipinjam",
+  "outcomeRemovedCountOne": "{count} barang telah dihapus dari keranjang Anda.",
+  "outcomeRemovedCountOther": "{count} barang telah dihapus dari keranjang Anda.",
+  "failedOutcomeTitle": "Peminjaman gagal",
+  "failedOutcomeDescription": "Tidak ada buku yang dapat dipinjam dari yang Anda pilih. Tinjau alasannya di bawah ini dan coba lagi.",
+  "error": {
+    "title": "Checkout tidak dapat dimuat",
+    "description": "Terjadi kesalahan saat menyiapkan checkout Anda. Coba lagi.",
+    "retry": "Coba lagi"
+  }
+}

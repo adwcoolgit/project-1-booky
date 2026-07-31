@@ -44,7 +44,10 @@ const config: Config = {
           subtle: "var(--color-brand-subtle)",
           strong: "var(--color-brand-strong)",
         },
-        danger: "var(--color-danger)",
+        danger: {
+          DEFAULT: "var(--color-danger)",
+          accent: "var(--color-danger-accent)",
+        },
         success: "var(--color-success)",
         warning: "var(--color-warning)",
       },
@@ -61,6 +64,11 @@ const config: Config = {
       letterSpacing: {
         auth: "-0.02em",
         "auth-helper": "-0.03em",
+        // Generic Figma tracking values (named by the -0.0Nem they carry, so
+        // callers outside the auth screens aren't stuck reusing "auth"-named
+        // keys for an unrelated feature).
+        tight2: "-0.02em",
+        tight3: "-0.03em",
       },
       borderRadius: {
         sm: "var(--radius-sm)",
@@ -72,9 +80,20 @@ const config: Config = {
         "4xl": "var(--radius-4xl)",
         panel: "28px",
         "5xl": "32px",
+        xs: "6px",
       },
       boxShadow: {
         card: "var(--shadow-card)",
+        "card-lg": "0 0 20px rgba(203, 202, 202, 0.25)",
+      },
+      lineHeight: {
+        // Fill the gaps in Tailwind's default absolute leading scale
+        // (3..10 -> 12px..40px in 4px steps) with the values the Figma
+        // cart/checkout screens use.
+        "7.5": "1.875rem",
+        "8.5": "2.125rem",
+        "10.5": "2.625rem",
+        "11": "2.75rem",
       },
       spacing: {
         xxs: "var(--space-xxs)",
@@ -95,6 +114,13 @@ const config: Config = {
         "11xl": "var(--space-11xl)",
         logo: "33px",
         "layout-desktop-gutter": "var(--layout-desktop-gutter)",
+        // Cart list cover art: mobile (Figma 393px) vs desktop (Figma 1440px).
+        "cart-cover-w": "4.375rem",
+        "cart-cover-h": "6.625rem",
+        "cart-cover-w-lg": "5.75rem",
+        "cart-cover-h-lg": "8.625rem",
+        "cart-summary": "19.875rem",
+        "cart-cta": "9.375rem",
       },
       maxWidth: {
         canvas: "var(--layout-desktop-canvas)",
@@ -102,6 +128,7 @@ const config: Config = {
         "auth-intro": "18.125rem",
         content: "60rem",
         guard: "35rem",
+        cart: "62.5rem",
       },
       minHeight: {
         "header-mobile": "var(--layout-mobile-header)",

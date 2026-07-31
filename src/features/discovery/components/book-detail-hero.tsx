@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
 
 import type {
   BookAvailabilityState,
@@ -189,11 +190,15 @@ export function BookDetailHero({
   copy,
   breadcrumbs,
   actions,
+  desktopAddToCartAction,
+  mobileAddToCartAction,
 }: {
   detail: BookDetailPresentation;
   copy: BookDetailHeroCopy;
   breadcrumbs?: readonly BookDetailBreadcrumbItem[] | undefined;
   actions?: readonly BookDetailHeroAction[] | undefined;
+  desktopAddToCartAction?: ReactNode;
+  mobileAddToCartAction?: ReactNode;
 }) {
   const availabilityLabel = copy.availability[detail.availabilityState];
   const metricItems = [
@@ -321,13 +326,14 @@ export function BookDetailHero({
               </p>
             </div>
 
-            {actions && actions.length > 0 ? (
-              <BookDetailMobileActions actions={actions} />
+            {mobileAddToCartAction || (actions && actions.length > 0) ? (
+              <BookDetailMobileActions actions={actions ?? []} addToCartAction={mobileAddToCartAction} />
             ) : null}
 
-            {actions && actions.length > 0 ? (
+            {desktopAddToCartAction || (actions && actions.length > 0) ? (
               <div className="hidden flex-wrap items-center gap-3 lg:flex">
-                {actions.map((action) =>
+                {desktopAddToCartAction}
+                {(actions ?? []).map((action) =>
                   renderBookDetailAction(
                     action,
                     "inline-flex h-12 min-w-[12.5rem] items-center justify-center rounded-full px-4 text-base font-bold leading-[30px] tracking-[-0.02em] transition",

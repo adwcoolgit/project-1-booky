@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import { readRouteGuardResult } from "@/features/auth/config/auth-routes";
+import { AddToCartButton } from "@/features/cart";
 import {
   BookDetailHero,
   BookReviewList,
@@ -16,6 +17,7 @@ import {
 import type { AppLocale } from "@/shared/i18n/config";
 import { resolveLocale } from "@/shared/i18n/config";
 import {
+  getCartFeatureMessages,
   getDiscoveryFeatureMessages,
   getSourceBookMessages,
   getSourceMetadataMessages,
@@ -116,6 +118,7 @@ export default async function BookDetailPage({
   });
   const detailCopy = getDiscoveryFeatureMessages(locale).results.detail;
   const sourceBook = getSourceBookMessages(locale);
+  const cartFeature = getCartFeatureMessages(locale);
   const navigation = getSourceNavigationMessages(locale);
   const stateCopy = createRouteStateCopy(locale);
   const parsedRoute = parseBookRouteParams({ bookId: rawBookId });
@@ -181,16 +184,40 @@ export default async function BookDetailPage({
         { label: data.detail.title },
       ];
 
+      const addToCartCopy = {
+        idle: sourceBook.addToCart,
+        pending: cartFeature.addToCartPending,
+        added: cartFeature.addToCartAdded,
+        error: cartFeature.addToCartError,
+      };
+      const isAddToCartDisabled =
+        data.detail.availabilityState === "unavailable" || data.detail.availabilityState === "unknown";
+
       content = (
         <>
           <BookDetailHero
-            actions={[
-              { disabled: true, label: sourceBook.addToCart, variant: "outline" },
-              { disabled: true, label: sourceBook.borrowBook, variant: "solid" },
-            ]}
+            actions={[{ disabled: true, label: sourceBook.borrowBook, variant: "solid" }]}
             breadcrumbs={breadcrumbs}
             copy={createHeroCopy(locale)}
+            desktopAddToCartAction={
+              <AddToCartButton
+                bookId={data.detail.id}
+                className="inline-flex h-12 min-w-[12.5rem] items-center justify-center rounded-full px-4 text-base font-bold leading-[30px] tracking-[-0.02em] transition"
+                copy={addToCartCopy}
+                disabled={isAddToCartDisabled}
+                locale={locale}
+              />
+            }
             detail={data.detail}
+            mobileAddToCartAction={
+              <AddToCartButton
+                bookId={data.detail.id}
+                className="inline-flex h-10 flex-1 items-center justify-center rounded-full px-2 text-sm font-bold leading-7 tracking-[-0.02em] transition sm:h-11 sm:px-3"
+                copy={addToCartCopy}
+                disabled={isAddToCartDisabled}
+                locale={locale}
+              />
+            }
           />
 
           <div className="h-px w-full bg-border" />

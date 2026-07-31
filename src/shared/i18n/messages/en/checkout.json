@@ -1,0 +1,24 @@
+{
+  "loading": "Loading checkout...",
+  "unknownBookTitle": "Unavailable book",
+  "genericFailureReason": "This book could not be borrowed.",
+  "pageTitle": "Checkout",
+  "previewTitle": "Your Information",
+  "booksTitle": "Selected Books",
+  "borrowDateEstimateNotice": "This is an estimate. The server confirms the final due date after you submit.",
+  "policyRequired": "You must accept the borrowing policy before you can confirm borrowing.",
+  "confirmPending": "Confirming...",
+  "confirmError": "Your borrowing request could not be completed. Try again.",
+  "partialOutcomeTitle": "Some books could not be borrowed",
+  "partialOutcomeSucceededTitle": "Borrowed successfully",
+  "partialOutcomeFailedTitle": "Could not be borrowed",
+  "outcomeRemovedCountOne": "{count} item was removed from your cart.",
+  "outcomeRemovedCountOther": "{count} items were removed from your cart.",
+  "failedOutcomeTitle": "Borrowing failed",
+  "failedOutcomeDescription": "None of the selected books could be borrowed. Review the reasons below and try again.",
+  "error": {
+    "title": "We could not load checkout",
+    "description": "Something went wrong while preparing your checkout. Try again.",
+    "retry": "Try again"
+  }
+}

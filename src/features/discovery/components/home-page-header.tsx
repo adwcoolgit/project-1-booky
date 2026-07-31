@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { DiscoveryBagIcon } from "@/features/discovery/components/discovery-bag-icon";
+import { CartBadge } from "@/features/cart";
 import { UserProfileMenu } from "@/features/discovery/components/user-profile-menu";
 import { LocaleSwitcher } from "@/features/foundation-shell";
 import type { AppLocale } from "@/shared/i18n/config";
@@ -48,6 +48,7 @@ type AuthenticatedHomePageHeaderProps = HomePageHeaderBaseProps & {
   borrowedListLabel: string;
   reviewsLabel: string;
   profileMenuLabel: string;
+  cartLabel: string;
   cartCount?: number | undefined;
   searchActionHref?: string | undefined;
   searchDefaultValue?: string | undefined;
@@ -112,12 +113,6 @@ export function HomePageHeader({
           hiddenFields: searchHiddenFields,
         })
       : searchActionHref;
-  const cartBadgeLabel =
-    props.variant === "authenticated" &&
-    typeof props.cartCount === "number" &&
-    props.cartCount > 0
-      ? String(Math.min(props.cartCount, 99))
-      : null;
 
   return (
     <header className="sticky top-0 z-50 home-card-shadow border-b border-border bg-white">
@@ -190,13 +185,8 @@ export function HomePageHeader({
                   <SearchIcon className="h-6 w-6 text-neutral-950" />
                 </Link>
 
-                <div className="relative shrink-0" data-home-header-bag="true">
-                  <DiscoveryBagIcon className="h-7 w-7 text-neutral-950 sm:h-[1.875rem] sm:w-[1.875rem] lg:h-8 lg:w-8" />
-                  {cartBadgeLabel ? (
-                    <span className="absolute left-3 top-0 inline-flex h-5 min-w-5 -translate-y-1/2 items-center justify-center rounded-full bg-danger px-[5px] text-[12px] font-bold leading-[23px] tracking-[-0.02em] text-white lg:left-[18px] lg:top-[7px] lg:translate-y-0">
-                      {cartBadgeLabel}
-                    </span>
-                  ) : null}
+                <div data-home-header-bag="true">
+                  <CartBadge initialCount={props.cartCount} label={props.cartLabel} locale={locale} />
                 </div>
 
                 <UserProfileMenu
