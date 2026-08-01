@@ -8,6 +8,7 @@ import type { CheckoutPreviewPresentation } from "@/entities/checkout";
 import type { BorrowConfirmationPresentation } from "@/entities/loan";
 import { mapBorrowConfirmationResultToPresentation } from "@/entities/loan";
 import { useCartSelectionStore } from "@/features/cart/model/cart-selection.store";
+import { CheckoutAgreements, type CheckoutAgreementsCopy } from "@/features/checkout/components/checkout-agreements";
 import {
   CheckoutBorrowDateField,
   type CheckoutBorrowDateFieldCopy,
@@ -23,10 +24,6 @@ import {
 import { CheckoutOutcomePanel, type CheckoutOutcomePanelCopy } from "@/features/checkout/components/checkout-outcome-panel";
 import { CheckoutPageState, type CheckoutPageStateCopy } from "@/features/checkout/components/checkout-page-state";
 import {
-  CheckoutPolicyAgreement,
-  type CheckoutPolicyAgreementCopy,
-} from "@/features/checkout/components/checkout-policy-agreement";
-import {
   CheckoutPreviewSummary,
   type CheckoutPreviewSummaryCopy,
 } from "@/features/checkout/components/checkout-preview-summary";
@@ -37,11 +34,13 @@ import { estimateReturnDate, toLocalDateInputValue } from "@/features/checkout/m
 import type { AppLocale } from "@/shared/i18n/config";
 
 export type CheckoutPageContentCopy = CheckoutPageStateCopy & {
+  cardTitle: string;
   preview: CheckoutPreviewSummaryCopy;
   duration: CheckoutDurationSelectCopy;
   borrowDate: CheckoutBorrowDateFieldCopy;
-  policy: CheckoutPolicyAgreementCopy;
+  agreements: CheckoutAgreementsCopy;
   returnDateLabel: string;
+  returnDateDescriptionTemplate: string;
   confirmButton: CheckoutConfirmButtonCopy;
   outcomePanel: CheckoutOutcomePanelCopy;
 };
@@ -63,7 +62,8 @@ export function CheckoutPageContent({
   // Owned here (not inside `CheckoutConfirmButton`) so the outcome-handling
   // effect below keeps running even if the confirm button's own subtree
   // conditionally stops rendering right after the response arrives (e.g. the
-  // selection transiently reading as empty before this effect has run).
+  // selection transiently reading as empty right after the server response
+  // arrives but before the outcome/reconciliation effects have run).
   const loanMutation = useLoanFromCartMutation({ locale });
 
   const selectedRows = useMemo(
@@ -122,7 +122,8 @@ export function CheckoutPageContent({
     durationDays: formInput.durationDays,
     borrowDate: formInput.borrowDate,
   });
-  const returnDateLabel = new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(estimatedReturnDate);
+  const returnDateLabel = new Intl.DateTimeFormat(locale, { dateStyle: "long" }).format(estimatedReturnDate);
+  const returnDateDescription = copy.returnDateDescriptionTemplate.replace("{date}", returnDateLabel);
   const minBorrowDate = toLocalDateInputValue(new Date());
 
   return (
@@ -131,7 +132,7 @@ export function CheckoutPageContent({
         <CheckoutOutcomePanel copy={copy.outcomePanel} locale={locale} outcome={outcomePresentation} />
       ) : null}
 
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-8">
+      <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-center lg:gap-checkout-columns-gap">
         <CheckoutPreviewSummary
           className="lg:flex-1"
           copy={copy.preview}
@@ -141,27 +142,46 @@ export function CheckoutPageContent({
           userPhone={query.data.user.phone}
         />
 
-        <div className="flex flex-col gap-5 rounded-[16px] border border-border bg-white p-5 lg:w-80">
-          <CheckoutDurationSelect
-            copy={copy.duration}
-            onChange={(durationDays) => setFormInput((current) => ({ ...current, durationDays }))}
-            value={formInput.durationDays}
-          />
+        <div className="flex w-full flex-col gap-4 rounded-3xl bg-white p-4 shadow-card-lg lg:w-checkout-card lg:gap-6 lg:p-5">
+          <h2 className="text-xl font-bold leading-8.5 tracking-tight2 text-neutral-950 lg:text-28 lg:leading-9.5">
+            {copy.cardTitle}
+          </h2>
+
           <CheckoutBorrowDateField
             copy={copy.borrowDate}
             minDate={minBorrowDate}
             onChange={(borrowDate) => setFormInput((current) => ({ ...current, borrowDate }))}
             value={formInput.borrowDate ?? ""}
           />
-          <div className="flex flex-col gap-1" data-checkout-return-date-preview="true">
-            <p className="text-sm font-semibold text-foreground">{copy.returnDateLabel}</p>
-            <p className="text-sm text-text-muted">{returnDateLabel}</p>
-          </div>
-          <CheckoutPolicyAgreement
-            checked={formInput.policyAccepted}
-            copy={copy.policy}
-            onChange={(policyAccepted) => setFormInput((current) => ({ ...current, policyAccepted }))}
+
+          <CheckoutDurationSelect
+            copy={copy.duration}
+            onChange={(durationDays) => setFormInput((current) => ({ ...current, durationDays }))}
+            value={formInput.durationDays}
           />
+
+          <div
+            className="flex flex-col gap-1 rounded-xl bg-primary-100 p-3 lg:p-4"
+            data-checkout-return-date-preview="true"
+          >
+            <p className="text-sm font-bold leading-7 tracking-tight2 text-neutral-950 lg:text-base lg:leading-7.5">
+              {copy.returnDateLabel}
+            </p>
+            <p className="text-sm font-medium leading-7 tracking-tight3 text-neutral-950 lg:text-base lg:leading-7.5">
+              {returnDateDescription}
+            </p>
+          </div>
+
+          <CheckoutAgreements
+            copy={copy.agreements}
+            onChangePolicyAccepted={(policyAccepted) => setFormInput((current) => ({ ...current, policyAccepted }))}
+            onChangeReturnAcknowledged={(returnAcknowledged) =>
+              setFormInput((current) => ({ ...current, returnAcknowledged }))
+            }
+            policyAccepted={formInput.policyAccepted}
+            returnAcknowledged={formInput.returnAcknowledged}
+          />
+
           <CheckoutConfirmButton
             copy={copy.confirmButton}
             formInput={formInput}

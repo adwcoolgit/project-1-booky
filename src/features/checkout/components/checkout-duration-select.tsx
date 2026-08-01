@@ -23,24 +23,32 @@ export function CheckoutDurationSelect({ value, onChange, copy, className }: Che
   const t = useTranslations("Checkout");
 
   return (
-    <fieldset className={cn("flex flex-col gap-2", className)} data-checkout-duration="true">
-      <legend className="text-sm font-semibold text-foreground">{copy.label}</legend>
-      <div className="flex flex-wrap gap-2" role="radiogroup">
+    <fieldset className={cn("flex flex-col gap-3", className)} data-checkout-duration="true">
+      <legend className="text-sm font-bold leading-7 tracking-tight2 text-neutral-950 lg:text-base lg:leading-7.5">
+        {copy.label}
+      </legend>
+      <div className="flex flex-wrap items-center gap-4" role="radiogroup">
         {DURATION_OPTIONS.map((option) => (
           <button
             aria-pressed={value === option}
-            className={cn(
-              "rounded-full border px-4 py-2 text-sm font-semibold transition",
-              value === option
-                ? "border-brand bg-brand text-white"
-                : "border-border bg-white text-neutral-950 hover:bg-neutral-50",
-            )}
+            className="flex items-center gap-2 transition"
             data-checkout-duration-option={option}
             key={option}
             onClick={() => onChange(option)}
             type="button"
           >
-            {t("durationDays", { count: option })}
+            <span
+              aria-hidden="true"
+              className={cn(
+                "flex h-6 w-6 shrink-0 items-center justify-center rounded-full border",
+                value === option ? "border-brand bg-brand" : "border-neutral-400 bg-white",
+              )}
+            >
+              {value === option ? <span className="h-2 w-2 rounded-full bg-white" /> : null}
+            </span>
+            <span className="text-sm font-semibold leading-7 tracking-tight2 text-neutral-950 lg:text-base lg:leading-7.5">
+              {t("durationDays", { count: option })}
+            </span>
           </button>
         ))}
       </div>

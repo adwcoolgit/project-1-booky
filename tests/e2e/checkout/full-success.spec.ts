@@ -76,6 +76,7 @@ test("confirming borrowing with a full-success response reaches the success scre
 
   await expect(page).toHaveURL(/\/en\/checkout$/);
 
+  await page.getByRole("checkbox", { name: "I agree to return the book(s) before the due date." }).check();
   await page.getByRole("checkbox", { name: "I agree to the borrowing policy." }).check();
   await page.getByRole("button", { name: "Confirm Borrowing" }).click();
 

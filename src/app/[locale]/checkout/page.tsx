@@ -56,9 +56,9 @@ export default async function CheckoutPage({
   const sourceCheckout = getSourceCheckoutMessages(locale);
 
   return (
-    <UserFacingPageShell displayName={displayName} locale={locale} variant="authenticated">
-      <section className="flex flex-col gap-6 sm:gap-8">
-        <h1 className="text-[24px] font-bold leading-9 text-neutral-950 sm:text-[28px] sm:leading-10 md:text-[32px] md:leading-[42px] xl:text-[36px] xl:leading-[44px]">
+    <UserFacingPageShell contentClassName="max-w-cart gap-8" displayName={displayName} locale={locale} variant="authenticated">
+      <section className="flex flex-col gap-6 lg:gap-8">
+        <h1 className="text-2xl font-bold leading-9 text-neutral-950 sm:text-3xl sm:leading-10 md:text-4xl md:leading-10.5 lg:leading-11">
           {checkout.pageTitle}
         </h1>
 
@@ -66,11 +66,22 @@ export default async function CheckoutPage({
           copy={{
             loading: checkout.loading,
             error: checkout.error,
-            preview: { title: checkout.previewTitle, booksTitle: checkout.booksTitle },
+            cardTitle: checkout.cardTitle,
+            preview: {
+              title: checkout.previewTitle,
+              booksTitle: checkout.booksTitle,
+              nameLabel: checkout.nameLabel,
+              emailLabel: checkout.emailLabel,
+              phoneLabel: checkout.phoneLabel,
+            },
             duration: { label: sourceCheckout.duration },
             borrowDate: { label: sourceCheckout.borrowDate, estimateNotice: checkout.borrowDateEstimateNotice },
-            policy: { agreement: sourceCheckout.agreement, policyRequired: checkout.policyRequired },
+            agreements: {
+              returnAcknowledgement: checkout.returnAcknowledgement,
+              policyAgreement: sourceCheckout.agreement,
+            },
             returnDateLabel: sourceCheckout.returnDate,
+            returnDateDescriptionTemplate: checkout.returnDateDescriptionTemplate,
             confirmButton: {
               confirm: sourceCheckout.confirm,
               pending: checkout.confirmPending,

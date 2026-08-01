@@ -50,6 +50,7 @@ test("checkout page with the confirm-borrowing button in a pending state passes 
 
   await expect(page).toHaveURL(/\/en\/checkout$/);
 
+  await page.getByRole("checkbox", { name: "I agree to return the book(s) before the due date." }).check();
   await page.getByRole("checkbox", { name: "I agree to the borrowing policy." }).check();
   await page.getByRole("button", { name: "Confirm Borrowing" }).click();
 
@@ -74,11 +75,16 @@ test("checkout success screen passes axe checks", async ({ page }) => {
   await page.goto("/en/cart");
   await page.locator('[data-cart-row-select="501"]').check();
   await page.getByRole("link", { name: "Checkout" }).click();
+  await page.getByRole("checkbox", { name: "I agree to return the book(s) before the due date." }).check();
   await page.getByRole("checkbox", { name: "I agree to the borrowing policy." }).check();
   await page.getByRole("button", { name: "Confirm Borrowing" }).click();
 
   await expect(page).toHaveURL(/\/en\/checkout\/success$/);
   await expect(page.getByRole("heading", { name: "Borrowing Successful" })).toBeVisible();
+  // The client-side navigation resolves before Next.js finishes streaming
+  // the new segment's <title>, which otherwise races axe's document-title
+  // check.
+  await page.waitForFunction(() => document.title.length > 0);
 
   await injectAxe(page);
   await checkA11y(page, undefined, { detailedReport: true, detailedReportOptions: { html: true } });

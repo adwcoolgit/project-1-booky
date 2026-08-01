@@ -48,6 +48,7 @@ test("rapid repeated activation of confirm-borrowing sends exactly one loan requ
 
   await expect(page).toHaveURL(/\/en\/checkout$/);
 
+  await page.getByRole("checkbox", { name: "I agree to return the book(s) before the due date." }).check();
   await page.getByRole("checkbox", { name: "I agree to the borrowing policy." }).check();
 
   // A stable attribute selector is used instead of role+name because the

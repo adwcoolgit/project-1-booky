@@ -46,14 +46,16 @@ test.describe("checkout review and policy gating", () => {
       .poll(async () => returnDatePreview.first().textContent())
       .not.toBe(initialReturnDateText);
 
-    // The policy-required notice is visible until the user accepts it.
-    await expect(page.getByText("You must accept the borrowing policy before you can confirm borrowing.")).toBeVisible();
+    // Confirmation is blocked until both agreement checkboxes are accepted.
+    const confirmButton = page.getByRole("button", { name: "Confirm Borrowing" });
+
+    await expect(confirmButton).toBeDisabled();
+
+    await page.getByRole("checkbox", { name: "I agree to return the book(s) before the due date." }).check();
+    await expect(confirmButton).toBeDisabled();
 
     await page.getByRole("checkbox", { name: "I agree to the borrowing policy." }).check();
-
-    await expect(
-      page.getByText("You must accept the borrowing policy before you can confirm borrowing."),
-    ).not.toBeVisible();
+    await expect(confirmButton).toBeEnabled();
   });
 
   test("redirects to the cart when no eligible cart row is selected", async ({ page }) => {

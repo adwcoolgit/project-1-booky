@@ -34,7 +34,7 @@ export function CheckoutConfirmButton({
   mutation,
   className,
 }: CheckoutConfirmButtonProps) {
-  const canConfirm = selectedCartItemIds.length > 0 && formInput.policyAccepted;
+  const canConfirm = selectedCartItemIds.length > 0 && formInput.returnAcknowledged && formInput.policyAccepted;
   // `isSuccess` is included so a resolved-but-not-yet-navigated-away
   // full-success response can't be double-submitted; the parent resets the
   // mutation immediately after handling a non-success outcome so failed
@@ -45,7 +45,7 @@ export function CheckoutConfirmButton({
     <div className="flex flex-col gap-2">
       <button
         className={cn(
-          "inline-flex items-center justify-center rounded-full bg-brand px-4 py-2 text-sm font-semibold text-white transition hover:brightness-95 disabled:pointer-events-none disabled:opacity-60",
+          "inline-flex h-12 w-full items-center justify-center rounded-full bg-brand text-base font-bold leading-7.5 tracking-tight2 text-white transition hover:brightness-95 disabled:pointer-events-none disabled:opacity-60",
           className,
         )}
         data-checkout-confirm="true"
