@@ -49,6 +49,7 @@ for (const viewport of [
     await page.goto("/en/cart");
     await page.locator('[data-cart-row-select="501"]').check();
     await page.getByRole("link", { name: "Checkout" }).click();
+    await page.getByRole("checkbox", { name: "I agree to return the book(s) before the due date." }).check();
     await page.getByRole("checkbox", { name: "I agree to the borrowing policy." }).check();
     await page.getByRole("button", { name: "Confirm Borrowing" }).click();
 

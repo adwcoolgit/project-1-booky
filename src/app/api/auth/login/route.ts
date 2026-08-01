@@ -149,7 +149,30 @@ export async function POST(request: Request) {
   const result = await processLoginRequest(payload, request.headers.get("origin"));
 
   if (result.sessionEnvelope) {
-    await writeSessionEnvelope(result.sessionEnvelope);
+    try {
+      await writeSessionEnvelope(result.sessionEnvelope);
+    } catch (error) {
+      // A misconfigured deployment (e.g. AUTH_SESSION_SIGNING_SECRET unset in
+      // production) throws here after a successful upstream login. Logging
+      // the real cause keeps it visible in server logs instead of surfacing
+      // only as an opaque generic failure to the user.
+      console.error("Failed to write the session cookie after a successful login.", error);
+
+      const locale = resolveLocale(
+        typeof payload === "object" && payload && "surfaceLocale" in payload && typeof payload.surfaceLocale === "string"
+          ? payload.surfaceLocale
+          : undefined,
+      );
+
+      return NextResponse.json(
+        authMutationFailureSchema.parse({
+          status: "error",
+          code: "server-error",
+          message: getAuthFeatureMessages(locale).feedback.genericError,
+        }),
+        { status: 500 },
+      );
+    }
   }
 
   return NextResponse.json(result.body, { status: result.status });

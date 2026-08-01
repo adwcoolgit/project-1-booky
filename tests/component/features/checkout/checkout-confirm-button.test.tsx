@@ -67,14 +67,19 @@ const copy: CheckoutConfirmButtonCopy = {
   error: "Your borrowing request could not be completed. Try again.",
 };
 
-const acceptedFormInput: CheckoutFormInput = { durationDays: 3, borrowDate: undefined, policyAccepted: true };
+const acceptedFormInput: CheckoutFormInput = {
+  durationDays: 3,
+  borrowDate: undefined,
+  returnAcknowledged: true,
+  policyAccepted: true,
+};
 
 describe("checkout confirm button", () => {
-  it("is disabled until the policy is accepted and at least one row is selected", () => {
+  it("is disabled until both agreements are accepted and at least one row is selected", () => {
     renderWithProviders(
       <ConfirmButtonHarness
         copy={copy}
-        formInput={{ durationDays: 3, borrowDate: undefined, policyAccepted: false }}
+        formInput={{ durationDays: 3, borrowDate: undefined, returnAcknowledged: true, policyAccepted: false }}
         locale="en"
         selectedCartItemIds={[501]}
       />,

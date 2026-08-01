@@ -7,16 +7,13 @@ import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { CheckoutAgreements, type CheckoutAgreementsCopy } from "@/features/checkout/components/checkout-agreements";
 import {
   CheckoutBorrowDateField,
   type CheckoutBorrowDateFieldCopy,
 } from "@/features/checkout/components/checkout-borrow-date-field";
 import { CheckoutDurationSelect } from "@/features/checkout/components/checkout-duration-select";
 import { CheckoutPageContent, type CheckoutPageContentCopy } from "@/features/checkout/components/checkout-page-content";
-import {
-  CheckoutPolicyAgreement,
-  type CheckoutPolicyAgreementCopy,
-} from "@/features/checkout/components/checkout-policy-agreement";
 import {
   CheckoutPreviewSummary,
   type CheckoutPreviewSummaryCopy,
@@ -92,39 +89,58 @@ describe("CheckoutBorrowDateField", () => {
   });
 });
 
-describe("CheckoutPolicyAgreement", () => {
-  const copy: CheckoutPolicyAgreementCopy = {
-    agreement: "I agree to the borrowing policy.",
-    policyRequired: "You must accept the borrowing policy before you can confirm borrowing.",
+describe("CheckoutAgreements", () => {
+  const copy: CheckoutAgreementsCopy = {
+    returnAcknowledgement: "I agree to return the book(s) before the due date.",
+    policyAgreement: "I accept the library borrowing policy.",
   };
 
-  it("shows the policy-required notice while unchecked", () => {
-    render(<CheckoutPolicyAgreement checked={false} copy={copy} onChange={vi.fn()} />);
+  it("renders both agreement checkboxes unchecked by default", () => {
+    render(
+      <CheckoutAgreements
+        copy={copy}
+        onChangePolicyAccepted={vi.fn()}
+        onChangeReturnAcknowledged={vi.fn()}
+        policyAccepted={false}
+        returnAcknowledged={false}
+      />,
+    );
 
-    expect(screen.getByText(copy.policyRequired)).toBeInTheDocument();
-    expect(screen.getByRole("checkbox", { name: copy.agreement })).not.toBeChecked();
+    expect(screen.getByRole("checkbox", { name: copy.returnAcknowledgement })).not.toBeChecked();
+    expect(screen.getByRole("checkbox", { name: copy.policyAgreement })).not.toBeChecked();
   });
 
-  it("hides the policy-required notice once accepted", () => {
-    render(<CheckoutPolicyAgreement checked={true} copy={copy} onChange={vi.fn()} />);
-
-    expect(screen.queryByText(copy.policyRequired)).not.toBeInTheDocument();
-  });
-
-  it("calls onChange when toggled", async () => {
-    const onChange = vi.fn();
+  it("calls the matching handler when each checkbox is toggled", async () => {
+    const onChangeReturnAcknowledged = vi.fn();
+    const onChangePolicyAccepted = vi.fn();
     const user = userEvent.setup();
 
-    render(<CheckoutPolicyAgreement checked={false} copy={copy} onChange={onChange} />);
+    render(
+      <CheckoutAgreements
+        copy={copy}
+        onChangePolicyAccepted={onChangePolicyAccepted}
+        onChangeReturnAcknowledged={onChangeReturnAcknowledged}
+        policyAccepted={false}
+        returnAcknowledged={false}
+      />,
+    );
 
-    await user.click(screen.getByRole("checkbox", { name: copy.agreement }));
+    await user.click(screen.getByRole("checkbox", { name: copy.returnAcknowledgement }));
+    await user.click(screen.getByRole("checkbox", { name: copy.policyAgreement }));
 
-    expect(onChange).toHaveBeenCalledWith(true);
+    expect(onChangeReturnAcknowledged).toHaveBeenCalledWith(true);
+    expect(onChangePolicyAccepted).toHaveBeenCalledWith(true);
   });
 });
 
 describe("CheckoutPreviewSummary", () => {
-  const copy: CheckoutPreviewSummaryCopy = { title: "Your Information", booksTitle: "Selected Books" };
+  const copy: CheckoutPreviewSummaryCopy = {
+    title: "User Information",
+    booksTitle: "Book List",
+    nameLabel: "Name",
+    emailLabel: "Email",
+    phoneLabel: "Phone Number",
+  };
 
   it("renders the user's information and selected book rows", () => {
     render(
@@ -148,7 +164,7 @@ describe("CheckoutPreviewSummary", () => {
       />,
     );
 
-    expect(screen.getByText("Your Information")).toBeInTheDocument();
+    expect(screen.getByText("User Information")).toBeInTheDocument();
     expect(screen.getByText("Jordan Reader")).toBeInTheDocument();
     expect(screen.getByText("jordan.reader@example.test")).toBeInTheDocument();
     expect(screen.getByText("The Left Hand of Darkness")).toBeInTheDocument();
@@ -160,14 +176,22 @@ describe("CheckoutPageContent policy gating", () => {
   const copy: CheckoutPageContentCopy = {
     loading: "Loading checkout...",
     error: { title: "We could not load checkout", description: "Try again.", retry: "Try again" },
-    preview: { title: "Your Information", booksTitle: "Selected Books" },
+    cardTitle: "Complete Your Borrow Request",
+    preview: {
+      title: "User Information",
+      booksTitle: "Book List",
+      nameLabel: "Name",
+      emailLabel: "Email",
+      phoneLabel: "Phone Number",
+    },
     duration: { label: "Duration" },
     borrowDate: { label: "Borrow Date", estimateNotice: "This is an estimate." },
-    policy: {
-      agreement: "I agree to the borrowing policy.",
-      policyRequired: "You must accept the borrowing policy before you can confirm borrowing.",
+    agreements: {
+      returnAcknowledgement: "I agree to return the book(s) before the due date.",
+      policyAgreement: "I accept the library borrowing policy.",
     },
     returnDateLabel: "Return Date",
+    returnDateDescriptionTemplate: "Please return the book no later than {date}.",
     confirmButton: {
       confirm: "Confirm Borrowing",
       pending: "Confirming...",
@@ -192,7 +216,7 @@ describe("CheckoutPageContent policy gating", () => {
     replaceSpy.mockClear();
   });
 
-  it("shows the policy-required notice until the eligible selection accepts the policy", async () => {
+  it("keeps confirm disabled until both agreements are accepted", async () => {
     server.use(
       http.get("/api/cart/checkout", () =>
         HttpResponse.json({
@@ -209,13 +233,17 @@ describe("CheckoutPageContent policy gating", () => {
 
     await waitFor(() => expect(screen.getByText("The Left Hand of Darkness")).toBeInTheDocument());
 
-    expect(screen.getByText(copy.policy.policyRequired)).toBeInTheDocument();
+    const confirmButton = screen.getByRole("button", { name: copy.confirmButton.confirm });
+
+    expect(confirmButton).toBeDisabled();
 
     const user = userEvent.setup();
 
-    await user.click(screen.getByRole("checkbox", { name: copy.policy.agreement }));
+    await user.click(screen.getByRole("checkbox", { name: copy.agreements.returnAcknowledgement }));
+    expect(confirmButton).toBeDisabled();
 
-    expect(screen.queryByText(copy.policy.policyRequired)).not.toBeInTheDocument();
+    await user.click(screen.getByRole("checkbox", { name: copy.agreements.policyAgreement }));
+    expect(confirmButton).toBeEnabled();
     expect(replaceSpy).not.toHaveBeenCalled();
   });
 

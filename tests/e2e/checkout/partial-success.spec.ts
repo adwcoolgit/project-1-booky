@@ -103,6 +103,7 @@ test("a partial-success confirmation shows succeeded, failed, and removed groups
 
   await expect(page).toHaveURL(/\/en\/checkout$/);
 
+  await page.getByRole("checkbox", { name: "I agree to return the book(s) before the due date." }).check();
   await page.getByRole("checkbox", { name: "I agree to the borrowing policy." }).check();
   await page.getByRole("button", { name: "Confirm Borrowing" }).click();
 

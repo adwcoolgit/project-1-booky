@@ -89,14 +89,22 @@ describe("CheckoutPageContent partial-success recovery", () => {
   const pageCopy: CheckoutPageContentCopy = {
     loading: "Loading checkout...",
     error: { title: "We could not load checkout", description: "Try again.", retry: "Try again" },
-    preview: { title: "Your Information", booksTitle: "Selected Books" },
+    cardTitle: "Complete Your Borrow Request",
+    preview: {
+      title: "User Information",
+      booksTitle: "Book List",
+      nameLabel: "Name",
+      emailLabel: "Email",
+      phoneLabel: "Phone Number",
+    },
     duration: { label: "Duration" },
     borrowDate: { label: "Borrow Date", estimateNotice: "This is an estimate." },
-    policy: {
-      agreement: "I agree to the borrowing policy.",
-      policyRequired: "You must accept the borrowing policy before you can confirm borrowing.",
+    agreements: {
+      returnAcknowledgement: "I agree to return the book(s) before the due date.",
+      policyAgreement: "I accept the library borrowing policy.",
     },
     returnDateLabel: "Return Date",
+    returnDateDescriptionTemplate: "Please return the book no later than {date}.",
     confirmButton: {
       confirm: "Confirm Borrowing",
       pending: "Confirming...",
@@ -132,7 +140,8 @@ describe("CheckoutPageContent partial-success recovery", () => {
 
     await waitFor(() => expect(screen.getByText("Sold Out Title")).toBeInTheDocument());
 
-    await user.click(screen.getByRole("checkbox", { name: "I agree to the borrowing policy." }));
+    await user.click(screen.getByRole("checkbox", { name: "I agree to return the book(s) before the due date." }));
+    await user.click(screen.getByRole("checkbox", { name: "I accept the library borrowing policy." }));
 
     // Re-mock the cart/checkout GET after confirmation so the reconciling
     // refetch reflects the server having removed cartItemId 501 (converted

@@ -60,6 +60,10 @@ const config: Config = {
         "body-md": ["var(--font-size-text-md)", { lineHeight: "var(--line-height-text-md)" }],
         "auth-brand": ["25.1429px", { lineHeight: "33px" }],
         "auth-title": ["var(--font-size-display-sm)", { lineHeight: "var(--line-height-display-sm)" }],
+        // Figma checkout card title (28px); paired line-height is applied
+        // separately via `leading-9.5` so it composes with the shared
+        // absolute leading scale below.
+        "28": "28px",
       },
       letterSpacing: {
         auth: "-0.02em",
@@ -92,6 +96,7 @@ const config: Config = {
         // cart/checkout screens use.
         "7.5": "1.875rem",
         "8.5": "2.125rem",
+        "9.5": "2.375rem",
         "10.5": "2.625rem",
         "11": "2.75rem",
       },
@@ -121,6 +126,10 @@ const config: Config = {
         "cart-cover-h-lg": "8.625rem",
         "cart-summary": "19.875rem",
         "cart-cta": "9.375rem",
+        // Checkout review card (right column, desktop) and the gap between
+        // the two checkout columns.
+        "checkout-card": "29.875rem",
+        "checkout-columns-gap": "3.625rem",
       },
       maxWidth: {
         canvas: "var(--layout-desktop-canvas)",

@@ -1,5 +1,7 @@
 "use client";
 
+import CalendarIcon from "@iconify-react/tabler/calendar";
+
 import { cn } from "@/shared/lib/utils";
 
 export type CheckoutBorrowDateFieldCopy = {
@@ -17,18 +19,24 @@ export type CheckoutBorrowDateFieldProps = {
 
 export function CheckoutBorrowDateField({ value, onChange, minDate, copy, className }: CheckoutBorrowDateFieldProps) {
   return (
-    <div className={cn("flex flex-col gap-1.5", className)} data-checkout-borrow-date="true">
-      <label className="text-sm font-semibold text-foreground" htmlFor="checkout-borrow-date">
+    <div className={cn("flex flex-col gap-0.5", className)} data-checkout-borrow-date="true">
+      <label
+        className="text-sm font-bold leading-7 tracking-tight2 text-neutral-950"
+        htmlFor="checkout-borrow-date"
+      >
         {copy.label}
       </label>
-      <input
-        className="w-full max-w-xs rounded-[10px] border border-border px-3 py-2 text-sm text-foreground focus:outline-brand"
-        id="checkout-borrow-date"
-        min={minDate}
-        onChange={(event) => onChange(event.target.value)}
-        type="date"
-        value={value}
-      />
+      <div className="flex h-12 items-center gap-2 rounded-xl border border-neutral-300 bg-neutral-100 px-4 py-2">
+        <input
+          className="w-full flex-1 bg-transparent text-base font-semibold leading-7.5 tracking-tight2 text-neutral-950 focus:outline-none"
+          id="checkout-borrow-date"
+          min={minDate}
+          onChange={(event) => onChange(event.target.value)}
+          type="date"
+          value={value}
+        />
+        <CalendarIcon aria-hidden="true" className="h-5 w-5 shrink-0 text-neutral-950" />
+      </div>
       <p className="text-xs text-text-muted">{copy.estimateNotice}</p>
     </div>
   );
